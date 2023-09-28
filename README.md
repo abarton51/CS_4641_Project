@@ -1,4 +1,4 @@
-# just-the-docs-template
+# Epic Machine Learning Project for CS 4641
 
 This is a *bare-minimum* template to create a [Jekyll] site that:
 
