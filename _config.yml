@@ -1,9 +1,9 @@
-title: Classifying Music Excerpts by Composer
+title: Music Excerpt Classification
 description: CS 4641 Machine Learning Project - Fall 2023
 author: Austin, Aditya, Isabelle, Karpagam, Niki
 theme: just-the-docs
-logo: "/assets/images/sigmabird.png"
-favicon_ico: "/assets/images/sigmabird.ico"
+logo: "/assets/images/robotmusic_icon1.png"
+favicon_ico: "/assets/images/robotmusic_icon2.ico"
 
 url: "https://cs4641_abarton51.github.io"
 repository: "https://github.com/abarton51/CS_4641_Project"
