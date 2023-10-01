@@ -1,18 +1,24 @@
 ---
-title: Home
+title: Overview
 layout: home
 ---
 # Introduction/Background:
-Blah blah blah, the world needs this, it's such a good idea. The *problem* is that people don't have this and if they did, thatd be great.
+We are going to perform a classification task on two different music audio datasets, MusicNet and GTZAN. MusicNet consists of 330 .wav and .midi files (per file type) corresponding to 330 separate classical piano compositions belonging to 15 different composers. GTZAN consists of 1000 mean feature matrices stored in .csv files and spectrogram images (per data type) corresponding to 10 genres of music. For MusicNet, the task is to identify the composer for a given input of audio data and for GTZAN the task is to classify the genre of music given an input of audio data. Both of these datasets are taken from [Kaggle](https://www.kaggle.com) and work in classification has recently gotten up to ~92% [[4.]](#references). Previous works struggled getting any model above 80% [[1.]](#references), [[2.]](#references). One study introduced an ensemble decision tree method that outperformed full connected neural networks ([2.]). Results these days outperform them but not much work has been done in using tree classifiers in this problem recently. Therefore, we aim to re-examine decision trees' abilities for this task and attempt to improve upon CNNs.
 
 # Proposed Methods
-We propose that we use methods that are both effective and capable.
+We plan to primarily explore using neural networks such as fully connected, convolutional, and recurrent neural networks. Within the class of neural networks as methods, we are specifically planning on improving upon CNNs and the combined method illustrated in [[1.]](#references). We plan to compare these methods to other classic methods such as support vector classifiers and decision trees. If permitting, we will construct a super learner model and see if we can get improvements on our results that justifies such a costly ensemble learning method.
 
 # Potential Results/Discussions
-We expect to see one of 2 results. 1) We change the world. 2) We get an A+.
+In our exploration of our data, we expect to be able to effectively reduce the dimension of the .csv datasets while maintaining its ability to separate classes. For our classification task, we expect to see a combination of CNNs and FFNs to perform the best from previous works with marginal improvements from adding in more spectrogram and image type data.
 
 # References
-Refer to the internet, that's wehre we got the info.
+[1.](https://cs229.stanford.edu/proj2021spr/report2/81973885.pdf) Pun, A., &; Nazirkhanova, K. (2021). Music Genre Classification with Mel Spectrograms and CNN.
+
+[2.](https://cs229.stanford.edu/proj2019aut/data/assignment_308832_raw/26583519.pdf) Jain, S., Smit, A., &; Yngesjo, T. (2019). Analysis and Classification of Symbolic Western Classical Music by Composer.
+
+[3.](https://ceur-ws.org/Vol-2718/paper04.pdf) Pál, T., & Várkonyi, D.T. (2020). Comparison of Dimensionality Reduction Techniques on Audio Signals. Conference on Theory and Practice of Information Technologies.
+
+[4.](https://www.kaggle.com/code/imsparsh/gtzan-genre-classification-deep-learning-val-92-4) Gupta, S. (2021). GTZAN-Genre Classification-Deep Learning-Val-92.4%.
 
 ## Introduction/Background: 
 A quick introduction of your topic and mostly literature review of what has been done in this area. You can briefly explain your dataset and its features here too.
