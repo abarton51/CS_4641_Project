@@ -9,7 +9,7 @@ We are going to perform a classification task on two different music audio datas
 We plan to primarily explore using neural networks such as fully connected, convolutional, and recurrent neural networks. Within the class of neural networks as methods, we are specifically planning on improving upon CNNs and the combined method illustrated in [[1.]](#references). We plan to compare these methods to other classic methods such as support vector classifiers and decision trees. If permitting, we will construct a super learner model and see if we can get improvements on our results that justifies such a costly ensemble learning method.
 
 # Potential Results/Discussions
-In our exploration of our data, we expect to be able to effectively reduce the dimension of the .csv datasets while maintaining its ability to separate classes. For our classification task, we expect to see a combination of CNNs and FFNs to perform the best from previous works with marginal improvements from adding in more spectrogram and image type data.
+In our exploration of our data, we expect to be able to effectively reduce the dimension of the .csv datasets while maintaining its ability to separate classes. For our classification task, we expect to see a combination of CNNs and MLPs to perform the best from previous works with marginal improvements from adding in more spectrogram and image type data.
 
 # References
 [1.](https://cs229.stanford.edu/proj2021spr/report2/81973885.pdf) Pun, A., &; Nazirkhanova, K. (2021). Music Genre Classification with Mel Spectrograms and CNN.
