@@ -11,6 +11,14 @@ We plan to primarily explore using neural networks such as fully connected and c
 # Potential Results/Discussions
 In our exploration of our data, we hope to be able to effectively reduce the dimension of the CSV datasets while maintaining some ability to separate data belonging to different classes. For each of our classification tasks, we expect to see a combination of CNNs and MLPs to perform the best from previous works with marginal improvements from adding in more spectrogram and image type data. Despite neural networks being expected to outperform other methods, we believe that gradient boosted decision trees may perform similarly and may provide benefits in lower training time and being able to analyze decision splits in parent nodes.
 
+# Checkpoints
+
+(TODO: THIS IS JUST A ROUGH TEMPLATE)
+1. Dataset completion
+2. Midterm report
+3. Final report
+(etc.)
+
 # References
 [1.](https://cs229.stanford.edu/proj2021spr/report2/81973885.pdf) Pun, A., &; Nazirkhanova, K. (2021). Music Genre Classification with Mel Spectrograms and CNN.
 
