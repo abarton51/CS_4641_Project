@@ -13,11 +13,11 @@ In our exploration of our data, we hope to be able to effectively reduce the dim
 
 # Checkpoints
 
-(TODO: THIS IS JUST A ROUGH TEMPLATE)
-1. Dataset completion
-2. Midterm report
-3. Final report
-(etc.)
+1. Initial EDAs and Inner Group Presentations/Tutorials - October 20th
+2. Dataset Pre-processing - October 25th
+3. First Model Implementations - November 1st
+4. Midterm Report - November 10th
+5. Final Report - December 5th
 
 # Contribution Table
 
@@ -29,11 +29,15 @@ In our exploration of our data, we hope to be able to effectively reduce the dim
 | Karpagam Karthikeyan | Video script, Video presentation |
 | Niki (Keyang) Lu     | Video presentation |
 
-![Excel Chart](https://github.com/abarton51/CS_4641_Project/raw/main/assets/images/GanttChart_ClassicalficationMusic-1.png)
+# Gantt Chart
 
-![Excel Chart](https://github.com/abarton51/CS_4641_Project/raw/main/assets/images/GanttChart_ClassicalficationMusic-2.png)
+Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/personal/kkarthikeyan8_gatech_edu/EVjVKvZA0_xLh_aF5jo_iTEBVskxE3vAHkcjEn6QkRMpAQ?e=xVssxk)
 
-![Excel Chart](https://github.com/abarton51/CS_4641_Project/raw/main/assets/images/GanttChart_ClassicalficationMusic-3.png)
+![Gantt Chart Page 1](/assets/images/GanttChart_ClassicalficationMusic-1.png)
+
+![Gantt Chart Page 2](/assets/images/GanttChart_ClassicalficationMusic-2.png)
+
+![Gantt Chart Page 3](/assets/images/GanttChart_ClassicalficationMusic-3.png)
 
 
 # References
