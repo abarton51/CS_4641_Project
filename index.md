@@ -29,6 +29,13 @@ In our exploration of our data, we hope to be able to effectively reduce the dim
 | Karpagam Karthikeyan | Video script, Video presentation |
 | Niki (Keyang) Lu     | Video presentation |
 
+![Excel Chart](https://github.com/abarton51/CS_4641_Project/raw/main/assets/images/GanttChart_ClassicalficationMusic-1.png)
+
+![Excel Chart](https://github.com/abarton51/CS_4641_Project/raw/main/assets/images/GanttChart_ClassicalficationMusic-2.png)
+
+![Excel Chart](https://github.com/abarton51/CS_4641_Project/raw/main/assets/images/GanttChart_ClassicalficationMusic-3.png)
+
+
 # References
 [1.](https://cs229.stanford.edu/proj2021spr/report2/81973885.pdf) Pun, A., &; Nazirkhanova, K. (2021). Music Genre Classification with Mel Spectrograms and CNN.
 
