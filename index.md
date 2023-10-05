@@ -19,6 +19,16 @@ In our exploration of our data, we hope to be able to effectively reduce the dim
 3. Final report
 (etc.)
 
+# Contribution Table
+
+| Contributor Name | Contribution Type  |
+|-------------------|-------------------|
+| Austin Barton        | Github, Proposal, Dataset Choices|
+| Aditya Radhakrishnan | GanttChart |
+| Isabelle Murray      | GanttChart, Contribution Table |
+| Karpagam Karthikeyan | Video script, Video presentation |
+| Niki (Keyang) Lu     | Video presentation |
+
 # References
 [1.](https://cs229.stanford.edu/proj2021spr/report2/81973885.pdf) Pun, A., &; Nazirkhanova, K. (2021). Music Genre Classification with Mel Spectrograms and CNN.
 
