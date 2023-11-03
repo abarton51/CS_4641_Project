@@ -15,7 +15,7 @@ class MidiFile(mido.MidiFile):
         self.meta = {}
         self.events = self.get_events()
 
-    def get_events(self):
+    def get_events(self, channels=16):
         mid = self
         print(mid)
 
@@ -23,7 +23,7 @@ class MidiFile(mido.MidiFile):
         # We store music events of 16 channel in the list "events" with form [[ch1],[ch2]....[ch16]]
         # Lyrics and meta data used a extra channel which is not include in "events"
 
-        events = [[] for x in range(16)]
+        events = [[] for x in range(channels)]
 
         # Iterate all event in the midi and extract to 16 channel form
         for track in mid.tracks:
@@ -42,7 +42,7 @@ class MidiFile(mido.MidiFile):
 
         return events
 
-    def get_roll(self):
+    def get_roll(self, channels=16, verbose=False):
         events = self.get_events()
         # Identify events, then translate to piano roll
         # choose a sample ratio(sr) to down-sample through time axis
@@ -52,7 +52,7 @@ class MidiFile(mido.MidiFile):
         length = self.get_total_ticks()
 
         # allocate memory to numpy array
-        roll = np.zeros((16, 128, length // sr), dtype="int8")
+        roll = np.zeros((channels, 128, length // sr), dtype="int8")
 
         # use a register array to save the state(no/off) for each key
         note_register = [int(-1) for x in range(128)]
@@ -67,8 +67,8 @@ class MidiFile(mido.MidiFile):
             volume = 100
             # Volume would change by control change event (cc) cc7 & cc11
             # Volume 0-100 is mapped to 0-127
-
-            print("channel", idx, "start")
+            if verbose:
+                print("channel", idx, "start")
             for msg in channel:
                 if msg.type == "control_change":
                     if msg.control == 7:
@@ -136,11 +136,9 @@ class MidiFile(mido.MidiFile):
 
         return roll
 
-    def get_roll_image(self):
+    def get_roll_image(self, K=16):
         roll = self.get_roll()
         plt.ioff()
-
-        K = 16
 
         transparent = colorConverter.to_rgba('black')
         colors = [mpl.colors.to_rgba(mpl.colors.hsv_to_rgb((i / K, 1, 1)), alpha=1) for i in range(K)]
@@ -167,9 +165,9 @@ class MidiFile(mido.MidiFile):
                 array.append(img.get_array())
             except IndexError:
                 pass
-        return array
+        return np.array(array)
 
-    def draw_roll(self):
+    def draw_roll(self, K=16, color_bar=False, min_y=36, max_y=108, save_roll=None):
 
 
         roll = self.get_roll()
@@ -192,13 +190,15 @@ class MidiFile(mido.MidiFile):
         print(x_label_period_sec)
         x_label_interval = mido.second2tick(x_label_period_sec, self.ticks_per_beat, self.get_tempo()) / self.sr
         print(x_label_interval)
-        plt.xticks([int(x * x_label_interval) for x in range(20)], [round(x * x_label_period_sec, 2) for x in range(20)])
+        #plt.xticks([int(x * x_label_interval) for x in range(20)], [round(x * x_label_period_sec, 2) for x in range(20)])
 
         # change scale and label of y axis
-        plt.yticks([y*16 for y in range(8)], [y*16 for y in range(8)])
+        plt.yticks([y*12 for y in range(10)], [y*12 for y in range(10)])
+        
+        plt.ylim(min_y, max_y)
 
         # build colors
-        channel_nb = 16
+        channel_nb = K
         transparent = colorConverter.to_rgba('black')
         colors = [mpl.colors.to_rgba(mpl.colors.hsv_to_rgb((i / channel_nb, 1, 1)), alpha=1) for i in range(channel_nb)]
         cmaps = [mpl.colors.LinearSegmentedColormap.from_list('my_cmap', [transparent, colors[i]], 128) for i in
@@ -224,13 +224,16 @@ class MidiFile(mido.MidiFile):
 
         colors = [mpl.colors.hsv_to_rgb((i / channel_nb, 1, 1)) for i in range(channel_nb)]
         cmap = mpl.colors.LinearSegmentedColormap.from_list('my_cmap', colors, 16)
-        a2 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
-        cbar = mpl.colorbar.ColorbarBase(a2, cmap=cmap,
-                                        orientation='horizontal',
-                                        ticks=list(range(16)))
+        if color_bar==True:
+            a2 = fig.add_axes([0.0, 0.80, 0.9, 0.15])
+            cbar = mpl.colorbar.ColorbarBase(a2, cmap=cmap,
+                                            orientation='horizontal',
+                                            ticks=list(range(K)))
 
         # show piano roll
         plt.draw()
+        if save_roll!=None:
+            plt.savefig(save_roll + '.png')
         plt.ion()
         plt.show(block=True)
 

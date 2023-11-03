@@ -33,8 +33,8 @@ def extract_classes(path):
     """
     classes = {}
     i = 0
-    for genre in os.listdir(path):
-        classes[genre] = i
+    for piece in os.listdir(path):
+        classes[piece] = i
         i += 1
     return classes
 
@@ -53,7 +53,6 @@ def extract_wav(path, classes, wav_duration, duration=2, sr=1000):
         X (numpy.ndarray): A 2D numpy array containing audio data, where each row represents an audio segment.
         Y (numpy.ndarray): A 1D numpy array containing labels for the audio segments.
     """
-
     dim = sr * duration
     samples_per_wav = wav_duration // duration
     X = np.zeros((1, dim))
