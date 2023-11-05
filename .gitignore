@@ -10,6 +10,13 @@ _site/
 vendor/
 
 # Ignore various folders
+src/musicNet/data
+src/musicNet/musicnet4641.ipynb
+src/musicNet/musicnetPreprocess1.ipynb
 tabs/attentions.md
 tabs/gans.md
 tabs/transformers.md
+*.mid
+*.csv
+*.wav
+*.npz

@@ -1,1 +1,118 @@
-{"metadata":{"kernelspec":{"language":"python","display_name":"Python 3","name":"python3"},"language_info":{"pygments_lexer":"ipython3","nbconvert_exporter":"python","version":"3.6.4","file_extension":".py","codemirror_mode":{"name":"ipython","version":3},"name":"python","mimetype":"text/x-python"}},"nbformat_minor":4,"nbformat":4,"cells":[{"cell_type":"code","source":"# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:43:23.501091Z\",\"iopub.execute_input\":\"2023-10-23T22:43:23.501490Z\",\"iopub.status.idle\":\"2023-10-23T22:43:24.622510Z\",\"shell.execute_reply.started\":\"2023-10-23T22:43:23.501458Z\",\"shell.execute_reply\":\"2023-10-23T22:43:24.621222Z\"}}\nimport numpy as np\nimport pandas as pd\n\nimport matplotlib.pyplot as plt\n\nimport os\n\nimport librosa\nimport librosa.display\n\nimport IPython\n\nfrom sklearn.decomposition import PCA\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:43:24.835354Z\",\"iopub.execute_input\":\"2023-10-23T22:43:24.835850Z\",\"iopub.status.idle\":\"2023-10-23T22:43:24.840898Z\",\"shell.execute_reply.started\":\"2023-10-23T22:43:24.835818Z\",\"shell.execute_reply\":\"2023-10-23T22:43:24.839833Z\"}}\nseed = 12\nnp.random.seed(seed)\n\npath = \"/kaggle/input/musicnet-dataset/\"\npath_audio_files = path + \"musicnet/musicnet/train_data/\"\n\nhop_length = 512\nn_fft = 2048\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:02:34.781794Z\",\"iopub.execute_input\":\"2023-10-23T22:02:34.783633Z\",\"iopub.status.idle\":\"2023-10-23T22:02:34.816557Z\",\"shell.execute_reply.started\":\"2023-10-23T22:02:34.783588Z\",\"shell.execute_reply\":\"2023-10-23T22:02:34.815498Z\"}}\ndf = pd.read_csv('/kaggle/input/musicnet-dataset/musicnet_metadata.csv')\ndf.head()\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:02:35.610156Z\",\"iopub.execute_input\":\"2023-10-23T22:02:35.611386Z\",\"iopub.status.idle\":\"2023-10-23T22:02:35.623565Z\",\"shell.execute_reply.started\":\"2023-10-23T22:02:35.611344Z\",\"shell.execute_reply\":\"2023-10-23T22:02:35.622616Z\"}}\ncomposers = np.unique(df['composer']).astype(str)\nid_dict = dict()\nfor i in range(len(composers)):\n    id_dict[composers[i]] = df.loc[df['composer'] == composers[0], 'id']\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:02:37.925328Z\",\"iopub.execute_input\":\"2023-10-23T22:02:37.926965Z\",\"iopub.status.idle\":\"2023-10-23T22:02:37.935675Z\",\"shell.execute_reply.started\":\"2023-10-23T22:02:37.926864Z\",\"shell.execute_reply\":\"2023-10-23T22:02:37.934010Z\"}}\nrandom_id_sample = []\nfor i in range(len(composers)):\n    curr_values_list = list(id_dict[composers[i]])\n    c = len(curr_values_list)\n    random_id_sample.append(curr_values_list[np.random.randint(0, c, size=1)[0]])\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:02:39.290995Z\",\"iopub.execute_input\":\"2023-10-23T22:02:39.291425Z\",\"iopub.status.idle\":\"2023-10-23T22:02:43.256664Z\",\"shell.execute_reply.started\":\"2023-10-23T22:02:39.291391Z\",\"shell.execute_reply\":\"2023-10-23T22:02:43.254388Z\"}}\nfor i, id_i in enumerate(random_id_sample):\n    print(composers[i])\n    \n    # Reading one random audio file per composer\n    data,sampling_rate = librosa.load(path_audio_files + str(id_i) + \".wav\")\n    \n    display(IPython.display.Audio(data, rate = sampling_rate))\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:06:26.773371Z\",\"iopub.execute_input\":\"2023-10-23T22:06:26.773916Z\",\"iopub.status.idle\":\"2023-10-23T22:06:45.428608Z\",\"shell.execute_reply.started\":\"2023-10-23T22:06:26.773859Z\",\"shell.execute_reply\":\"2023-10-23T22:06:45.427341Z\"}}\nfig, axes= plt.subplots(nrows=5, ncols=2, figsize=(15, 20))\nk = 0\nj = 0\nfor i, id_i in enumerate(random_id_sample):\n    # Reading one random audio file per composer\n    data,sampling_rate = librosa.load(path_audio_files + str(id_i) + \".wav\")\n    \n    librosa.display.waveshow(y = data, sr = sampling_rate, color = \"#A300F9\",ax=axes[k][j])\n \n\n    axes[k][j].set_title(composers[i])\n\n    if(j == 1):\n        k += 1\n        j = 0\n    else:\n        j += 1\n\nplt.tight_layout()\nplt.show()\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:09:24.604356Z\",\"iopub.execute_input\":\"2023-10-23T22:09:24.606428Z\",\"iopub.status.idle\":\"2023-10-23T22:09:30.970285Z\",\"shell.execute_reply.started\":\"2023-10-23T22:09:24.606357Z\",\"shell.execute_reply\":\"2023-10-23T22:09:30.968972Z\"}}\nfig, axes= plt.subplots(nrows=5, ncols=2, figsize=(15, 20))\nk = 0\nj = 0\nfor i, id_i in enumerate(random_id_sample):\n    \n    # Reading one random audio file per composer\n    data,sampling_rate = librosa.load(path_audio_files + str(id_i) + \".wav\")\n    \n    zero_crossing_rate = librosa.feature.zero_crossing_rate(y = data,hop_length = hop_length)[0]\n    \n    axes[k][j].plot(zero_crossing_rate,color = \"#A300F9\")\n \n    axes[k][j].set_title(composers[i])\n\n    if(j == 1):\n        k += + 1\n        j = 0\n    else:\n        j += 1\n\nplt.tight_layout()\nplt.show()\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:13:36.674564Z\",\"iopub.execute_input\":\"2023-10-23T22:13:36.675059Z\",\"iopub.status.idle\":\"2023-10-23T22:16:08.152879Z\",\"shell.execute_reply.started\":\"2023-10-23T22:13:36.675021Z\",\"shell.execute_reply\":\"2023-10-23T22:16:08.151286Z\"}}\nfig, axes= plt.subplots(nrows=5, ncols=2, figsize=(15, 20))\nk = 0\nj = 0\nfor i, id_i in enumerate(random_id_sample):\n    # Reading one random audio file per composer\n    data,sampling_rate = librosa.load(path_audio_files + str(id_i) + \".wav\")\n    \n    stft_data = np.abs(librosa.stft(y = data, n_fft = n_fft,hop_length = hop_length))\n    \n    axes[k][j].plot(stft_data,color = \"#A300F9\")\n \n    axes[k][j].set_title(composers[i])\n\n    if(j == 1):\n        k += 1\n        j = 0\n    else:\n        j += 1\n\nplt.tight_layout()\nplt.show()\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:18:27.177925Z\",\"iopub.execute_input\":\"2023-10-23T22:18:27.178451Z\",\"iopub.status.idle\":\"2023-10-23T22:19:43.753705Z\",\"shell.execute_reply.started\":\"2023-10-23T22:18:27.178414Z\",\"shell.execute_reply\":\"2023-10-23T22:19:43.752037Z\"}}\nfig, axes= plt.subplots(nrows=5, ncols=2, figsize=(15, 20))\nk = 0\nj = 0\nfor i, id_i in enumerate(random_id_sample):\n    # Reading one random audio file per composer\n    data,sampling_rate = librosa.load(path_audio_files + str(id_i) + \".wav\")\n    \n    stft_data = np.abs(librosa.stft(y = data, n_fft = n_fft,hop_length = hop_length))\n    \n    # Convert an amplitude spectrogram to Decibels-scaled spectrogram.\n    DB = librosa.amplitude_to_db(stft_data, ref = np.max)\n\n    img = librosa.display.specshow(DB, sr = sampling_rate, hop_length = hop_length, x_axis = 'time', y_axis = 'log',cmap = 'cool',ax=axes[k][j])\n    fig.colorbar(img, ax=axes[k][j])\n    \n    axes[k][j].set_title(composers[i])\n\n    if(j == 1):\n        k += 1\n        j = 0\n    else:\n        j = j + 1\n\nplt.tight_layout()\nplt.show()\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:24:03.874836Z\",\"iopub.execute_input\":\"2023-10-23T22:24:03.875370Z\",\"iopub.status.idle\":\"2023-10-23T22:24:21.260538Z\",\"shell.execute_reply.started\":\"2023-10-23T22:24:03.875333Z\",\"shell.execute_reply\":\"2023-10-23T22:24:21.259014Z\"}}\nfig, axes= plt.subplots(nrows=5, ncols=2, figsize=(15, 20))\nk = 0\nj = 0\nfor i, id_i in enumerate(random_id_sample):\n    # Reading one random audio file per composer\n    data,sampling_rate = librosa.load(path_audio_files + str(id_i) + \".wav\")\n    \n    mel_spec = librosa.feature.melspectrogram(y=data, sr=sampling_rate, hop_length=hop_length)\n    \n    mel_spec_db = librosa.amplitude_to_db(mel_spec, ref=np.max)\n\n    img = librosa.display.specshow(mel_spec_db, sr = sampling_rate, hop_length = hop_length, x_axis = 'time', y_axis = 'log',cmap = 'cool',ax=axes[k][j])\n    fig.colorbar(img, ax=axes[k][j])\n    \n    axes[k][j].set_title(composers[i])\n\n    if(j == 1):\n        k += 1\n        j = 0\n    else:\n        j += 1\n\nplt.tight_layout()\nplt.show()\n\n# %% [code] {\"execution\":{\"iopub.status.busy\":\"2023-10-23T22:36:26.806077Z\",\"iopub.execute_input\":\"2023-10-23T22:36:26.806598Z\",\"iopub.status.idle\":\"2023-10-23T22:36:44.398571Z\",\"shell.execute_reply.started\":\"2023-10-23T22:36:26.806563Z\",\"shell.execute_reply\":\"2023-10-23T22:36:44.397107Z\"}}\n# Increase or decrease hop_length to change how granular you want your data to be\n\nfig, axes= plt.subplots(nrows=5, ncols=2, figsize=(15, 20))\nk = 0\nj = 0\nfor i, id_i in enumerate(random_id_sample):\n    # Reading one random audio file per composer\n    data,sampling_rate = librosa.load(path_audio_files + str(id_i) + \".wav\")\n    \n    # Chromogram\n    chromagram = librosa.feature.chroma_stft(y=data, sr=sampling_rate, hop_length=hop_length)\n    #print('Chromogram shape:', chromagram.shape)\n\n    #plt.figure(figsize=(16, 6))\n    img = librosa.display.specshow(chromagram, x_axis='time', y_axis='chroma', hop_length=hop_length, cmap='coolwarm',ax=axes[k][j])\n    fig.colorbar(img, ax=axes[k][j])\n    \n    axes[k][j].set_title(composers[i])\n\n    if(j == 1):\n        k += + 1\n        j = 0\n    else:\n        j += 1\n\nplt.tight_layout()\nplt.show()","metadata":{"_uuid":"d16e5cda-fc91-4f01-a32a-45702c208e49","_cell_guid":"94c0629a-206f-4878-8c31-1aedce6fcba7","collapsed":false,"jupyter":{"outputs_hidden":false},"trusted":true},"execution_count":null,"outputs":[]}]}
+#!C:/Users/Teddy/anaconda3/envs/cs4641_env
+import sys
+sys.path.append('../')
+
+import numpy as np
+import pandas as pd
+
+import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
+
+import os
+from tqdm import tqdm
+
+import wav_processing
+
+import librosa
+import librosa.display
+from mido import MidiFile
+from midi_roll import roll
+import music21
+#import midi
+
+import IPython
+
+def create_id_dict(df):
+    """
+    Create a dictionary with composer names as keys and their songs as values.
+
+    Args:
+        df (pandas.DataFrame): DataFrame that contains the composer names and id values.
+        
+    Returns:
+        dict (dictionary): A dictionary where composer names are keys, and their associated songs are values.
+    """
+    composers = np.unique(df['composer'].values).astype(str)
+    id_dict = dict()
+    for i in range(len(composers)):
+        id_dict[composers[i]] = df.loc[df['composer'].values == composers[i]]['id'].values
+    return id_dict
+
+def rand_id_sample(dict):
+    """
+    Return random sample of id values for each composer.
+    
+    Args:
+        dict (dictionary): A dictionary where composer names are keys, and their associated songs are values.
+    
+    Returns:
+        random_id_sample (list): A list of the id values for randomly sample songs for each composer.
+    """
+    random_id_sample = []
+    composers = list(dict.keys())
+    for i in range(len(composers)):
+        curr_values_list = list(dict[composers[i]])
+        c = len(curr_values_list)
+        random_id_sample.append(curr_values_list[np.random.randint(0, c, size=1)[0]])
+    return random_id_sample
+
+def load_audio_data(df, path, wav_duration=30, duration=2, sr=10, train=True, split_samples=False):
+    """
+    Load WAV data.
+
+    Args:
+        df (Pandas.DataFrame): DataFrame with information on composer and song id number.
+        path (str): path into the folder that contains the train or test folder with the data.
+        wav_duration (int): The duration (in seconds) of each training example.
+        duration (int, optional): The desired duration (in seconds) for audio segments. Defaults to 2 seconds.
+        sr (int, optional): The sample rate of the WAV files. Defaults to 1000 samples per second. Deafults to 10.
+        train (bool, optional): Specify to load train or test data. Defaults to True.
+        split_samples (bool, optional): Specify to split each song into samples or have one sample per song. Defaults to False.
+
+    Returns:
+        X: Data sample matrix
+        y: Label vector for each sample
+    """
+    dim = sr * duration
+    samples_per_wav = wav_duration // duration
+    
+    if split_samples:
+        X = np.zeros((1, dim))
+        y = np.zeros((1))
+    else:
+        X, y = [], []
+    
+    data_dict = create_id_dict(df)
+    class_dict = {}
+    cl_idx = 0
+    for composer in list(data_dict.keys()):
+        class_dict[composer] = cl_idx
+        cl_idx+=1
+
+    if train:
+        file_path = path + '/train_data'
+    else:
+        file_path = path + '/test_data'
+    
+    for composer in tqdm(list(data_dict.keys())):
+        for song in data_dict[composer]:
+            try:
+                x, _ = librosa.load(file_path + '/' + str(song) + '.wav', sr=2)
+                x = np.pad(x, (0, 100), mode='constant', constant_values=0)
+                if split_samples:
+                    sample_x = x[0: samples_per_wav * dim].reshape(samples_per_wav, dim)
+                    sample_y = np.ones((samples_per_wav)) * class_dict[composer]
+                    X = np.concatenate((X, sample_x))
+                    y = np.concatenate((y, sample_y))
+                else:
+                    sample_x = x[0: dim]
+                    sample_y = class_dict[composer]
+                    X.append(sample_x)
+                    y.append(sample_y)
+            except:
+                print("librosa load failed on " + file_path + '/' + str(song) + '.wav')
+                
+    if split_samples:
+        return X[1:,:], y[1:]
+    
+    return np.array(X), np.array(y)
