@@ -38,6 +38,13 @@ def create_id_dict(df):
         id_dict[composers[i]] = df.loc[df['composer'].values == composers[i]]['id'].values
     return id_dict
 
+def trim_data_dict(data_dict, min_len=20):
+    new_data_dict = {}
+    for composer in list(data_dict.keys()):
+        if len(data_dict[composer]) >= min_len:
+            new_data_dict[composer] = data_dict[composer]
+    return new_data_dict
+
 def rand_id_sample(dict):
     """
     Return random sample of id values for each composer.
@@ -56,7 +63,7 @@ def rand_id_sample(dict):
         random_id_sample.append(curr_values_list[np.random.randint(0, c, size=1)[0]])
     return random_id_sample
 
-def load_audio_data(df, path, wav_duration=30, duration=2, sr=10, train=True, split_samples=False):
+def load_audio_data(data_dict, path, wav_duration=30, duration=2, sr=10, train=True, split_samples=False):
     """
     Load WAV data.
 
@@ -82,7 +89,7 @@ def load_audio_data(df, path, wav_duration=30, duration=2, sr=10, train=True, sp
     else:
         X, y = [], []
     
-    data_dict = create_id_dict(df)
+    #data_dict = create_id_dict(df)
     class_dict = {}
     cl_idx = 0
     for composer in list(data_dict.keys()):
