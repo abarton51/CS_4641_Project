@@ -17,7 +17,6 @@ class MidiFile(mido.MidiFile):
 
     def get_events(self, channels=16):
         mid = self
-        print(mid)
 
         # There is > 16 channel in midi.tracks. However there is only 16 channel related to "music" events.
         # We store music events of 16 channel in the list "events" with form [[ch1],[ch2]....[ch16]]
@@ -119,11 +118,6 @@ class MidiFile(mido.MidiFile):
 
                 time_counter += msg.time
 
-                # TODO : velocity -> done, but not verified
-                # TODO: Pitch wheel
-                # TODO: Channel - > Program Changed / Timbre catagory
-                # TODO: real time scale of roll
-
             # if there is a note not closed at the end of a channel, close it
             for key, data in enumerate(note_register):
                 if data != -1:
@@ -174,7 +168,7 @@ class MidiFile(mido.MidiFile):
 
         # build and set fig obj
         plt.ioff()
-        fig = plt.figure(figsize=(4, 3))
+        fig = plt.figure(figsize=(4, 3), frameon=False)
         a1 = fig.add_subplot(111)
         a1.axis("equal")
         a1.set_facecolor("black")
@@ -233,7 +227,7 @@ class MidiFile(mido.MidiFile):
         # show piano roll
         plt.draw()
         if save_roll!=None:
-            plt.savefig(save_roll + '.png')
+            plt.savefig(save_roll + '.png', bbox_inches='tight')
         plt.ion()
         plt.show(block=True)
 
