@@ -2,45 +2,76 @@
 layout: default
 title: Midterm Report
 ---
+# CS 4641 Machine Learning, Team 6, Midterm Report
+Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya Radhakrishan
 
-## Overview and Recap
-This is our midterm report for epic audio classification project.
+## Introduction
+A quick introduction of your topic and mostly literature review of what has been done in this area. Briefly explain your dataset and its features and provide a link to your dataset if applicable.
 
-## Datasets
+### Datasets
+**MusicNet**: Description and link to dataset.
 
-## Data Preprocessing
+**GTZAN**: Description and link to dataset.
 
-### MusicNet
+## Problem Definition
+Why there is a problem here? What is the motivation of the project? 
 
-#### Overview and Methods
+## Methods
+
+### Exploratory Data Analysis (EDA)
+**MusicNet**:
+
+**GTZAN**:
+
+### Data Preprocessing
+**MusicNet**:
+
+**GTZAN**:
 
 #### Dimensionality Reduction - PCA
+**MusicNet**:
+- Brief description and include visuals if applicable.
 
-#### Results and Visuals
+**GTZAN**:
+- Brief description and include visuals if applicable.
 
-### GTZAN
+### Classification
+**MusicNet**:
+#### Choice of Model and Algorithms:
+**Chosen Model(s)**
+- Description of Implementation, hyperparameter selection, computation time, etc.
 
-#### Overview and Methods
+**GTZAN**:
+#### Choice of Model and Algorithms:
+**Chosen Model(s)**
+- Description of Implementation, hyperparameter selection, computation time, etc.
 
-#### Dimensionality Reduction - PCA
-
-#### Results and Visuals
-
-## Supervised Models
+## Results and Discusssion
 
 ### MusicNet
-
-#### Overview and Model Selection
-
-#### Results
+- Quantitative metrics
+- F1 Scores, confusion matrix, etc.
 
 ### GTZAN
+- Quantitative metrics
+- F1 Scores, confusion matrix, etc.
 
-#### Overview and Model Selection
+### Discussion
+**MusicNet**
+- 
 
-#### Results
+**GTZAN**
+- 
 
-## Summary
+**Overall**
+- 
+
+**Next Steps**
+- 
 
 # References
 [1.]
+
+[2.]
+
+[3.]
