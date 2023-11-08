@@ -80,12 +80,12 @@ class MidiFile(mido.MidiFile):
 
                 if msg.type == "program_change":
                     timbre_register[idx] = msg.program
-                    print("channel", idx, "pc", msg.program, "time", time_counter, "duration", msg.time)
+                    #print("channel", idx, "pc", msg.program, "time", time_counter, "duration", msg.time)
 
 
 
                 if msg.type == "note_on":
-                    print("on ", msg.note, "time", time_counter, "duration", msg.time, "velocity", msg.velocity)
+                    #print("on ", msg.note, "time", time_counter, "duration", msg.time, "velocity", msg.velocity)
                     note_on_start_time = time_counter // sr
                     note_on_end_time = (time_counter + msg.time) // sr
                     intensity = volume * msg.velocity // 127
@@ -106,7 +106,7 @@ class MidiFile(mido.MidiFile):
 
 
                 if msg.type == "note_off":
-                    print("off", msg.note, "time", time_counter, "duration", msg.time, "velocity", msg.velocity)
+                    #print("off", msg.note, "time", time_counter, "duration", msg.time, "velocity", msg.velocity)
                     note_off_start_time = time_counter // sr
                     note_off_end_time = (time_counter + msg.time) // sr
                     note_on_end_time = note_register[msg.note][0]
