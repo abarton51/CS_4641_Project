@@ -57,17 +57,13 @@ Why there is a problem here? What is the motivation of the project?
 - F1 Scores, confusion matrix, etc.
 
 ### Discussion
-**MusicNet**
-- 
+**MusicNet**: Data is not distributed well. Need to go actually get more data if we want to reliably do classificaiton on all the composers in the dataset.
 
-**GTZAN**
-- 
+**GTZAN**:
 
-**Overall**
-- 
+**Overall**:
 
-**Next Steps**
-- 
+#### Next Steps
 
 # References
 [1.]
