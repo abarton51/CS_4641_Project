@@ -20,6 +20,25 @@ import music21
 
 import IPython
 
+def create_midi_dict(midi_path):
+    """
+    Creates a dictionary of composer -> list of midi files for that composer.
+
+    Args:
+        midi_path (str): The string value of the folder containing all the composer folders of midi files.
+        Example: midi_path='data/musicnet_midis'
+
+    Returns:
+        dict: Dictionary with key (str): value (list of str) pairs.
+    """
+    composers = os.listdir(midi_path)
+    midi_file_dict = {}
+    for composer in composers:
+        midi_file_dict[composer] = []
+        for midi_file in os.listdir(os.path.join(midi_path, composer)):
+            midi_file_dict[composer].append(midi_file)
+    return midi_file_dict
+
 def open_midi(midi_path):
     """
     One line method to parse through and read MIDIs
