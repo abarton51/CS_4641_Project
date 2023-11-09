@@ -1,6 +1,6 @@
 <h1 align="center">Exploring Music Classification - Composers and Genres</h1>
 
-![](https://github.com/abarton51/CS_4641_Project/blob/main/assets/github/robotmusic_icon1.png?raw=true)
+![](https://github.com/abarton51/CS_4641_Project/blob/main/assets/images/robotmusic_icon1.png?raw=true)
 
 <h3 align="center"><ins>Authors:</ins> Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya Radhakrishan</h3>
 
