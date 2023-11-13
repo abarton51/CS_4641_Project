@@ -42,3 +42,6 @@ search:
 heading_anchors: true
 
 color_scheme: dark
+
+exclude:
+    - src
