@@ -77,25 +77,25 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 ### GTZAN
 - Quantitative metrics
 - 3-second samples:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/a869741c-2e86-44d0-b466-77fe4e0d1ae1)
+<img src="/assets/images/gtzan-accuracy-3sec.png" alt="drawing" width="200"/>
 
 
 - F1 Scores, confusion matrix, etc.
 Confusion Matrix:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/9dcf1cc0-11d9-4810-a1a2-77e9cac62418)
+<img src="/assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="200"/>
 
 Loss:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/c98bd4c3-ffbf-4358-be40-15c8c3dbcebc)
+<img src="/assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="200"/>
 
 - 30-second samples:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/f57f56f3-b7a3-4c02-b269-c78683bf40cb)
+<img src="/assets/images/gtzan-accuracy-30sec.png" alt="drawing" width="200"/>
 
 - F1 Scores, confusion matrix, etc.
 Confusion Matrix:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/bf218a88-6027-4df1-bb2b-de1ec801c04b)
+<img src="/assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
 
 Loss: 
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/39803c4f-a0ca-4ddd-b93a-1c76e752787b)
+<img src="/assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
 
 
 ### Discussion
