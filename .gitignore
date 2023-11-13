@@ -20,3 +20,6 @@ tabs/transformers.md
 *.csv
 *.wav
 *.npz
+
+# Ignore musicNet notebook (too large).
+src/musicNet/musicnet4641.ipynb
