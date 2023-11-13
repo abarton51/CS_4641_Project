@@ -56,6 +56,13 @@ Why there is a problem here? What is the motivation of the project?
 - F1 Scores, confusion matrix, etc.
 
 ### GTZAN
+We experimented with a feedforward neural network. As the input data consisted only of extracted features that were not spatially or temporally related, a CNN, RNN, transformer, or other kind of model was not needed. We chose the neural network as we believed we had sufficient training samples and that this function may be sufficiently complex for a neural network to approximate. We will explore this further by implementing other non-NN machine learning models in the future.
+
+To begin, the 3-second variant was experimented with. We made a 10% split from our training dataset to create a validation set to detect when overfitting was occurring. Early stopping was implemented such that training would halt as soon as 3 epochs had the validation loss not decrease. We employed a softmax activation function for our final layer (as this is a multiclass single-label classification problem) and the categorical cross-entropy loss. For hidden layers, we used ReLU. For a network this shallow, no vanishing gradients were observed, making the use of a ReLU variant (such as LeakyReLU) unnecessary. The Adam optimizer was used with a learning rate of 10^-3.
+
+The iteration over model architectures began with a single hidden layer of 32 neurons. From there, the number of neurons was increased, and as signs of overfitting were noticed, dropout regularization was added in. Not only did this prevent overfitting, but it also improved model performance compared to less parameter-dense networks, likely a consequence of breaking co-adaptations. Ultimately, performance peaked with a network consisting of 2 hidden layers, each with a 0.5 dropout and 512 neurons each. 
+
+Results using 3-second samples:
 - Quantitative metrics
 - Accuracy: 90.34%
               precision    recall  f1-score   support
@@ -75,15 +82,56 @@ Why there is a problem here? What is the motivation of the project?
    macro avg       0.90      0.90      0.90      1998
 weighted avg       0.90      0.90      0.90      1998
 - F1 Scores, confusion matrix, etc.
--![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/c650ea82-34e3-480f-af20-46ab67a7c203)
+Loss:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/c650ea82-34e3-480f-af20-46ab67a7c203)
+Confusion Matrix:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/85ccf7ba-80c5-42f2-9e19-5b554963ec12)
+
+However, it is important to note that performance did not climb significantly from a single-hidden-layer network with just 128 neurons and dropout. After this, additional improvements to model capacity provided diminishing returns for the increased needs for computing.
+
+With similar experimentation, it was found (along with optimizer parameters) that a batch size of 32 resulted in the best performance, reaching 90+% accuracy on the well-balanced test set.
+When dealing with the 30-second variant, the number of training samples drastically reduced, making overfitting a concern. While we ultimately ended up using virtually the same setup (only a smaller batch size, this time 16), we had to make changes to the size and number of layers.
+
+It was found that the ceiling for performance was a model that had two 64-neuron hidden layers with a dropout of 0.5 each. Anything more complex, and the model would simply start to overfit (triggering early stopping) before it could properly converge on a good solution.
+
+In any case, the smaller dataset and smaller model resulted in severely degraded test set performance, with the neural network only achieving an accuracy of just over 70%. 
+
+Results using 30-second samples:
+- Quantitative metrics
+- Accuracy: 71.50%
+              precision    recall  f1-score   support
+
+     Class 0       0.67      0.48      0.56        21
+     Class 1       0.71      0.96      0.81        23
+     Class 2       0.79      0.75      0.77        20
+     Class 3       0.55      0.69      0.61        16
+     Class 4       0.56      0.26      0.36        19
+     Class 5       0.86      0.90      0.88        20
+     Class 6       0.75      0.88      0.81        17
+     Class 7       0.65      0.79      0.71        19
+     Class 8       0.70      0.61      0.65        23
+     Class 9       0.82      0.82      0.82        22
+
+    accuracy                           0.71       200
+   macro avg       0.70      0.71      0.70       200
+weighted avg       0.71      0.71      0.70       200
+- F1 Scores, confusion matrix, etc.
+Loss:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/95134070-2529-4ef7-9728-8a18fae2e1ca)
+Confusion Matrix:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/4a25e36f-0db0-4aed-80a3-1dd9d65f00c9)
 
 
 
 ### Discussion
 **MusicNet**: Data is not distributed well. Need to go actually get more data if we want to reliably do classificaiton on all the composers in the dataset.
 
-**GTZAN**:
+**GTZAN**: 
+When perfecting the accuracy of our models we came across a few notable mistakes. 
+- Often times rock music would be misclassified as disco or metal.
+- A large amount of jazz samples were misclassified as classical.
 
+  
 **Overall**:
 
 #### Next Steps
