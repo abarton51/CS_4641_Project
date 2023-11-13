@@ -77,7 +77,7 @@ def extract_notes(midi_part):
     
     return ret, parent_element
 
-def print_parts_countour(midi):
+def print_parts_countour(midi, save_path=None):
     fig = plt.figure(figsize=(12, 5))
     ax = fig.add_subplot(1, 1, 1)
     minPitch = music21.pitch.Pitch('C10').ps
@@ -109,4 +109,6 @@ def print_parts_countour(midi):
     plt.ylabel("Note index (each octave has 12 notes)")
     plt.xlabel("Number of quarter notes (beats)")
     plt.title('Voices motion approximation, each color is a different instrument, red lines show each octave')
+    if save_path != None:
+        plt.savefig('midi_roll_sample.png')
     plt.show()
