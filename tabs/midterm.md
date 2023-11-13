@@ -10,14 +10,14 @@ A quick introduction of your topic and mostly literature review of what has been
 
 ### Datasets
 **MusicNet**: Description and link to dataset.
-MusicNet is a collection of 330 freely-licensed classical music recordings, together with over 1 million annotated labels indicating the precise time of each note in every recording, the instrument that plays each note, and the note's position in the metrical structure of the composition. The labels are acquired from musical scores aligned to recordings by dynamic time warping. The labels are verified by trained musicians; a labeling error rate of 4% has been estimated. The MusicNet labels are offered to the machine learning and music communities as a resource for training models and a common benchmark for comparing results.
+MusicNet is a collection of 330 freely licensed classical music recordings, together with over 1 million annotated labels indicating the precise time of each note in every recording, the instrument that plays each note, and the note's position in the metrical structure of the composition. The labels are acquired from musical scores aligned to recordings by dynamic time warping. The labels are verified by trained musicians; a labeling error rate of 4% has been estimated. The MusicNet labels are offered to the machine learning and music communities as a resource for training models and a common benchmark for comparing results.
 https://www.kaggle.com/datasets/imsparsh/musicnet-dataset 
 
 **GTZAN**: Description and link to dataset.
 https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification 
 
 ## Problem Definition
-Why there is a problem here? What is the motivation of the project? 
+Why there is a problem here? What is the motivation for the project? 
 
 ## Methods
 
@@ -64,23 +64,8 @@ The iteration over model architectures began with a single hidden layer of 32 ne
 
 Results using 3-second samples:
 - Quantitative metrics
-- Accuracy: 90.34%
-              precision    recall  f1-score   support
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/5c6815ca-1d82-4f7c-8eeb-184b48bffcf8)
 
-     Class 0       0.90      0.85      0.87       186
-     Class 1       0.91      0.97      0.94       199
-     Class 2       0.91      0.89      0.90       194
-     Class 3       0.92      0.93      0.92       190
-     Class 4       0.90      0.83      0.87       189
-     Class 5       0.93      0.95      0.94       200
-     Class 6       0.89      0.91      0.90       203
-     Class 7       0.93      0.90      0.91       244
-     Class 8       0.85      0.89      0.87       210
-     Class 9       0.90      0.91      0.90       183
-
-    accuracy                           0.90      1998
-   macro avg       0.90      0.90      0.90      1998
-weighted avg       0.90      0.90      0.90      1998
 - F1 Scores, confusion matrix, etc.
 Loss:
 ![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/c650ea82-34e3-480f-af20-46ab67a7c203)
@@ -98,23 +83,8 @@ In any case, the smaller dataset and smaller model resulted in severely degraded
 
 Results using 30-second samples:
 - Quantitative metrics
-- Accuracy: 71.50%
-              precision    recall  f1-score   support
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/8f992238-62dd-456e-ae58-522a68920771)
 
-     Class 0       0.67      0.48      0.56        21
-     Class 1       0.71      0.96      0.81        23
-     Class 2       0.79      0.75      0.77        20
-     Class 3       0.55      0.69      0.61        16
-     Class 4       0.56      0.26      0.36        19
-     Class 5       0.86      0.90      0.88        20
-     Class 6       0.75      0.88      0.81        17
-     Class 7       0.65      0.79      0.71        19
-     Class 8       0.70      0.61      0.65        23
-     Class 9       0.82      0.82      0.82        22
-
-    accuracy                           0.71       200
-   macro avg       0.70      0.71      0.70       200
-weighted avg       0.71      0.71      0.70       200
 - F1 Scores, confusion matrix, etc.
 Loss:
 ![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/95134070-2529-4ef7-9728-8a18fae2e1ca)
