@@ -77,7 +77,7 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 ### GTZAN
 - Quantitative metrics
 - 3-second samples:
-<img src="/assets/images/gtzan-accuracy-3sec.jpg" alt="drawing" width="200"/>
+<img src="/assets/images/gtzan-accuracy-3sec.jpeg" alt="drawing" width="200"/>
 
 
 - F1 Scores, confusion matrix, etc.
@@ -88,11 +88,11 @@ Loss:
 <img src="/assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="200"/>
 
 - 30-second samples:
-<img src="/assets/images/gtzan-accuracy-30sec.png" alt="drawing" width="200"/>
+<img src="/assets/images/gtzan-accuracy-30sec.jpeg" alt="drawing" width="200"/>
 
 - F1 Scores, confusion matrix, etc.
 Confusion Matrix:
-<img src="/assets/images/gtzan-30sec-confmatrix.jpg" alt="drawing" width="200"/>
+<img src="/assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
 
 Loss: 
 <img src="/assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
