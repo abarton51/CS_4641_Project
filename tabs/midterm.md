@@ -14,9 +14,9 @@ Our project's goal is to perform two different classification tasks on two diffe
 **GTZAN**: Description and link to dataset.
 
 ## Problem Definition
-The problem that we want to solve is the classification of music data into specific categories (composers for MusicNet and genres for GTZAN). Essentially, the existing challenge is to surpass previous accuracy benchmarks, especially with methods beyond neural networks, and to explore alternative models like decision trees. The motivation lies in pushing the boundaries of classification accuracy, understanding the potential of decision trees in this domain, and improving the interpretability of the models used. The project aims to contribute to the ongoing efforts in the field of music classification and expand the range of effective methodologies for this task.
-Despite neural networks' dominance in recent works, there's motivation to enhance their performance and explore if combining methods can yield better results. The readings suggest that decision trees, especially gradient boosted ones, might perform comparably and offer advantages in terms of training time and interpretability. The project aims to effectively reduce the dimensionality of the datasets, enhancing the understanding and visualization of the data using techniques like t-SNE and PCA. There's a consideration for constructing a super learner model to evaluate if the potential improvements justify the computational cost.
+The problem that we want to solve is the classification of music data into specific categories (composers for MusicNet and genres for GTZAN). Essentially, the existing challenge is to improve previous accuracy benchmarks, especially with methods beyond neural networks, and to explore alternative models like decision trees. Our motivation for this project was to increase classification accuracy, improve the potential of decision trees in this domain, and to better understand and interpret the models that we chose to use. Our project aims to contribute to the field of music classification and expand the range of effective methodologies for similar tasks.
 
+Despite the dominance of neural networks' in recent works, there's motivation to enhance their performance and explore if combining methods can gain better results. hte references and readings suggest that decision trees, especially gradient boosted ones, might perform comparably and offer advantages in terms of training time and interpretability. Based on this, the project aims to effectively reduce the dimensionality of the datasets, enhancing the understanding and visualization of the data using techniques like t-SNE and PCA. 
 
 ## Methods
 
@@ -87,11 +87,13 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 
 **Overall**:
 
-#### Next Steps
+## Next Steps
 
 # References
-[1.]
+[1.] Pun, A., &; Nazirkhanova, K. (2021). Music Genre Classification with Mel Spectrograms and CNN
 
-[2.]
+[2.] Jain, S., Smit, A., &; Yngesjo, T. (2019). Analysis and Classification of Symbolic Western Classical Music by Composer.
 
-[3.]
+[3.] Pál, T., & Várkonyi, D.T. (2020). Comparison of Dimensionality Reduction Techniques on Audio Signals. Conference on Theory and Practice of Information Technologies.
+
+[4.] Gupta, S. (2021). GTZAN-Genre Classification-Deep Learning-Val-92.4%.
