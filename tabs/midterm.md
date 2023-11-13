@@ -75,36 +75,49 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 - F1 Scores, confusion matrix, etc.
 
 ### GTZAN
+- We experimented with a feedforward neural network. As the input data consisted only of extracted features that were not spatially or temporally related, a CNN, RNN, transformer, or other kind of model was not needed. We chose the neural network as we believed we had sufficient training samples and that this function may be sufficiently complex for a neural network to approximate. We will explore this further by implementing other non-NN machine learning models in the future.
+
+To begin, the 3-second variant was experimented with. We made a 10% split from our training dataset to create a validation set to detect when overfitting was occurring. Early stopping was implemented such that training would halt as soon as 3 epochs had the validation loss not decrease. We employed a softmax activation function for our final layer (as this is a multiclass single-label classification problem) and the categorical cross-entropy loss. For hidden layers, we used ReLU. For a network this shallow, no vanishing gradients were observed, making the use of a ReLU variant (such as LeakyReLU) unnecessary. The Adam optimizer was used with a learning rate of 10^-3.
+
+The iteration over model architectures began with a single hidden layer of 32 neurons. From there, the number of neurons was increased, and as signs of overfitting were noticed, dropout regularization was added in. Not only did this prevent overfitting, but it also improved model performance compared to less parameter-dense network, likely a consequence of breaking co-adaptations. Ultimately, performance peaked with a network consisting of 2 hidden layers, each with a 0.5 dropout and 512 neurons each. 
 - Quantitative metrics
 - 3-second samples:
-<img src="/assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="200"/>
-
+- <img src="/assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="200"/>
 
 - F1 Scores, confusion matrix, etc.
-Confusion Matrix:
-<img src="/assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="200"/>
+- Confusion Matrix:
+- <img src="/assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="200"/>
 
-Loss:
-<img src="/assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="200"/>
+- Loss:
+- <img src="/assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="200"/>
+
+- However, it is important to note that performance did not climb significantly from a single-hidden-layer network with just 128 neurons and dropout. After this, additional improvements to model capacity provided diminishing returns for the increased needs for computing.
+
+With similar experimentation, it was found (along with optimizer parameters) that a batch size of 32 resulted in the best performance, reaching 90+% accuracy on the well-balanced test set.
+When dealing with the 30-second variant, the number of training samples drastically reduced, making overfitting a concern. While we ultimately ended up using virtually the same setup (only a smaller batch size, this time 16), we had to make changes to the size and number of layers.
+
+It was found that the ceiling for performance was a model that had two 64-neuron hidden layers with a dropout of 0.5 each. Anything more complex, and the model would simply start to overfit (triggering early stopping) before it could properly converge on a good solution.
+
+In any case, the smaller dataset and smaller model resulted in severely degraded test set performance, with the neural network only achieving an accuracy of just over 70%. 
 
 - 30-second samples:
-<img src="/assets/images/gtzan-accuracy-30sec.JPG" alt="drawing" width="200"/>
+- <img src="/assets/images/gtzan-accuracy-30sec.JPG" alt="drawing" width="200"/>
 
 - F1 Scores, confusion matrix, etc.
-Confusion Matrix:
-<img src="/assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
+- Confusion Matrix:
+- <img src="/assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
 
 Loss: 
-<img src="/assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
+- <img src="/assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
 
 
 ### Discussion
 **MusicNet**: Data is not distributed well. Need to go actually get more data if we want to reliably do classificaiton on all the composers in the dataset.
 
 **GTZAN**: 
-While perfecting the accuracy of our model, we came across a few notable mistakes:
--Rock music would often be misclassified as disco or metal. 
--A large number of jazz music samples were misclassified as classical.
+- While perfecting the accuracy of our model, we came across a few notable mistakes:
+- -Rock music would often be misclassified as disco or metal. 
+- -A large number of jazz music samples were misclassified as classical.
 
 **Overall**:
 
