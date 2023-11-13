@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Midterm Report
+title: 2. Midterm Report
 ---
 # CS 4641 Machine Learning, Team 6, Midterm Report
 Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya Radhakrishan
