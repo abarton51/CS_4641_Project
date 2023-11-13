@@ -76,12 +76,35 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 
 ### GTZAN
 - Quantitative metrics
+- 3-second samples:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/a869741c-2e86-44d0-b466-77fe4e0d1ae1)
+
+
 - F1 Scores, confusion matrix, etc.
+Confusion Matrix:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/9dcf1cc0-11d9-4810-a1a2-77e9cac62418)
+
+Loss:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/c98bd4c3-ffbf-4358-be40-15c8c3dbcebc)
+
+- 30-second samples:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/f57f56f3-b7a3-4c02-b269-c78683bf40cb)
+
+- F1 Scores, confusion matrix, etc.
+Confusion Matrix:
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/bf218a88-6027-4df1-bb2b-de1ec801c04b)
+
+Loss: 
+![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/39803c4f-a0ca-4ddd-b93a-1c76e752787b)
+
 
 ### Discussion
 **MusicNet**: Data is not distributed well. Need to go actually get more data if we want to reliably do classificaiton on all the composers in the dataset.
 
-**GTZAN**:
+**GTZAN**: 
+While perfecting the accuracy of our model, we came across a few notable mistakes:
+-Rock music would often be misclassified as disco or metal. 
+-A large number of jazz music samples were misclassified as classical.
 
 **Overall**:
 
