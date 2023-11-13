@@ -14,7 +14,9 @@ Our project's goal is to perform two different classification tasks on two diffe
 **GTZAN**: Description and link to dataset.
 
 ## Problem Definition
-Why there is a problem here? What is the motivation of the project? 
+The problem that we want to solve is the classification of music data into specific categories (composers for MusicNet and genres for GTZAN). Essentially, the existing challenge is to surpass previous accuracy benchmarks, especially with methods beyond neural networks, and to explore alternative models like decision trees. The motivation lies in pushing the boundaries of classification accuracy, understanding the potential of decision trees in this domain, and improving the interpretability of the models used. The project aims to contribute to the ongoing efforts in the field of music classification and expand the range of effective methodologies for this task.
+Despite neural networks' dominance in recent works, there's motivation to enhance their performance and explore if combining methods can yield better results. The readings suggest that decision trees, especially gradient boosted ones, might perform comparably and offer advantages in terms of training time and interpretability. The project aims to effectively reduce the dimensionality of the datasets, enhancing the understanding and visualization of the data using techniques like t-SNE and PCA. There's a consideration for constructing a super learner model to evaluate if the potential improvements justify the computational cost.
+
 
 ## Methods
 
