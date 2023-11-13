@@ -57,7 +57,27 @@ Why there is a problem here? What is the motivation of the project?
 
 ### GTZAN
 - Quantitative metrics
+- Accuracy: 90.34%
+              precision    recall  f1-score   support
+
+     Class 0       0.90      0.85      0.87       186
+     Class 1       0.91      0.97      0.94       199
+     Class 2       0.91      0.89      0.90       194
+     Class 3       0.92      0.93      0.92       190
+     Class 4       0.90      0.83      0.87       189
+     Class 5       0.93      0.95      0.94       200
+     Class 6       0.89      0.91      0.90       203
+     Class 7       0.93      0.90      0.91       244
+     Class 8       0.85      0.89      0.87       210
+     Class 9       0.90      0.91      0.90       183
+
+    accuracy                           0.90      1998
+   macro avg       0.90      0.90      0.90      1998
+weighted avg       0.90      0.90      0.90      1998
 - F1 Scores, confusion matrix, etc.
+-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/c650ea82-34e3-480f-af20-46ab67a7c203)
+
+
 
 ### Discussion
 **MusicNet**: Data is not distributed well. Need to go actually get more data if we want to reliably do classificaiton on all the composers in the dataset.
