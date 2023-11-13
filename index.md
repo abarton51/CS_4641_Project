@@ -1,5 +1,5 @@
 ---
-title: Proposal
+title: 1. Proposal
 layout: home
 ---
 # Introduction/Background:
