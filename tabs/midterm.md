@@ -81,7 +81,7 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 - F1 Scores, confusion matrix, etc.
 
 ### Discussion
-**MusicNet**: Data is not distributed well. Need to go actually get more data if we want to reliably do classificaiton on all the composers in the dataset.
+**MusicNet**: After performing much of the data visualization on the data that we collected from the Kaggle dataset, we noticed that the data is not distributed well. We found that the reason for this distribution is because we need to get more data if we want to reliably do classification on all the composers in the dataset. For instance, we noticed that certain composers like Bach had over 100 songs that we were able to use as data points whereas other composers like Haydn had less than 5 songs within the given dataset, which likely caused this disparity in the results. Because of this, we plan on adding more songs from the different composers to account for this disparity our results. We also found that PCA results of the MIDI data are promising and show separability in the data. In addition to using more sophisticated models, we plan on using a multi-modal classification model that processes MIDI numerical data and also possibly including images of MIDI roles and/or mel-spectrogram graphs. This entails processing not only the raw numerical MIDI data but also considering supplementary information in the form of images, such as MIDI rolls or mel-spectrogram graphs. 
 
 **GTZAN**:
 
