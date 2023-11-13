@@ -9,13 +9,12 @@ Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya
 Our project's goal is to perform two different classification tasks on two different music audio datasets, MusicNet and GTZAN. GTZAN consists of 1000 mean feature matrices stored in CSV files and spectrogram PNG images (per file type) corresponding to 10 genres of music. For MusicNet, the task is to identify the composer for a given input of audio data and for GTZAN the task is to classify the genre of music given an input of audio data. Both of these datasets are taken from [Kaggle](https://www.kaggle.com) and work in classification has recently gotten up to ~92% [[4.]](#references). Previous works struggled getting any model above 80% [[1.]](#references), [[2.]](#references). One study introduced a gradient boosted ensemble decision tree method called LightGBM that outperformed fully connected neural networks [[2.]](#references). Results these days outperform them but not much recent work has been done in using tree classifiers in this problem and most implementations appear to focus on neural network implementations. Therefore, we aim to re-examine decision trees' abilities for this task and attempt to improve upon neural network results. Additionally, in our exploratory data analysis and data pre-processing we would like to consider non-linear, as well as linear, dimensionality reduction techniques. We would like to evaluate these different methods similar to Pal et al., [[3]](#references), by reducing dimensions to a specified number, running a clustering algorithm on the data, and then evaluating results posthoc. In their results, t-SNE consistently outperformed other dimension reduction techniques. Therefore, we plan to use t-SNE in order to better understand and visualize our data in addition to principle components analysis (PCA).
 
 ### Datasets
-
+**MusicNet**: We took this data from [Kaggle](kaggle.com). [MusicNet](https://www.kaggle.com/datasets/imsparsh/musicnet-dataset) is an audio dataset consisting of 330 WAV and MIDI files corresponding to 10 mutually exclusive classes. Each of the 330 WAV and MIDI files (per file type) corresponding to 330 separate classical compositions belong to 10 different composers from the classical and baroque periods. The total size of the dataset is approximately 33 GB and has 992 files in total. 330 of those are WAV, 330 are MIDI, 1 NPZ file of MusicNet features stored in a NumPy array, and a CSV of metadata. For this portion of the project, we essentially ignore the NPZ file and explore our own processing and exploration of the WAV and MIDI data for a more thorough understanding of the data and the task.
 
 **GTZAN**: Description and link to dataset.
-https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification 
 
 ## Problem Definition
-Why there is a problem here? What is the motivation for the project? 
+Why there is a problem here? What is the motivation of the project? 
 
 ## Methods
 
@@ -69,59 +68,21 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 **Chosen Model(s)**
 - Description of Implementation, hyperparameter selection, computation time, etc.
 
-## Results and Discussion
+## Results and Discusssion
 
 ### MusicNet
 - Quantitative metrics
 - F1 Scores, confusion matrix, etc.
 
 ### GTZAN
-We experimented with a feedforward neural network. As the input data consisted only of extracted features that were not spatially or temporally related, a CNN, RNN, transformer, or other kind of model was not needed. We chose the neural network as we believed we had sufficient training samples and that this function may be sufficiently complex for a neural network to approximate. We will explore this further by implementing other non-NN machine learning models in the future.
-
-To begin, the 3-second variant was experimented with. We made a 10% split from our training dataset to create a validation set to detect when overfitting was occurring. Early stopping was implemented such that training would halt as soon as 3 epochs had the validation loss not decrease. We employed a softmax activation function for our final layer (as this is a multiclass single-label classification problem) and the categorical cross-entropy loss. For hidden layers, we used ReLU. For a network this shallow, no vanishing gradients were observed, making the use of a ReLU variant (such as LeakyReLU) unnecessary. The Adam optimizer was used with a learning rate of 10^-3.
-
-The iteration over model architectures began with a single hidden layer of 32 neurons. From there, the number of neurons was increased, and as signs of overfitting were noticed, dropout regularization was added in. Not only did this prevent overfitting, but it also improved model performance compared to less parameter-dense networks, likely a consequence of breaking co-adaptations. Ultimately, performance peaked with a network consisting of 2 hidden layers, each with a 0.5 dropout and 512 neurons each. 
-
-Results using 3-second samples:
 - Quantitative metrics
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/5c6815ca-1d82-4f7c-8eeb-184b48bffcf8)
-
 - F1 Scores, confusion matrix, etc.
-Loss:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/c650ea82-34e3-480f-af20-46ab67a7c203)
-Confusion Matrix:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/85ccf7ba-80c5-42f2-9e19-5b554963ec12)
-
-However, it is important to note that performance did not climb significantly from a single-hidden-layer network with just 128 neurons and dropout. After this, additional improvements to model capacity provided diminishing returns for the increased needs for computing.
-
-With similar experimentation, it was found (along with optimizer parameters) that a batch size of 32 resulted in the best performance, reaching 90+% accuracy on the well-balanced test set.
-When dealing with the 30-second variant, the number of training samples drastically reduced, making overfitting a concern. While we ultimately ended up using virtually the same setup (only a smaller batch size, this time 16), we had to make changes to the size and number of layers.
-
-It was found that the ceiling for performance was a model that had two 64-neuron hidden layers with a dropout of 0.5 each. Anything more complex, and the model would simply start to overfit (triggering early stopping) before it could properly converge on a good solution.
-
-In any case, the smaller dataset and smaller model resulted in severely degraded test set performance, with the neural network only achieving an accuracy of just over 70%. 
-
-Results using 30-second samples:
-- Quantitative metrics
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/8f992238-62dd-456e-ae58-522a68920771)
-
-- F1 Scores, confusion matrix, etc.
-Loss:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/95134070-2529-4ef7-9728-8a18fae2e1ca)
-Confusion Matrix:
-![image](https://github.com/abarton51/CS_4641_Project/assets/73034441/4a25e36f-0db0-4aed-80a3-1dd9d65f00c9)
-
-
 
 ### Discussion
 **MusicNet**: Data is not distributed well. Need to go actually get more data if we want to reliably do classificaiton on all the composers in the dataset.
 
-**GTZAN**: 
-When perfecting the accuracy of our models we came across a few notable mistakes. 
-- Often times rock music would be misclassified as disco or metal.
-- A large amount of jazz samples were misclassified as classical.
+**GTZAN**:
 
-  
 **Overall**:
 
 #### Next Steps
