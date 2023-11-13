@@ -14,7 +14,9 @@ Our project's goal is to perform two different classification tasks on two diffe
 **GTZAN**: We took this data from [Kaggle](kaggle.com). [GTZAN](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) is an audio dataset containing a collection of 10 genres with 100 audio files each, all having a length of 30 seconds. It also contains a visual representation of each audio file in the form of a Mel Spectrogram and 2 CSV files that contain features for the audio files. One file has for each song (30 seconds long) a mean and variance computed over multiple features that can be extracted from an audio file. The other file has the same structure, but the songs were split before into 3-second audio files.
 
 ## Problem Definition
-Why there is a problem here? What is the motivation of the project? 
+The problem that we want to solve is the classification of music data into specific categories (composers for MusicNet and genres for GTZAN). Essentially, the existing challenge is to improve previous accuracy benchmarks, especially with methods beyond neural networks, and to explore alternative models like decision trees. Our motivation for this project was to increase classification accuracy, improve the potential of decision trees in this domain, and to better understand and interpret the models that we chose to use. Our project aims to contribute to the field of music classification and expand the range of effective methodologies for similar tasks.
+
+Despite the dominance of neural networks' in recent works, there's motivation to enhance their performance and explore if combining methods can gain better results. hte references and readings suggest that decision trees, especially gradient boosted ones, might perform comparably and offer advantages in terms of training time and interpretability. Based on this, the project aims to effectively reduce the dimensionality of the datasets, enhancing the understanding and visualization of the data using techniques like t-SNE and PCA. 
 
 ## Methods
 
@@ -123,11 +125,12 @@ Loss:
 
 **Overall**:
 
-#### Next Steps
+## Next Steps
 
 # References
-[1.]
+[1.] Pun, A., &; Nazirkhanova, K. (2021). Music Genre Classification with Mel Spectrograms and CNN
 
-[2.]
+[2.] Jain, S., Smit, A., &; Yngesjo, T. (2019). Analysis and Classification of Symbolic Western Classical Music by Composer.
 
-[3.]
+[3.] Pál, T., & Várkonyi, D.T. (2020). Comparison of Dimensionality Reduction Techniques on Audio Signals. Conference on Theory and Practice of Information Technologies.
+
