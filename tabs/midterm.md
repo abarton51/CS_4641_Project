@@ -29,7 +29,7 @@ For MusicNet, we thoroughly explore visualization of both WAV and MIDI data file
 
 If you've every listened to this song, you'll immediately recognize the overall pattern of the notes. Below is a sample of the left and right hand notes from measure 1 to 6.
 
-<img src="/assets/images/beethoven_ms_mvmt3_partscontour_measures1to6.png" alt="drawing" width="200"/>
+<img src="/assets/images/beethoven_ms_mvmt3_partscontour_measures1to6.png" alt="drawing" width="400"/>
 
 Below we show the frequencies of certain pitches and quarter length notes at certain pitches.
 
@@ -54,6 +54,22 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 
 #### Dimensionality Reduction - PCA
 **MusicNet**: We perform dimensionality reduction using Principal Components Analysis (PCA) on the pre-processed MIDI data. We hope to be able reduce the number of features especially due to the large amount of sparisity in each row vector. Because most of the songs only have 1-2 instruments, which means that for most songs there would be at most 256 non-zero entries, we expect to be able to significanlty reduce the number of features while maitining separability in our data. 
+
+We can see that there is no separation between Beethoven and Bach classes in the first two principal directions.
+
+<img src="/assets/images/Beethoven_vs_Bach_pca2.png" alt="drawing" width="200"/>
+
+However, very clear separation between Cambini and Bach exists in our data in the first two principal directions.
+
+<img src="/assets/images/bach_vs_cambini_pca2.png" alt="drawing" width="200"/>
+
+Here we see promising separation between Mozart and Cambini. Although they may not be linearly separable in this case, there is a clear distinction between the clusters of data in our data for their first two principal components.
+
+<img src="/assets/images/Mozart_vs_Cambini_pca2.png" alt="drawing" width="200"/>
+
+
+
+<img src="/assets/images/Schubert_vs_Bach_pca2.png" alt="drawing" width="200"/>
 
 **GTZAN**:
 - Brief description and include visuals if applicable.
