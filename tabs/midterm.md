@@ -67,7 +67,7 @@ Here we see promising separation between Mozart and Cambini. Although they may n
 
 <img src="/assets/images/Mozart_vs_Cambini_pca2.png" alt="drawing" width="200"/>
 
-
+Here again we see a lack of separability for the first two principal components of Bach and Schubert. A strong contrast between Bach vs. Cambini, which did show a high amount of separability. This demonstrates that when performing this classification task on this processed MIDI data, it is likely that the model will struggle to perform well in delineating Bach and Schubert more than it does delineating Bach and Cambini.
 
 <img src="/assets/images/Schubert_vs_Bach_pca2.png" alt="drawing" width="200"/>
 
