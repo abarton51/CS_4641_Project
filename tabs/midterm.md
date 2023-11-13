@@ -49,7 +49,7 @@ Why there is a problem here? What is the motivation of the project?
 **Chosen Model(s)**
 - Description of Implementation, hyperparameter selection, computation time, etc.
 
-## Results and Discusssion
+## Results and Discussion
 
 ### MusicNet
 - Quantitative metrics
