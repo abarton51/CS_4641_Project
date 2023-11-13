@@ -10,6 +10,7 @@ A quick introduction of your topic and mostly literature review of what has been
 
 ### Datasets
 **MusicNet**: Description and link to dataset.
+MusicNet is a collection of 330 freely-licensed classical music recordings, together with over 1 million annotated labels indicating the precise time of each note in every recording, the instrument that plays each note, and the note's position in the metrical structure of the composition. The labels are acquired from musical scores aligned to recordings by dynamic time warping. The labels are verified by trained musicians; a labeling error rate of 4% has been estimated. The MusicNet labels are offered to the machine learning and music communities as a resource for training models and a common benchmark for comparing results.
 https://www.kaggle.com/datasets/imsparsh/musicnet-dataset 
 
 **GTZAN**: Description and link to dataset.
