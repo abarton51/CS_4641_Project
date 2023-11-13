@@ -10,8 +10,10 @@ A quick introduction of your topic and mostly literature review of what has been
 
 ### Datasets
 **MusicNet**: Description and link to dataset.
+https://www.kaggle.com/datasets/imsparsh/musicnet-dataset 
 
 **GTZAN**: Description and link to dataset.
+https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification 
 
 ## Problem Definition
 Why there is a problem here? What is the motivation of the project? 
