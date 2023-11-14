@@ -194,7 +194,7 @@ Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/perso
 
 ![Gantt Chart Page 1](../assets/images/GanttChart_ClassicalficationMusic-1.png)
 
-![Gantt Chart Page 2](../assets/images/gantt_midterm_update.png.png)
+![Gantt Chart Page 2](../assets/images/gantt_midterm_update.png)
 
 ![Gantt Chart Page 3](../assets/images/GanttChart_ClassicalficationMusic-3.png)
 
