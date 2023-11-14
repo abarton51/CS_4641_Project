@@ -160,15 +160,15 @@ In any case, the smaller dataset and smaller model resulted in severely degraded
 
 F1 Scores, confusion matrix, etc.
 
-<img src="assets/images/gtzan-accuracy-30sec.JPG" alt="drawing" width="200"/>
+<img src="../assets/images/gtzan-accuracy-30sec.JPG" alt="drawing" width="200"/>
 
 - Confusion Matrix:
 
-<img src="assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
+<img src="../assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
 
 - Loss: 
 
-<img src="assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
+<img src="../assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
 
 
 ### Discussion
