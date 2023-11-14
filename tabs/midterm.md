@@ -5,8 +5,10 @@ title: 2. Midterm Report
 # CS 4641 Machine Learning, Team 6, Midterm Report
 Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya Radhakrishan
 
+***
+
 ## Introduction
-Our project's goal is to perform two different classification tasks on two different music audio datasets, MusicNet and GTZAN. GTZAN consists of 1000 mean feature matrices stored in CSV files and spectrogram PNG images (per file type) corresponding to 10 genres of music. For MusicNet, the task is to identify the composer for a given input of audio data and for GTZAN the task is to classify the genre of music given an input of audio data. Both of these datasets are taken from [Kaggle](https://www.kaggle.com) and work in classification has recently gotten up to ~92% [[4.]](#references). Previous works struggled getting any model above 80% [[1.]](#references), [[2.]](#references). One study introduced a gradient boosted ensemble decision tree method called LightGBM that outperformed fully connected neural networks [[2.]](#references). Results these days outperform them but not much recent work has been done in using tree classifiers in this problem and most implementations appear to focus on neural network implementations. Therefore, we aim to re-examine decision trees' abilities for this task and attempt to improve upon neural network results. Additionally, in our exploratory data analysis and data pre-processing we would like to consider non-linear, as well as linear, dimensionality reduction techniques. We would like to evaluate these different methods similar to Pal et al., [[3]](#references), by reducing dimensions to a specified number, running a clustering algorithm on the data, and then evaluating results posthoc. In their results, t-SNE consistently outperformed other dimension reduction techniques. Therefore, we plan to use t-SNE in order to better understand and visualize our data in addition to principle components analysis (PCA).
+Our project's goal is to perform two different slightly different classification tasks on two different music audio datasets, MusicNet and GTZAN. For GTZAN we are performing a genre classification task. For MusicNet, the task is to identify the composer for a given input of audio data from the baroque and classifcal periods of music. Both of these datasets are taken from [Kaggle](https://www.kaggle.com) and work in classification has recently gotten up to ~92% [[4.]](#references). Previous works struggled getting any model above 80% [[1.]](#references), [[2.]](#references). One study introduced a gradient boosted ensemble decision tree method called LightGBM that outperformed fully connected neural networks [[2.]](#references). Results these days outperform them but not much recent work has been done in using tree classifiers in this problem and most implementations appear to focus on neural network implementations. Therefore, we aim to re-examine decision trees' abilities for this task and attempt to improve upon neural network results. Additionally, in our exploratory data analysis and data pre-processing we would like to consider non-linear, as well as linear, dimensionality reduction techniques. We would like to evaluate these different methods similar to Pal et al., [[3]](#references), by reducing dimensions to a specified number, running a clustering algorithm on the data, and then evaluating results posthoc. In their results, t-SNE consistently outperformed other dimension reduction techniques. Therefore, we plan to use t-SNE in order to better understand and visualize our data in addition to principle components analysis (PCA). Currently, our work focuses on data pre-processing, visualization, using PCA for our dimensionality reduction technique, and obtaining base line results on minimally processed data with simple Feedforward Neural Network architectures.
 
 ### Datasets
 **MusicNet**: We took this data from [Kaggle](kaggle.com). [MusicNet](https://www.kaggle.com/datasets/imsparsh/musicnet-dataset) is an audio dataset consisting of 330 WAV and MIDI files corresponding to 10 mutually exclusive classes. Each of the 330 WAV and MIDI files (per file type) corresponding to 330 separate classical compositions belong to 10 different composers from the classical and baroque periods. The total size of the dataset is approximately 33 GB and has 992 files in total. 330 of those are WAV, 330 are MIDI, 1 NPZ file of MusicNet features stored in a NumPy array, and a CSV of metadata. For this portion of the project, we essentially ignore the NPZ file and explore our own processing and exploration of the WAV and MIDI data for a more thorough understanding of the data and the task.
@@ -18,7 +20,8 @@ The problem that we want to solve is the classification of music data into speci
 
 Despite the dominance of neural networks' in recent works, there's motivation to enhance their performance and explore if combining methods can gain better results. hte references and readings suggest that decision trees, especially gradient boosted ones, might perform comparably and offer advantages in terms of training time and interpretability. Based on this, the project aims to effectively reduce the dimensionality of the datasets, enhancing the understanding and visualization of the data using techniques like t-SNE and PCA. 
 
-## Methods
+## Methods Overview
+We utilize Principal Component Analysis as our dimensionality reduction technique for visualization as well as pre-processing data. We implement classification only on the GTZAN data and specifically utilized Feedforward Neural Networks/MLPs. Further discussion of these methods is explained in the Data Preprocessing and Classification sections.
 
 ### Exploratory Data Analysis (EDA)
 **MusicNet**:
@@ -44,11 +47,16 @@ Below is a an example of the pitch frequency in the vertical axis and the two co
 
 ### Data Preprocessing
 **MusicNet**:
+
+#### MIDI Files
 For the MIDI files, we aimed to create an algorithm to parse through MIDI files and convert into row vectors to be stored into a data matrix **X**. We utilize the MIDI parsing software from [python-midi](https://github.com/vishnubob/python-midi) to parse through the MIDI files and obtain tensors of float values that corresond to the instrument, the pitch of the note, and the loudness of the note. Each MIDI file generated a (**I**x **P**x **A**) tensor stored as a 3-D numpy array where **I** is the number of instruments, **P** is the total number of pitches, which range from (1-128), and the total number of quarter notes in the piece **A**. **I** is held as a constant of 16. For any instrument not played, it simply stores a matrix of zeroes. Additionally, the number of quarter notes in each piece is vastly different. Therefore, we require a way to process this data in a way that is homogenous in its dimensions.
 
 We take the average values of each piece across the 3rd dimension (axis = 2) generating a 2-D array of size 16x128 where each entry is the average float value for that corresponindg pitch and instrument across every note in the piece. From here, we flatten the 2-D array to generate a 1-D array of size 16*128 = 2048, where each block of values 128 entries long corresponds to an instrument. This flattening procedure respects the order of the instruments in a consistent manner across all MIDI files and is capable of storing instrument information for all MIDI files within the domain of the 16 instruments. The 16 instruments consist of the most common instruments in classical music including piano, violin, bass, cello, drums, voice, etc. Although the memory is costly, and the non-zero entries in each row vector are quite sparse, we determined that this procedure would be a viable method to maintain information in a manner that is feasible and reasonably efficient for our task.
 
 In summary, we parse through each MIDI file and undergo a basic algorithm to generate row vectors of float values for each composition. We do this for each MIDI file and generate a data matrix X_{MIDI} that is a R^{330x2048} stored as a 2-D array of float values. This data matrix X_{MIDI} is what we will process through supervised models in the future and is the data we further explore with Principal Component Analysis detailed in the next section for MusicNet.
+
+#### WAV Files
+For WAV files, we obtain a 1-D array for each song consisting of amplitude float values. Each entry corresponds to a timestep in which the WAV file is sampled which is determined by the sampling rate specified when loading the data. We use the [librosa](https://librosa.org/doc/latest/index.html) audio analysis package in Python to load WAV files. After data is loaded, take intervals of the WAV data to act as a single data point. For example, a 30 second song with a sampling rate of 2 would generate a 1-D float array of length 60. If we specify intervals of 3 s, then we would obtain 20 distinct data points each with 3 values for amplitude. A possible exploration with this data, because it is sequential, is to use models specifically tailored towards processing sequential data and learning relations between points in a sequence, such as transformers. However, we currently only perform this minimal processing for MusicNet in order to visualize and understand the data, and obtain baseline performances in supervised models to compare to performances with other processed data.
 
 **GTZAN**:
 
@@ -75,21 +83,13 @@ Here again we see a lack of separability for the first two principal components 
 - Brief description and include visuals if applicable.
 
 ### Classification
-**MusicNet**:
-#### Choice of Model and Algorithms:
-**Chosen Model(s)**
-- Description of Implementation, hyperparameter selection, computation time, etc.
+#### **MusicNet** - Choice of Model and Algorithms:
+**Chosen Model(s)**: We opted to only perform classification on the GTZAN dataset. MusicNet requires more thorough processing and either trimming the dataset down to obtain a better distribution of data by class or retrieving data manually. This is discussed more in the Discussion section.
 
-**GTZAN**:
-#### Choice of Model and Algorithms:
-**Chosen Model(s)**
-- Description of Implementation, hyperparameter selection, computation time, etc.
+#### **GTZAN** - Choice of Model and Algorithms:
+**Chosen Model(s)**: Description of Implementation, hyperparameter selection, computation time, etc.
 
 ## Results and Discusssion
-
-### MusicNet
-- Quantitative metrics
-- F1 Scores, confusion matrix, etc.
 
 ### GTZAN
 We experimented with a feedforward neural network. As the input data consisted only of extracted features that were not spatially or temporally related, a CNN, RNN, transformer, or other kind of model was not needed. We chose the neural network as we believed we had sufficient training samples and that this function may be sufficiently complex for a neural network to approximate. We will explore this further by implementing other non-NN machine learning models in the future.
@@ -100,7 +100,7 @@ The iteration over model architectures began with a single hidden layer of 32 ne
 
 Quantitative metrics
 - 3-second samples:
-- <img src="/assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="200"/>
+<img src="/assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="200"/>
 
 F1 Scores, confusion matrix, etc.
 - Confusion Matrix:
