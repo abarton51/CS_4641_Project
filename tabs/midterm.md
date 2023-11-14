@@ -102,19 +102,19 @@ On top of doing supervised learning with the extracted features that the dataset
 
 We can see that there is no separation between Beethoven and Bach classes in the first two principal directions.
 
-<img src="../assets/images/Beethoven_vs_Bach_pca2.png" alt="drawing" width="200"/>
+<img src="../assets/images/Beethoven_vs_Bach_pca2.png" alt="drawing" width="300"/>
 
 However, very clear separation between Cambini and Bach exists in our data in the first two principal directions.
 
-<img src="../assets/images/bach_vs_cambini_pca2.png" alt="drawing" width="200"/>
+<img src="../assets/images/bach_vs_cambini_pca2.png" alt="drawing" width="300"/>
 
 Here we see promising separation between Mozart and Cambini. Although they may not be linearly separable in this case, there is a clear distinction between the clusters of data in our data for their first two principal components.
 
-<img src="../assets/images/Mozart_vs_Cambini_pca2.png" alt="drawing" width="200"/>
+<img src="../assets/images/Mozart_vs_Cambini_pca2.png" alt="drawing" width="300"/>
 
 Here again we see a lack of separability for the first two principal components of Bach and Schubert. A strong contrast between Bach vs. Cambini, which did show a high amount of separability. This demonstrates that when performing this classification task on this processed MIDI data, it is likely that the model will struggle to perform well in delineating Bach and Schubert more than it does delineating Bach and Cambini.
 
-<img src="../assets/images/Schubert_vs_Bach_pca2.png" alt="drawing" width="200"/>
+<img src="../assets/images/Schubert_vs_Bach_pca2.png" alt="drawing" width="300"/>
 
 **GTZAN**:
 After we get our dataset represented by a NxTxF matrix, we perform Principal Component Analysis (PCA) on the dataset. The reason we do this is to reduce the dimensionality of the dataset while mostly maintaining the information we have. This will allow us to train smaller and better models. To do this, we flatten the tensor into a (NT)xF matrix. We then perform PCA to get a (NT)xF' model. We then reshape it back to  a NxTxF' tensor. We will be testing models utilizing different values of F'.
