@@ -75,8 +75,6 @@ Chromagram sequence of chroma features each expressing how the representation's 
 
 <img src="../assets/images/wav_chromagram.png" alt="drawing" width="350"/>
 
-**GTZAN**:
-
 ### Data Preprocessing
 **MusicNet**:
 #### MIDI Files
@@ -183,6 +181,9 @@ Another notable misclassification involved a significant number of jazz music sa
 **Overall**: Based on both the MusicNet and GTZAN datasets, we noticed that the uneven distribution of data among the composers in MusicNet has suggested the recognition of potential biases, leading us to plan to address this disparity by increasing the dataset with more compositions from various composers. Additionally, we plan to incorporate numerical MIDI data as well as images like mel-spectrogram graphs. For GTZAN, we propose solutions that involve refining our understanding of distinctive elements when discerning musical nuances, especially in rock and jazz. Based on these results, we can improve our model accuracy and robustness in completing music classification tasks.
 
 ## Next Steps
+**MusicNet**: We will gather data manually to improve the overall distribution of data by classes or trim the dataset down to only include classes with a minimum number of data points. We will use the processed MIDI data, WAV data, and potentially images to implement two different supervised models - Neural Networks and Decision Trees. If time permits, we will revisit/re-explore data visualization use t-SNE as a nonlinear dimensionality reduction method for the processed MIDI files.
+
+**GTZAN**: We plan to incorporate a multi-modal approach to classification using the existing Feedforward Neural Network approach with WAV data as input as well as Convolutional Neural Networks with image data such as Mel Spectrogram PNG files. If time permits, we will explore utilizing Transformers on the WAV data due to the sequential nature of music data and the feasibility of being able to train transformer models to learn context within samples of music using the attention mechanisms.
 
 ## Contribution Table
 
