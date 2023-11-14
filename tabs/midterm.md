@@ -25,10 +25,13 @@ We utilize Principal Component Analysis as our dimensionality reduction techniqu
 
 ### Exploratory Data Analysis (EDA)
 **MusicNet**:
-For MusicNet, we thoroughly explore visualization of both WAV and MIDI data files in various ways, using our own created methods, open-source programs, and a mix of the two. We will first go through the MIDI file exploration for Beethoven's 3rd Movement of the famous Moonlight Sonata composition. Something very important to be aware of is how many different MIDI file formats exist and how different some MIDI files may be in certain portions of their structure. The software we used to visualize and parse through MIDI files are open-source and can be found at [python-midi](https://github.com/vishnubob/python-midi/) and [music21](https://web.mit.edu/music21/). In the following example, the MIDI file is broken down into a left hand and right hand portion of the piano solo played. Below is a sample of the right hand and left hand from measures 1 to 10 shown in separate plots, in their respective order.
+For MusicNet, we thoroughly explore visualization of both WAV and MIDI data files in various ways, using our own created methods, open-source programs, and a mix of the two. 
 
-<img src="/assets/images/beethoven_ms_mvmt3_righthand_measure1to10.png" alt="drawing" width="200"/>
-<img src="/assets/images/beethoven_ms_mvmt3_lefthand_measure1to10.png" alt="drawing" width="200"/>
+#### MIDI File Visualization
+We will first go through the MIDI file exploration for Beethoven's 3rd Movement of the famous Moonlight Sonata composition. Something very important to be aware of is how many different MIDI file formats exist and how different some MIDI files may be in certain portions of their structure. The software we used to visualize and parse through MIDI files are open-source and can be found at [python-midi](https://github.com/vishnubob/python-midi/) and [music21](https://web.mit.edu/music21/). In the following example, the MIDI file is broken down into a left hand and right hand portion of the piano solo played. Below is a sample of the right hand and left hand from measures 1 to 10 shown in separate plots, in their respective order.
+
+<img src="/assets/images/beethoven_ms_mvmt3_righthand_measure1to10.png" alt="drawing" width="300"/>
+<img src="/assets/images/beethoven_ms_mvmt3_lefthand_measure1to10.png" alt="drawing" width="300"/>
 
 If you've every listened to this song, you'll immediately recognize the overall pattern of the notes. Below is a sample of the left and right hand notes from measure 1 to 6.
 
@@ -36,39 +39,41 @@ If you've every listened to this song, you'll immediately recognize the overall 
 
 Below we show the frequencies of certain pitches and quarter length notes at certain pitches.
 
-<img src="/assets/images/beethoven_ms_mvmt3_frequency_quarterlength_pitch.png" alt="drawing" width="200"/>
-<img src="/assets/images/beethoven_ms_mvmt3_pitchclass_frequency.png" alt="drawing" width="200"/>
+<img src="/assets/images/beethoven_ms_mvmt3_frequency_quarterlength_pitch.png" alt="drawing" width="300"/>
+<img src="/assets/images/beethoven_ms_mvmt3_pitchclass_frequency.png" alt="drawing" width="300"/>
 
 Below is a an example of the pitch frequency in the vertical axis and the two coordinates along the horizontal directions are pitch and note length.
 
-<img src="/assets/images/beethoven_ms_mvmt3_3dbars.png" alt="drawing" width="200"/>
+<img src="/assets/images/beethoven_ms_mvmt3_3dbars.png" alt="drawing" width="350"/>
 
-Now we examine samples of WAV files for each composer in a multitude of ways.
+
+#### WAV File Visualization
+Now we examine samples of WAV files for each composer in a multitude of ways. We obtain a random composition as a WAV file for each composer and visualize the data.
 
 Visualizing the audio in time domain: Time on x-axis and Amplitude on y-axis. Here, in the following examples, the sampling rate is 22050 samples, i.e, in 1 second 22050 samples are taken. This means that the data is sampled every 0.046 milliseconds.
 
-<img src="/assets/images/wav_time_domain.png.png" alt="drawing" width="200"/>
+<img src="/assets/images/wav_time_domain.png.png" alt="drawing" width="350"/>
 
 The zero crossing rate indicates the number of times that a signal crosses the horizontal axis.
 
-<img src="/assets/images/wav_zero_crossing_rate.png" alt="drawing" width="200"/>
+<img src="/assets/images/wav_zero_crossing_rate.png" alt="drawing" width="350"/>
 
 The STFT represents a signal in the time-frequency domain by computing discrete Fourier transforms (DFT) over short overlapping windows. Frequency is on the x-axis and Intensity is on the y-axis
 
-<img src="/assets/images/wav_stft.png" alt="drawing" width="200"/>
+<img src="/assets/images/wav_stft.png" alt="drawing" width="350"/>
 
 A Spectogram represents the intensity of a signal over time at various frequencies. Time is on the x-axis and Intensity of Frequency is on the y-axis
 
-<img src="/assets/images/wav_spectrogram.png" alt="drawing" width="200"/>
+<img src="/assets/images/wav_spectrogram.png" alt="drawing" width="350"/>
 
 The Mel Scale is a logarithmic transformation of a signal’s frequency. The core idea of this transformation is that sounds of equal distance on the Mel Scale are perceived to be of equal distance to humans. Hence, it mimics our own perception of sound. The transformation of frequency to mel scale is:   {% raw %} *m = 1127xln(1 + f/700)* {% endraw %}
 Mel Spectrograms are spectrograms that visualize sounds on the Mel scale.
 
-<img src="/assets/images/wav_mel_spec.png" alt="drawing" width="200"/>
+<img src="/assets/images/wav_mel_spec.png" alt="drawing" width="350"/>
 
 Chromagram sequence of chroma features each expressing how the representation's pitch content within the time window is spread over the twelve chroma bands/pitches.
 
-<img src="/assets/images/wav_chromagram.png" alt="drawing" width="200"/>
+<img src="/assets/images/wav_chromagram.png" alt="drawing" width="350"/>
 
 **GTZAN**:
 
@@ -128,15 +133,18 @@ To begin, the 3-second variant was experimented with. We made a 10% split from o
 
 The iteration over model architectures began with a single hidden layer of 32 neurons. From there, the number of neurons was increased, and as signs of overfitting were noticed, dropout regularization was added in. Not only did this prevent overfitting, but it also improved model performance compared to less parameter-dense network, likely a consequence of breaking co-adaptations. Ultimately, performance peaked with a network consisting of 2 hidden layers, each with a 0.5 dropout and 512 neurons each. 
 
-Quantitative metrics
-- 3-second samples:
-<img src="/assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="200"/>
+**Quantitative metrics**: 3-second samples
 
 F1 Scores, confusion matrix, etc.
+
+<img src="/assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="200"/>
+
 - Confusion Matrix:
+
 <img src="/assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="200"/>
 
 - Loss:
+
 <img src="/assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="200"/>
 
 However, it is important to note that performance did not climb significantly from a single-hidden-layer network with just 128 neurons and dropout. After this, additional improvements to model capacity provided diminishing returns for the increased needs for computing.
@@ -148,16 +156,19 @@ It was found that the ceiling for performance was a model that had two 64-neuron
 
 In any case, the smaller dataset and smaller model resulted in severely degraded test set performance, with the neural network only achieving an accuracy of just over 70%. 
 
-Quantitative metrics
-- 30-second samples:
-- <img src="/assets/images/gtzan-accuracy-30sec.JPG" alt="drawing" width="200"/>
+**Quantitative metrics**: 30-second samples
 
 F1 Scores, confusion matrix, etc.
-- Confusion Matrix:
-- <img src="/assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
 
-Loss: 
-- <img src="/assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
+<img src="/assets/images/gtzan-accuracy-30sec.JPG" alt="drawing" width="200"/>
+
+- Confusion Matrix:
+
+<img src="/assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
+
+- Loss: 
+
+<img src="/assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
 
 
 ### Discussion
@@ -165,8 +176,8 @@ Loss:
 
 **GTZAN**: 
 - While perfecting the accuracy of our model, we came across a few notable mistakes:
-- -Rock music would often be misclassified as disco or metal. 
-- -A large number of jazz music samples were misclassified as classical.
+- Rock music would often be misclassified as disco or metal. 
+- A large number of jazz music samples were misclassified as classical.
 
 **Overall**:
 
