@@ -182,6 +182,7 @@ Another notable misclassification involved a significant number of jazz music sa
 ## Next Steps
 
 ## Contribution Table
+
 | Contributor Name      | Contribution Type                      |
 |------------------------|----------------------------------------|
 | Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, MIDI Parsing, Data Visualization, GitHub Pages|
@@ -193,11 +194,11 @@ Another notable misclassification involved a significant number of jazz music sa
 ## Gantt Chart
 Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/personal/kkarthikeyan8_gatech_edu/EVjVKvZA0_xLh_aF5jo_iTEBVskxE3vAHkcjEn6QkRMpAQ?e=xVssxk)
 
-![Gantt Chart Page 1](assets/images/GanttChart_ClassicalficationMusic-1.png)
+![Gantt Chart Page 1](../assets/images/GanttChart_ClassicalficationMusic-1.png)
 
-![Gantt Chart Page 2](assets/images/GanttChart_ClassicalficationMusic-2.png)
+![Gantt Chart Page 2](../assets/images/GanttChart_ClassicalficationMusic-2.png)
 
-![Gantt Chart Page 3](assets/images/GanttChart_ClassicalficationMusic-3.png)
+![Gantt Chart Page 3](../assets/images/GanttChart_ClassicalficationMusic-3.png)
 
 
 
