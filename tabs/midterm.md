@@ -185,9 +185,9 @@ Another notable misclassification involved a significant number of jazz music sa
 |------------------------|----------------------------------------|
 | Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, MIDI Parsing, Data Visualization, GitHub Pages|
 | Aditya Radhakrishnan   | Model Design & Implementation, Development/Iteration, Validation, Testing, Results Generation & Visualization, and Early Dataset Balancing Exploration                              |
-| Isabelle Murray        | GanttChart, Model Implementation/development, Testing, Results Generation & Visualization  |
+| Isabelle Murray        | GanttChart, Model Implementation/Development, Testing, Results Generation & Visualization  |
 | Karpagam Karthikeyan   | GanttChart, MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing         |
-| Niki (Keyang) Lu       | Video presentation, GTZAN Data Preprocessing & Visualization                |
+| Niki (Keyang) Lu       | GTZAN Data Preprocessing & Visualization                |
 
 ## Gantt Chart
 Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/personal/kkarthikeyan8_gatech_edu/EVjVKvZA0_xLh_aF5jo_iTEBVskxE3vAHkcjEn6QkRMpAQ?e=xVssxk)
