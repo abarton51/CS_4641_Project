@@ -13,7 +13,7 @@ Our project's goal is to perform two different slightly different classification
 ### Datasets
 **MusicNet**: We took this data from [Kaggle](kaggle.com). [MusicNet](https://www.kaggle.com/datasets/imsparsh/musicnet-dataset) is an audio dataset consisting of 330 WAV and MIDI files corresponding to 10 mutually exclusive classes. Each of the 330 WAV and MIDI files (per file type) corresponding to 330 separate classical compositions belong to 10 different composers from the classical and baroque periods. The total size of the dataset is approximately 33 GB and has 992 files in total. 330 of those are WAV, 330 are MIDI, 1 NPZ file of MusicNet features stored in a NumPy array, and a CSV of metadata. For this portion of the project, we essentially ignore the NPZ file and explore our own processing and exploration of the WAV and MIDI data for a more thorough understanding of the data and the task.
 
-**GTZAN**: We took this data from [Kaggle](kaggle.com). [GTZAN](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) is an audio dataset containing a collection of 10 genres with 100 audio files each, all having a length of 30 seconds. It also contains a visual representation of each audio file in the form of a Mel Spectrogram and 2 CSV files that contain features for the audio files. One file has for each song (30 seconds long) a mean and variance computed over multiple features that can be extracted from an audio file. The other file has the same structure, but the songs were split before into 3-second audio files.
+**GTZAN**: [GTZAN](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) is a genre recognition dataset of 30 second audio wav files at 41000 HZ sample rate, labeled by their genre. The sample rate of an audio file represent the number of sample, or real numbers, that the file represent one second of audio clip by. This means, for a 30 second wav file, the dimensionality of the dataset is 41000x30. The data set consists of 1000 wav files and 10 genres, with each genre consisting of 100 wav files. The genres include disco, metal, reggae, blues, rock, classical, jazz, hiphop, country, and pop. We took this data from [Kaggle](kaggle.com).
 
 ## Problem Definition
 The problem that we want to solve is the classification of music data into specific categories (composers for MusicNet and genres for GTZAN). Essentially, the existing challenge is to improve previous accuracy benchmarks, especially with methods beyond neural networks, and to explore alternative models like decision trees. Our motivation for this project was to increase classification accuracy, improve the potential of decision trees in this domain, and to better understand and interpret the models that we chose to use. Our project aims to contribute to the field of music classification and expand the range of effective methodologies for similar tasks.
@@ -52,7 +52,7 @@ Now we examine samples of WAV files for each composer in a multitude of ways. We
 
 Visualizing the audio in time domain: Time on x-axis and Amplitude on y-axis. Here, in the following examples, the sampling rate is 22050 samples, i.e, in 1 second 22050 samples are taken. This means that the data is sampled every 0.046 milliseconds.
 
-<img src="../assets/images/wav_time_domain.png.png" alt="drawing" width="350"/>
+<img src="../assets/images/wav_time_domain.png" alt="drawing" width="350"/>
 
 The zero crossing rate indicates the number of times that a signal crosses the horizontal axis.
 
@@ -93,6 +93,11 @@ For WAV files, we obtain a 1-D array for each song consisting of amplitude float
 Lastly, we discussed and showed a thorough treatment of visualization in the EDA section above. As done in [[2.]](#references), we plan on exploring using images as input data to perform the classficiation task, possibly in addition to other data, creating a multi-modal classification model. A likely supervised model we will explore for inputting images are Convolutional Neural Networks (CNNs).
 
 **GTZAN**:
+#### Extracted Features:
+The GTZAN dataset also provides a list of extracted features. There are total of 58 features, which drastically reduces the dimensionality of our input data.
+
+#### Frequency Space representation using Discrete FFT:
+On top of doing supervised learning with the extracted features that the dataset provides, we also directly train on the wav files. To inrease the number of training examples and reduce the dimensionality of the data set, we use 2 second clips instead of the full 30 second clips. To translate the dataset to useful information, we must extract the frequency information. This is because musical notes are made of different frequencies. For example, the fundamental frequency of the middle C is 256 Hz. Translating audio segments into frequencies will allow the model to understand the input much better. To do this, we use a technique called the Fourier Transform. The fourier transform is a way to translate complex value functions into its frequency representations. In our application, we use the finite, discrete version of fourier transform that works on finite vectors rather than functions. In particular, we use a technique called Fast Fourier Transform (FFT) to speed up computation. For every m samples of the 2 second clip, we extract the frequency information from that vector in R^m. We create datasets using m values of 256 and 512. In the end, we end up with a training input of NxTxF, where the first dimension (N) indicates which training sample (2 second clip we are using), the second dimension (T) indicates which of the 256 sample time stamp in the 2 second clip we are in, and the third dimension (F) representing which frequencies (musical notes) are present during that clip. 
 
 #### Dimensionality Reduction - PCA
 **MusicNet**: We perform dimensionality reduction using Principal Components Analysis (PCA) on the pre-processed MIDI data. We hope to be able reduce the number of features especially due to the large amount of sparisity in each row vector. Because most of the songs only have 1-2 instruments, which means that for most songs there would be at most 256 non-zero entries, we expect to be able to significanlty reduce the number of features while maitining separability in our data. 
@@ -114,7 +119,7 @@ Here again we see a lack of separability for the first two principal components 
 <img src="../assets/images/Schubert_vs_Bach_pca2.png" alt="drawing" width="200"/>
 
 **GTZAN**:
-- Brief description and include visuals if applicable.
+After we get our dataset represented by a NxTxF matrix, we perform Principal Component Analysis (PCA) on the dataset. The reason we do this is to reduce the dimensionality of the dataset while mostly maintaining the information we have. This will allow us to train smaller and better models. To do this, we flatten the tensor into a (NT)xF matrix. We then perform PCA to get a (NT)xF' model. We then reshape it back to  a NxTxF' tensor. We will be testing models utilizing different values of F'.
 
 ### Classification
 #### **MusicNet** - Choice of Model and Algorithms:
