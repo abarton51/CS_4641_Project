@@ -30,21 +30,21 @@ For MusicNet, we thoroughly explore visualization of both WAV and MIDI data file
 #### MIDI File Visualization
 We will first go through the MIDI file exploration for Beethoven's 3rd Movement of the famous Moonlight Sonata composition. Something very important to be aware of is how many different MIDI file formats exist and how different some MIDI files may be in certain portions of their structure. The software we used to visualize and parse through MIDI files are open-source and can be found at [python-midi](https://github.com/vishnubob/python-midi/) and [music21](https://web.mit.edu/music21/). In the following example, the MIDI file is broken down into a left hand and right hand portion of the piano solo played. Below is a sample of the right hand and left hand from measures 1 to 10 shown in separate plots, in their respective order.
 
-<img src="assets/images/beethoven_ms_mvmt3_righthand_measure1to10.png" alt="drawing" width="300"/>
-<img src="assets/images/beethoven_ms_mvmt3_lefthand_measure1to10.png" alt="drawing" width="300"/>
+<img src="../assets/images/beethoven_ms_mvmt3_righthand_measure1to10.png" alt="drawing" width="300"/>
+<img src="../assets/images/beethoven_ms_mvmt3_lefthand_measure1to10.png" alt="drawing" width="300"/>
 
 If you've ever listened to this song, you'll immediately recognize the overall pattern of the notes. Below is a sample of the left and right-hand notes from measures 1 to 6.
 
-<img src="assets/images/beethoven_ms_mvmt3_partscontour_measures1to6.png" alt="drawing" width="400"/>
+<img src="../assets/images/beethoven_ms_mvmt3_partscontour_measures1to6.png" alt="drawing" width="400"/>
 
 Below we show the frequencies of certain pitches and quarter-length notes at certain pitches.
 
-<img src="assets/images/beethoven_ms_mvmt3_frequency_quarterlength_pitch.png" alt="drawing" width="300"/>
-<img src="assets/images/beethoven_ms_mvmt3_pitchclass_frequency.png" alt="drawing" width="300"/>
+<img src="../assets/images/beethoven_ms_mvmt3_frequency_quarterlength_pitch.png" alt="drawing" width="300"/>
+<img src="../assets/images/beethoven_ms_mvmt3_pitchclass_frequency.png" alt="drawing" width="300"/>
 
 Below is an example of the pitch frequency in the vertical axis and the two coordinates along the horizontal directions are pitch and note length.
 
-<img src="assets/images/beethoven_ms_mvmt3_3dbars.png" alt="drawing" width="350"/>
+<img src="../assets/images/beethoven_ms_mvmt3_3dbars.png" alt="drawing" width="350"/>
 
 
 #### WAV File Visualization
@@ -52,28 +52,28 @@ Now we examine samples of WAV files for each composer in a multitude of ways. We
 
 Visualizing the audio in time domain: Time on x-axis and Amplitude on y-axis. Here, in the following examples, the sampling rate is 22050 samples, i.e, in 1 second 22050 samples are taken. This means that the data is sampled every 0.046 milliseconds.
 
-<img src="assets/images/wav_time_domain.png.png" alt="drawing" width="350"/>
+<img src="../assets/images/wav_time_domain.png.png" alt="drawing" width="350"/>
 
 The zero crossing rate indicates the number of times that a signal crosses the horizontal axis.
 
-<img src="assets/images/wav_zero_crossing_rate.png" alt="drawing" width="350"/>
+<img src="../assets/images/wav_zero_crossing_rate.png" alt="drawing" width="350"/>
 
 The STFT represents a signal in the time-frequency domain by computing discrete Fourier transforms (DFT) over short overlapping windows. Frequency is on the x-axis and Intensity is on the y-axis
 
-<img src="assets/images/wav_stft.png" alt="drawing" width="350"/>
+<img src="../assets/images/wav_stft.png" alt="drawing" width="350"/>
 
 A Spectogram represents the intensity of a signal over time at various frequencies. Time is on the x-axis and Intensity of Frequency is on the y-axis
 
-<img src="assets/images/wav_spectrogram.png" alt="drawing" width="350"/>
+<img src="../assets/images/wav_spectrogram.png" alt="drawing" width="350"/>
 
 The Mel Scale is a logarithmic transformation of a signal’s frequency. The core idea of this transformation is that sounds of equal distance on the Mel Scale are perceived to be of equal distance to humans. Hence, it mimics our own perception of sound. The transformation of frequency to mel scale is:   {% raw %} *m = 1127xln(1 + f/700)* {% endraw %}
 Mel Spectrograms are spectrograms that visualize sounds on the Mel scale.
 
-<img src="assets/images/wav_mel_spec.png" alt="drawing" width="350"/>
+<img src="../assets/images/wav_mel_spec.png" alt="drawing" width="350"/>
 
 Chromagram sequence of chroma features each expressing how the representation's pitch content within the time window is spread over the twelve chroma bands/pitches.
 
-<img src="assets/images/wav_chromagram.png" alt="drawing" width="350"/>
+<img src="../assets/images/wav_chromagram.png" alt="drawing" width="350"/>
 
 **GTZAN**:
 
@@ -99,19 +99,19 @@ Lastly, we discussed and showed a thorough treatment of visualization in the EDA
 
 We can see that there is no separation between Beethoven and Bach classes in the first two principal directions.
 
-<img src="assets/images/Beethoven_vs_Bach_pca2.png" alt="drawing" width="200"/>
+<img src="../assets/images/Beethoven_vs_Bach_pca2.png" alt="drawing" width="200"/>
 
 However, very clear separation between Cambini and Bach exists in our data in the first two principal directions.
 
-<img src="assets/images/bach_vs_cambini_pca2.png" alt="drawing" width="200"/>
+<img src="../assets/images/bach_vs_cambini_pca2.png" alt="drawing" width="200"/>
 
 Here we see promising separation between Mozart and Cambini. Although they may not be linearly separable in this case, there is a clear distinction between the clusters of data in our data for their first two principal components.
 
-<img src="assets/images/Mozart_vs_Cambini_pca2.png" alt="drawing" width="200"/>
+<img src="../assets/images/Mozart_vs_Cambini_pca2.png" alt="drawing" width="200"/>
 
 Here again we see a lack of separability for the first two principal components of Bach and Schubert. A strong contrast between Bach vs. Cambini, which did show a high amount of separability. This demonstrates that when performing this classification task on this processed MIDI data, it is likely that the model will struggle to perform well in delineating Bach and Schubert more than it does delineating Bach and Cambini.
 
-<img src="assets/images/Schubert_vs_Bach_pca2.png" alt="drawing" width="200"/>
+<img src="../assets/images/Schubert_vs_Bach_pca2.png" alt="drawing" width="200"/>
 
 **GTZAN**:
 - Brief description and include visuals if applicable.
@@ -136,15 +136,15 @@ The iteration over model architectures began with a single hidden layer of 32 ne
 
 F1 Scores, confusion matrix, etc.
 
-<img src="assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="200"/>
+<img src="../assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="200"/>
 
 - Confusion Matrix:
 
-<img src="assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="200"/>
+<img src="../assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="200"/>
 
 - Loss:
 
-<img src="assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="200"/>
+<img src="../assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="200"/>
 
 However, it is important to note that performance did not climb significantly from a single-hidden-layer network with just 128 neurons and dropout. After this, additional improvements to model capacity provided diminishing returns for the increased needs for computing.
 
