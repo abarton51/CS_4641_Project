@@ -172,14 +172,13 @@ F1 Scores, confusion matrix, etc.
 
 
 ### Discussion
-**MusicNet**: Data is not distributed well. Need to go actually get more data if we want to reliably do classification on all the composers in the dataset.
+**MusicNet**: After performing much of the data visualization on the data that we collected from the Kaggle dataset, we noticed that the data is not distributed well. We found that the reason for this distribution is because we need to get more data if we want to reliably do classification on all the composers in the dataset. For instance, we noticed that certain composers like Bach had over 100 songs that we were able to use as data points whereas other composers like Haydn had less than 5 songs within the given dataset, which likely caused this disparity in the results. Because of this, we plan on adding more songs from the different composers to account for this disparity our results. We also found that PCA results of the MIDI data are promising and show separability in the data. In addition to using more sophisticated models, we plan on using a multi-modal classification model that processes MIDI numerical data and also possibly including images of MIDI roles and/or mel-spectrogram graphs. This entails processing not only the raw numerical MIDI data but also considering supplementary information in the form of images, such as MIDI rolls or mel-spectrogram graphs. 
 
-**GTZAN**: 
-- While perfecting the accuracy of our model, we came across a few notable mistakes:
-- Rock music would often be misclassified as disco or metal. 
-- A large number of jazz music samples were misclassified as classical.
+**GTZAN**: One reoccurring error involved the misclassification of rock music samples. Our model had a tendency to mistakenly label rock compositions as either disco or metal, where this misclassification indicates a potential overlap in the feature space or characteristic patterns shared between rock, disco, and metal genres. The challenge lies in distinguishing subtle distinctions that define each genre, such as rhythm patterns, instrumentations, or tonal characteristics, which might be shared or confused by our model. Addressing this misclassification will require a more nuanced feature representation and a deeper understanding of the distinctive elements that differentiate rock from disco and metal. 
 
-**Overall**:
+Another notable misclassification involved a significant number of jazz music samples being incorrectly labeled as classical. This misclassification hints at shared features or structural elements between jazz and classical music that pose challenges for our model. Improving the model's ability to discern the subtle nuances that distinguish jazz from classical music will be crucial for rectifying this specific misclassification. 
+
+**Overall**: Based on both the MusicNet and GTZAN datasets, we noticed that the uneven distribution of data among the composers in MusicNet has suggested the recognition of potential biases, leading us to plan to address this disparity by increasing the dataset with more compositions from various composers. Additionally, we plan to incorporate numerical MIDI data as well as images like mel-spectrogram graphs. For GTZAN, we propose solutions that involve refining our understanding of distinctive elements when discerning musical nuances, especially in rock and jazz. Based on these results, we can improve our model accuracy and robustness in completing music classification tasks.
 
 ## Next Steps
 
