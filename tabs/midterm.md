@@ -89,10 +89,10 @@ Quantitative metrics
 
 F1 Scores, confusion matrix, etc.
 - Confusion Matrix:
-<img src="/assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="200"/>
+<img src="/assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="400"/>
 
 - Loss:
-<img src="/assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="200"/>
+<img src="/assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="400"/>
 
 However, it is important to note that performance did not climb significantly from a single-hidden-layer network with just 128 neurons and dropout. After this, additional improvements to model capacity provided diminishing returns for the increased needs for computing.
 
@@ -109,10 +109,10 @@ Quantitative metrics
 
 F1 Scores, confusion matrix, etc.
 - Confusion Matrix:
-- <img src="/assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="200"/>
+- <img src="/assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="400"/>
 
 Loss: 
-- <img src="/assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="200"/>
+- <img src="/assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="400"/>
 
 
 ### Discussion
