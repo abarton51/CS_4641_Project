@@ -33,11 +33,11 @@ In our exploration of our data, we hope to be able to effectively reduce the dim
 
 Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/personal/kkarthikeyan8_gatech_edu/EVjVKvZA0_xLh_aF5jo_iTEBVskxE3vAHkcjEn6QkRMpAQ?e=xVssxk)
 
-![Gantt Chart Page 1](/assets/images/GanttChart_ClassicalficationMusic-1.PNG)
+![Gantt Chart Page 1](assets/images/GanttChart_ClassicalficationMusic-1.PNG)
 
-![Gantt Chart Page 2](/assets/images/GanttChart_ClassicalficationMusic-2.png)
+![Gantt Chart Page 2](assets/images/GanttChart_ClassicalficationMusic-2.png)
 
-![Gantt Chart Page 3](/assets/images/GanttChart_ClassicalficationMusic-3.png)
+![Gantt Chart Page 3](../assets/images/GanttChart_ClassicalficationMusic-3.png)
 
 
 # References
