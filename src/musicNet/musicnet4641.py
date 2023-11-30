@@ -38,11 +38,15 @@ def create_id_dict(df):
         id_dict[composers[i]] = df.loc[df['composer'].values == composers[i]]['id'].values
     return id_dict
 
-def trim_data_dict(data_dict, min_len=20):
+def trim_data_dict(data_dict, min_len=20, is_np_array=False):
     new_data_dict = {}
     for composer in list(data_dict.keys()):
-        if len(data_dict[composer]) >= min_len:
-            new_data_dict[composer] = data_dict[composer]
+        if is_np_array:
+            if data_dict[composer].shape[0] >= min_len:
+                new_data_dict[composer] = data_dict[composer]
+        else:
+            if len(data_dict[composer]) >= min_len:
+                new_data_dict[composer] = data_dict[composer]
     return new_data_dict
 
 def rand_id_sample(dict):
