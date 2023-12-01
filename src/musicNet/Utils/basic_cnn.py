@@ -45,7 +45,6 @@ class CNNMusicNet(nn.Module):
         x = s(x)
         return x
 
-model = CNNMusicNet()
-
-from torchsummary import summary
-print(summary(model, (3, 128, 128)))
+#model = CNNMusicNet()
+#from torchsummary import summary
+#print(summary(model, (3, 128, 128)))
