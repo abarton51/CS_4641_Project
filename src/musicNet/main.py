@@ -10,6 +10,17 @@ X_test = np.load(path + '/test_data_midi.npy')
 y_train = np.load(path + '/train_labels_midi.npy')
 y_test = np.load(path + '/test_labels_midi.npy')
 
+# 0 -> 0 - Bach
+# 1 -> 1 - Beethoven
+# 2 -> 2 - Brahms
+# 7 -> 3 - Mozart
+# 9 -> 4 - Schubert
+
+y_train[y_train==7] = 3
+y_test[y_test==7] = 3
+y_train[y_train==9] = 4
+y_test[y_test==9] = 4
+
 dt_clf = DecisionTreeClassifier(random_state=42)
 
 dt_clf.fit(X_train, y_train)
