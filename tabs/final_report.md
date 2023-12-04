@@ -7,11 +7,40 @@ Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya
 
 ***
 
+# Table of Contents
+
+- [CS 4641 Machine Learning, Team 6, Final Report](#cs-4641-machine-learning-team-6-final-report)
+- [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [Datasets](#datasets)
+  - [Problem Definition](#problem-definition)
+  - [Methods Overview](#methods-overview)
+    - [Data Preprocessing](#data-preprocessing)
+      - [MIDI Files](#midi-files)
+      - [WAV Files](#wav-files)
+      - [Extracted Features:](#extracted-features)
+      - [Frequency Space representation using Discrete FFT:](#frequency-space-representation-using-discrete-fft)
+      - [Dimensionality Reduction - PCA](#dimensionality-reduction---pca)
+      - [Dimensionality Reduction - t-SNE](#dimensionality-reduction---t-sne)
+    - [Classification](#classification)
+      - [**MusicNet** - Choice of Model and Algorithms:](#musicnet---choice-of-model-and-algorithms)
+      - [**GTZAN** - Choice of Model and Algorithms:](#gtzan---choice-of-model-and-algorithms)
+  - [Results and Discussion](#results-and-discussion)
+    - [Discussion](#discussion)
+  - [Next Steps](#next-steps)
+  - [Contribution Table](#contribution-table)
+  - [Gantt Chart](#gantt-chart)
+- [References](#references)
+
 ## Introduction
-Our project's goal is to perform two different slightly different classification tasks on two different music audio datasets, MusicNet and GTZAN. For GTZAN, we are performing a genre classification task. For MusicNet, the task is to identify the composer for a given input of audio data from the baroque and classifcal periods of music. Both of these datasets are taken from [Kaggle](https://www.kaggle.com) and work in classification has recently gotten up to ~92% [[4.]](#references). Previous works struggled getting any model above 80% [[1.]](#references), [[2.]](#references). One study introduced a gradient boosted ensemble decision tree method called LightGBM that outperformed fully connected neural networks [[2.]](#references). Results these days outperform them but not much recent work has been done in using tree classifiers in this problem and most implementations appear to focus on neural network implementations. Therefore, we aim to re-examine decision trees' abilities for this task and attempt to improve upon neural network results. Additionally, in our exploratory data analysis and data pre-processing we would like to consider non-linear, as well as linear, dimensionality reduction techniques. We would like to evaluate these different methods similar to Pal et al., [[3]](#references), by reducing dimensions to a specified number, running a clustering algorithm on the data, and then evaluating results posthoc. In their results, t-SNE consistently outperformed other dimension reduction techniques. Therefore, we plan to use t-SNE in order to better understand and visualize our data in addition to principle components analysis (PCA). Currently, our work focuses on data pre-processing, visualization, using PCA for our dimensionality reduction technique, and obtaining base line results on minimally processed data with simple Feedforward Neural Network architectures.
+This project addresses the challenges of music audio classification through two distinct tasks on Kaggle datasets, MusicNet and GTZAN. For GTZAN, the objective is genre classification, while for MusicNet, the focus is on identifying composers from the baroque and classical periods. Notably, recent advancements in classification have achieved approximately 92% accuracy [[4.]](#references), surpassing previous struggles to breach the 80% mark [[1.]](#references), [[2.]](#references). While neural networks dominate current implementations, our study revisits the efficacy of decision trees, particularly gradient-boosted trees, which have demonstrated superior performance in comparison on some cases.
+
+In addition to model exploration, our project delves into data analysis and pre-processing techniques. Both linear and non-linear dimensionality reduction methods are considered, inspired by Pal et al's., [[3]](#references) approach. We adopt t-SNE and PCA for dimensionality reduction, leveraging their ability to unveil underlying patterns in the data. We assess and compare the results of these methods visually. In contrast to work by Pal et al., [[3]](#refrences), t-SNE performed worse visually than PCA.
+
+The primary focus of our work lies in comprehensive data pre-processing and visualization. We employ PCA as the primary dimensionality reduction technique, aiming to establish baseline results using minimally processed data with straightforward Feedforward Neural Network architectures. This approach contributes to the understanding of audio (specifically, music audio) datasets and opens questions and important notes for future improvements in music audio classification tasks, emphasizing the potential of decision tree models (and their variants) and the significance of effective dimensionality reduction techniques. Our findings also open up for models specific to sequential data.
 
 ### Datasets
-**MusicNet**: We took this data from [Kaggle](kaggle.com). [MusicNet](https://www.kaggle.com/datasets/imsparsh/musicnet-dataset) is an audio dataset consisting of 330 WAV and MIDI files corresponding to 10 mutually exclusive classes. Each of the 330 WAV and MIDI files (per file type) corresponding to 330 separate classical compositions belong to 10 different composers from the classical and baroque periods. The total size of the dataset is approximately 33 GB and has 992 files in total. 330 of those are WAV, 330 are MIDI, 1 NPZ file of MusicNet features stored in a NumPy array, and a CSV of metadata. For this portion of the project, we essentially ignore the NPZ file and explore our own processing and exploration of the WAV and MIDI data for a more thorough understanding of the data and the task.
+**MusicNet**: We took this data from [Kaggle](kaggle.com). [MusicNet](https://www.kaggle.com/datasets/imsparsh/musicnet-dataset) is an audio dataset consisting of 330 WAV and MIDI files corresponding to 10 mutually exclusive classes. Each of the 330 WAV and MIDI files (per file type) corresponding to 330 separate classical compositions belong to 10 different composers from the classical and baroque periods. The total size of the dataset is approximately 33 GB and has 992 files in total. 330 of those are WAV, 330 are MIDI, 1 NPZ file of MusicNet features stored in a NumPy array, and a CSV of metadata. For this portion of the project, we essentially ignore the NPZ file and explore our own processing and exploration of the WAV and MIDI data for a more thorough understanding of the data and the task. Further discussion of the data processing is described in detail in the [Data Preprocessing](#data-preprocessing) section.
 
 **GTZAN**: [GTZAN](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) is a genre recognition dataset of 30 second audio wav files at 41000 HZ sample rate, labeled by their genre. The sample rate of an audio file represent the number of sample, or real numbers, that the file represent one second of audio clip by. This means, for a 30 second wav file, the dimensionality of the dataset is 41000x30. The data set consists of 1000 wav files and 10 genres, with each genre consisting of 100 wav files. The genres include disco, metal, reggae, blues, rock, classical, jazz, hiphop, country, and pop. We took this data from [Kaggle](kaggle.com).
 
@@ -22,62 +51,10 @@ Despite the dominance of neural networks in recent works, there's motivation to 
 
 ## Methods Overview
 - We utilize Principal Component Analysis on both datasets as our dimensionality reduction technique for visualization as well as pre-processing data.
-- We implement t-distributed Stochastic Neighbor Embedding (t-SNE).
-- We implement classiciation on the MusicNet dataset using decision trees, random forests, and gradient boosted trees.
+- We implement t-distributed Stochastic Neighbor Embedding (t-SNE) and compare with PCA.
+- We implement classiciation on the MusicNet dataset using decision trees, random forests, and gradient-boosted trees.
 - We implement classification on the GTZAN dataset using Feedforward Neural Networks/MLPs on WAV data and Convolution Neural Networks on Mel-Spectrogram PNG images. 
 - Further discussion of these methods is explained in the Data Preprocessing and Classification sections.
-
-### Exploratory Data Analysis (EDA)
-**MusicNet**:
-For MusicNet, we thoroughly explore visualization of both WAV and MIDI data files in various ways, using our own created methods, open-source programs, and a mix of the two. 
-
-#### MIDI File Visualization
-We will first go through the MIDI file exploration for Beethoven's 3rd Movement of the famous Moonlight Sonata composition. Something very important to be aware of is how many different MIDI file formats exist and how different some MIDI files may be in certain portions of their structure. The software we used to visualize and parse through MIDI files are open-source and can be found at [python-midi](https://github.com/vishnubob/python-midi/) and [music21](https://web.mit.edu/music21/). In the following example, the MIDI file is broken down into a left hand and right hand portion of the piano solo played. Below is a sample of the right hand and left hand from measures 1 to 10 shown in separate plots, in their respective order.
-
-<img src="../assets/images/beethoven_ms_mvmt3_righthand_measure1to10.png" alt="drawing" width="300"/>
-<img src="../assets/images/beethoven_ms_mvmt3_lefthand_measure1to10.png" alt="drawing" width="300"/>
-
-If you've ever listened to this song, you'll immediately recognize the overall pattern of the notes. Below is a sample of the left and right-hand notes from measures 1 to 6.
-
-<img src="../assets/images/beethoven_ms_mvmt3_partscontour_measures1to6.png" alt="drawing" width="400"/>
-
-Below we show the frequencies of certain pitches and quarter-length notes at certain pitches.
-
-<img src="../assets/images/beethoven_ms_mvmt3_frequency_quarterlength_pitch.png" alt="drawing" width="300"/>
-<img src="../assets/images/beethoven_ms_mvmt3_pitchclass_frequency.png" alt="drawing" width="300"/>
-
-Below is an example of the pitch frequency in the vertical axis and the two coordinates along the horizontal directions are pitch and note length.
-
-<img src="../assets/images/beethoven_ms_mvmt3_3dbars.png" alt="drawing" width="350"/>
-
-
-#### WAV File Visualization
-Now we examine samples of WAV files for each composer in a multitude of ways. We obtain a random composition as a WAV file for each composer and visualize the data.
-
-Visualizing the audio in time domain: Time on x-axis and Amplitude on y-axis. Here, in the following examples, the sampling rate is 22050 samples, i.e, in 1 second 22050 samples are taken. This means that the data is sampled every 0.046 milliseconds.
-
-<img src="../assets/images/wav_time_domain.png" alt="drawing" width="350"/>
-
-The zero crossing rate indicates the number of times that a signal crosses the horizontal axis.
-
-<img src="../assets/images/wav_zero_crossing_rate.png" alt="drawing" width="350"/>
-
-The STFT represents a signal in the time-frequency domain by computing discrete Fourier transforms (DFT) over short overlapping windows. Frequency is on the x-axis and Intensity is on the y-axis
-
-<img src="../assets/images/wav_stft.png" alt="drawing" width="350"/>
-
-A Spectogram represents the intensity of a signal over time at various frequencies. Time is on the x-axis and Intensity of Frequency is on the y-axis
-
-<img src="../assets/images/wav_spectrogram.png" alt="drawing" width="350"/>
-
-The Mel Scale is a logarithmic transformation of a signal’s frequency. The core idea of this transformation is that sounds of equal distance on the Mel Scale are perceived to be of equal distance to humans. Hence, it mimics our own perception of sound. The transformation of frequency to mel scale is:   {% raw %} *m = 1127xln(1 + f/700)* {% endraw %}
-Mel Spectrograms are spectrograms that visualize sounds on the Mel scale.
-
-<img src="../assets/images/wav_mel_spec.png" alt="drawing" width="350"/>
-
-Chromagram sequence of chroma features each expressing how the representation's pitch content within the time window is spread over the twelve chroma bands/pitches.
-
-<img src="../assets/images/wav_chromagram.png" alt="drawing" width="350"/>
 
 ### Data Preprocessing
 **MusicNet**:
@@ -91,15 +68,12 @@ In summary, we parse through each MIDI file and undergo a basic algorithm to gen
 #### WAV Files
 For WAV files, we obtain a 1-D array for each song consisting of amplitude float values. Each entry corresponds to a timestep in which the WAV file is sampled which is determined by the sampling rate specified when loading the data. We use the [librosa](https://librosa.org/doc/latest/index.html) audio analysis package in Python to load WAV files. After data is loaded, take intervals of the WAV data to act as a single data point. The sampling rate is defined as the average number of samples obtained in 1 second. It is used while converting the continuous data to a discrete data. For example, a 30 s song with a sampling rate of 2 would generate a 1-D float array of length 60. If we specify intervals of 3 s, then we would obtain 20 distinct data points each with 3 values (each for amplitude). A possible exploration with this data, because it is sequential, is to use models specifically tailored towards processing sequential data and learning relations between points in a sequence, such as transformers. However, we currently only perform this minimal processing for MusicNet in order to visualize and understand the data, and obtain baseline performances in supervised models to compare to performances with other processed data.
 
-#### Images
-Lastly, we discussed and showed a thorough treatment of visualization in the EDA section above. As done in [[2.]](#references), we plan on exploring using images as input data to perform the classficiation task, possibly in addition to other data, creating a multi-modal classification model. A likely supervised model we will explore for inputting images are Convolutional Neural Networks (CNNs).
-
 **GTZAN**:
 #### Extracted Features:
 The GTZAN dataset also provides a list of extracted features. There are total of 58 features, which drastically reduces the dimensionality of our input data.
 
 #### Frequency Space representation using Discrete FFT:
-On top of doing supervised learning with the extracted features that the dataset provides, we also directly train on the wav files. To inrease the number of training examples and reduce the dimensionality of the data set, we use 2 second clips instead of the full 30 second clips. To translate the dataset to useful information, we must extract the frequency information. This is because musical notes are made of different frequencies. For example, the fundamental frequency of the middle C is 256 Hz. Translating audio segments into frequencies will allow the model to understand the input much better. To do this, we use a technique called the Fourier Transform. The fourier transform is a way to translate complex value functions into its frequency representations. In our application, we use the finite, discrete version of fourier transform that works on finite vectors rather than functions. In particular, we use a technique called Fast Fourier Transform (FFT) to speed up computation. For every m samples of the 2 second clip, we extract the frequency information from that vector in R^m. We create datasets using m values of 256 and 512. In the end, we end up with a training input of NxTxF, where the first dimension (N) indicates which training sample (2 second clip we are using), the second dimension (T) indicates which of the 256 sample time stamp in the 2 second clip we are in, and the third dimension (F) representing which frequencies (musical notes) are present during that clip. 
+On top of doing supervised learning with the extracted features that the dataset provides, we also directly train on the wav files. To inrease the number of training examples and reduce the dimensionality of the data set, we use 2 second clips instead of the full 30 second clips. To translate the dataset to useful information, we must extract the frequency information. This is because musical notes are made of different frequencies. For example, the fundamental frequency of the middle C is 256 Hz. Translating audio segments into frequencies will allow the model to understand the input much better. To do this, we use a technique called the Fourier Transform. The fourier transform is a way to translate complex value functions into its frequency representations. In our application, we use the finite, discrete version of fourier transform that works on finite vectors rather than functions. In particular, we use a technique called Fast Fourier Transform (FFT) to speed up computation. For every m samples of the 2 second clip, we extract the frequency information from that vector in R^m. We create datasets using m values of 256 and 512. In the end, we end up with a training input of NxTxF, where the first dimension (N) indicates which training sample (2 second clip we are using), the second dimension (T) indicates which of the 256 sample time stamp in the 2 second clip we are in, and the third dimension (F) representing which frequencies (musical notes) are present during that clip.
 
 #### Dimensionality Reduction - PCA
 **Principle Components Analysis**: Principle Components Analysis (PCA) is a linear dimensionality reduction technique that projects the features of the data along the directions of maximal (and orthogonal to one another) variance. These "new" features are called principle components and are project along what we call principal directions. The principal components can then be ordered by the amount of variance in each principal directions they were projected onto. If we have d dimensions, then we hope to be able to select d' < d new features that can still effectively separate the data in its corresponding reduced subspace. We choose PCA because of its high amount of interpretability, reasonable computational expensiveness, ubiquitousness, and effectiveness in reducing dimensions while maintaining crucial information and separability of data.
@@ -128,8 +102,17 @@ After we get our dataset represented by a NxTxF matrix, we perform Principal Com
 #### Dimensionality Reduction - t-SNE
 **t-distributed Stochastic Neighbor Embedding**: t-SNE, or t-Distributed Stochastic Neighbor Embedding, is a dimensionality reduction technique used for visualizing high-dimensional data in a lower-dimensional space, often two or three dimensions. It excels at preserving local relationships between data points, making it effective in revealing clusters and patterns that might be obscured in higher dimensions. The algorithm focuses on maintaining similarities between neighboring points, creating a visualization that accurately reflects the structure of the data. t-SNE is particularly valuable when exploring complex datasets with nonlinear relationships, as it can outperform traditional linear methods like PCA in capturing intricate structures. Its ability to uncover subtle patterns and groupings makes t-SNE a popular choice for exploratory data analysis and visualization tasks in various fields, including machine learning, biology, and natural language processing. Note that we only perform t-SNE on the MusicNet dataset.
 
-**MusicNet MIDI Data t-SNE Results**
+Our t-SNE results were strikingly poor in comparison to the PCA results shown above. We demonstrate only one plot for the sake of this report's brevity, but most class pairs were not linearly separable in 2 or 3 dimensions.
 
+In purple are data points belonging to Beethoven and in green are data points belonging to Mozart.
+
+<img src="../assets/tsne/tsne_plot_Beethoven_vs_Mozart_2d" alt="drawing" width="300"/>
+
+Here are the data points but in a 3-dimensional space reduced by t-SNE from the original 2048 dimensions.
+
+<img src="../assets/tsne/tsne_plot_Beethoven_vs_Mozart_3d" alt="drawing" width="300"/>
+
+**MusicNet MIDI Data t-SNE Results**
 
 ### Classification
 #### **MusicNet** - Choice of Model and Algorithms:
