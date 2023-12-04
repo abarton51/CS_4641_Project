@@ -25,6 +25,8 @@ y_test[y_test==7] = 3
 y_train[y_train==9] = 4
 y_test[y_test==9] = 4
 
+labels = ['Bach', 'Beethoven', 'Brahms', 'Mozart', 'Schubert']
+
 dt_clf = DecisionTreeClassifier(random_state=42)
 
 dt_clf.fit(X_train, y_train)
@@ -33,6 +35,15 @@ accuracy = dt_clf.score(X_test, y_test)
 print(training_accuracy)
 print(accuracy)
 
+ypred = dt_clf.predict(X_test)
+
+confusion_mat = confusion_matrix(y_test, ypred)
+conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat, display_labels=labels)
+conf_mat_display.plot()
+plt.show()
+plt.close()
+
+
 rf_clf = RandomForestClassifier(random_state=42, max_features=512, n_estimators=100)
 
 rf_clf.fit(X_train, y_train)
@@ -40,6 +51,14 @@ training_accuracy = rf_clf.score(X_train, y_train)
 accuracy = rf_clf.score(X_test, y_test)
 print(training_accuracy)
 print(accuracy)
+
+ypred = dt_clf.predict(X_test)
+
+confusion_mat = confusion_matrix(y_test, ypred)
+conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat, display_labels=labels)
+conf_mat_display.plot()
+plt.show()
+plt.close()
 
 bst = xgb.XGBClassifier(n_estimators=20, max_depth=15, learning_rate=0.8, objective='multi:softmax')
 # fit model
@@ -51,12 +70,21 @@ test_accuracy = bst.score(X_test, y_test)
 print(training_accuracy)
 print(test_accuracy)
 
+ypred = bst.predict(X_test)
+
+confusion_mat = confusion_matrix(y_test, ypred)
+conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat,  display_labels=labels)
+conf_mat_display.plot()
+
+print(training_accuracy)
+print(test_accuracy)
+
 dtrain = xgb.DMatrix(X_train, label=y_train)
 dtest = xgb.DMatrix(X_test, label=y_test)
 
 dtrain.save_binary('src/musicNet/data/xgboost/train.buffer')
 
-param = {'max_depth': 10, 'eta': 1, 'objective': 'multi:softmax'}
+param = {'max_depth': 3, 'eta': 1, 'objective': 'multi:softmax'}
 param['nthread'] = 4
 param['eval_metric'] = 'auc'
 param['num_class'] = 5
@@ -75,11 +103,28 @@ bst.dump_model('src\\musicNet\\saved_models\\bt\\dump.raw.txt')
 #xgb.plot_importance(bst)
 #xgb.plot_tree(bst, num_trees=2)
 #xgb.to_graphviz(bst, num_trees=2)
-
-ypred = bst.predict(dtest, iteration_range=(0, bst.best_iteration + 1))
+ypred = bst.predict(dtest)
 
 confusion_mat = confusion_matrix(y_test, ypred)
-conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat)
+conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat,  display_labels=labels)
 conf_mat_display.plot()
 
 plt.show()
+
+xgb_clf = xgb.XGBClassifier(**param)
+xgb_clf._Boster = bst
+
+xgb_clf.fit(X_train, y_train)
+# make predictions
+preds = xgb_clf.predict(X_test)
+training_accuracy = xgb_clf.score(X_train, y_train)
+test_accuracy = xgb_clf.score(X_test, y_test)
+print("final bt")
+print(training_accuracy)
+print(test_accuracy)
+
+ypred = xgb_clf.predict(X_test)
+
+confusion_mat = confusion_matrix(y_test, ypred)
+conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat,  display_labels=labels)
+conf_mat_display.plot()
