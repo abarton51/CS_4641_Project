@@ -135,6 +135,11 @@ After we get our dataset represented by a NxTxF matrix, we perform Principal Com
 #### **MusicNet** - Choice of Model and Algorithms:
 **Chosen Model(s)**: We opted to only perform classification on the GTZAN dataset. MusicNet requires more thorough processing and either trimming the dataset down to obtain a better distribution of data by class or retrieving data manually. This is discussed more in the Discussion section.
 
+## Results and Discussion
+**Quantitative metrics**: Confusion Matrix
+![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/d0cccb80-6f47-43c3-b704-89c69f3cd8d6)
+
+
 #### **GTZAN** - Choice of Model and Algorithms:
 **Chosen Model(s)**: 
 
