@@ -413,8 +413,6 @@ As we can see, training the model more does not result in better performance. So
 **Quantitative metrics**: 3-second samples
 
 F1 Scores, confusion matrix, etc.
-<img src="../assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="400"/>
-
 
 | Genre        | Precision | Recall | F1-score | Support |
 |--------------|-----------|--------|----------|---------|
@@ -435,12 +433,11 @@ F1 Scores, confusion matrix, etc.
 
 With a 90% accuray, both weighted and unweighted, this model provides the best results for the entire GTZAN dataset.
 
-- Confusion Matrix:
   
 <img src="../assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="400"/>
 
 Interestingly, one of the most pronounced type of misclassification is the labelling of rock pieces as either disco or metal, where intuitively, there is a significant amount of similarity.
-- Loss:
+
 
 <img src="../assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="400"/>
 
@@ -450,9 +447,6 @@ The model has a clean loss graph, and the early stopping prevented the validatio
 **Quantitative metrics**: 30-second samples
 
 F1 Scores, confusion matrix, etc.
-
-<img src="../assets/images/gtzan-accuracy-30sec.JPG" alt="drawing" width="400"/>
-
 
 | Genre        | Precision | Recall | F1-score | Support |
 |--------------|-----------|--------|----------|---------|
@@ -472,13 +466,11 @@ F1 Scores, confusion matrix, etc.
 
 Clearly, as expected and shown by our results with the validation set during model development, performance is considerably worse. This can simply be attributed to fewer training samples, with the model overfitting too quickly before it could adequately learn the underlying function.
 
-- Confusion Matrix:
 
 <img src="../assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="400"/>
 
 The difficulty of classifying rock is far more pronounced here, although this time, the misclassifications are to classes that are more diverse. However, classes that are highly related to rock (say, blues, from which rock and roll is derived) tend to have a higher misclassification rate than that of, say, classical music. Rock as a genre historically evolved from a number of genres, from jazz to country to blues, and this depth of complexity may be the driving force behind these misclassifications.
 
-- Loss: 
 
 <img src="../assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="400"/>
 
@@ -504,14 +496,13 @@ As expected, the loss graph is far worse, with validation loss diverging in a qu
 
 The CNNs on the processed spectrogram generally perform quite poorly. Extracting features from the raw spectrogram is a far more difficult function to learn than classifying human-selected features, which is effectively much more refined information that humans use when making and playing music. However, the model is certainly far better than a simple randomized classification, and it has certainly learned something.
 
-- Confusion Matrix:
 
-<img src="../assets/images/gtzan_mlp_spectrogram_2ssecs_cm.png" alt="drawing" width="400"/>
+<img src="../assets/images/raw_gtzan_mlp_spectrogram_20500hz_2s_256npersegsecs_cm.png" alt="drawing" width="400"/>
 
 Just as before, rock seems to be misclassified a lot, with blues following not too far behind. Once again, the fact that rock is, in part, derived from blues means that the two are highly similar, and these misclassifications may be explained in this way.
 
-- Loss:
-<img src="../assets/images/gtzan_mlp_spectrogram_2ssecs_loss.png" alt="drawing" width="400"/>
+
+<img src="../assets/images/raw_gtzan_mlp_spectrogram_20500hz_2s_256npersegsecs_loss.png" alt="drawing" width="400"/>
 
 The loss graph considerably diverges at ~8-9 epochs, showing the start of overfitting.
 
@@ -536,13 +527,11 @@ The loss graph considerably diverges at ~8-9 epochs, showing the start of overfi
 
 The raw spectrogram model performs considerably better than the processed ones. This is likely due to the processed spectrograms losing valuable information for classification. However, the inherent greater complexity of this function results in a performance that is still inferior to the best MLP.
 
-- Confusion Matrix: 
 
 <img src="../assets/images/raw_gtzan_mlp_spectrogram_2ssecs_cm.png" alt="drawing" width="400"/>
 
 Once again, patterns in rock music being misclassified are observable, a universal trend. The distinct nature of classical music as an archaic genre may help set it apart, resulting in a high model accuracy.
 
-- Loss:
 
 <img src="../assets/images/raw_gtzan_mlp_spectrogram_2ssecs_loss.png" alt="drawing" width="400"/>
 
@@ -570,9 +559,8 @@ Perhaps one of the most interesting insights we find is in how the model does it
 3. Addressing Class Imbalance: The imbalanced distribution of samples among composers, especially evident in the reduced subset, may impact model performance, where techniques like oversampling, undersampling, or using different class weights during training could be further explored, noteably the composers whom have much less data to work with compared to the other composers in the dataset.
 
 **GTZAN**:
-Perhaps one of the best avenues for exploration is improving performance with spectrogram data. For human-extracted features, it is unlikely that a beefier model will produce better results - it has been tried in our work, and despite high performance, it seems to produce diminishing returns more than anything. Spectrograms contain far more information, and if a more sophisticated model is used with better preprocessing techniques, it is quite likely that performance can be improved even further.
-
-Another potentially valuable approach is perhaps combining the two, building a model that has a convolutional feature extractor that has its features concatenated with the human-extracted features, before finally being classified by a feedforward network (MLP). With this, the simplicity of human-derived features combined with fine-grain details from the spectrogram can be combined to produce a model that may be superior to both.
+1. Improving Performance with Spectrogram Data: Exploring performance improvement with spectrogram data is a promising avenue. Human-extracted features may not benefit significantly from more complex models, as our work shows high performance but diminishing returns. Spectrograms, containing more information, paired with sophisticated models and better preprocessing techniques, could enhance performance further.
+2. Combining Convolutional Feature Extractor with Human-Extracted Features: A hybrid approach could involve building a model that combines a convolutional feature extractor with human-extracted features. The concatenated features would then be classified by a feedforward network (MLP). This method aims to merge the simplicity of human-derived features with the detailed insights from spectrograms, potentially creating a superior model.
 
 ## Contribution Table
 
