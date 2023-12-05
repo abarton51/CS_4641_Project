@@ -413,27 +413,140 @@ As we can see, training the model more does not result in better performance. So
 **Quantitative metrics**: 3-second samples
 
 F1 Scores, confusion matrix, etc.
+<img src="../assets/images/gtzan-accuracy-3sec.JPG" alt="drawing" width="400"/>
 
+
+| Genre        | Precision | Recall | F1-score | Support |
+|--------------|-----------|--------|----------|---------|
+| Disco        | 0.90      | 0.85   | 0.87     | 186     |
+| Metal        | 0.91      | 0.97   | 0.94     | 199     |
+| Reggae       | 0.91      | 0.89   | 0.90     | 194     |
+| Blues        | 0.93      | 0.93   | 0.92     | 190     |
+| Rock         | 0.90      | 0.83   | 0.87     | 189     |
+| Classical    | 0.93      | 0.95   | 0.94     | 208     |
+| Jazz         | 0.89      | 0.91   | 0.90     | 203     |
+| Hip Hop      | 0.85      | 0.89   | 0.87     | 244     |
+| Country      | 0.85      | 0.89   | 0.87     | 210     |
+| Pop          | 0.90      | 0.91   | 0.90     | 183     |
+| **Accuracy**     |           |        | 0.90     | 1998    |
+| **Macro Avg.**   | 0.90      | 0.90   | 0.90     | 1998    |
+| **Weighted Avg.**| 0.90      | 0.90   | 0.90     | 1998    |
+
+
+With a 90% accuray, both weighted and unweighted, this model provides the best results for the entire GTZAN dataset.
 
 - Confusion Matrix:
+  
+<img src="../assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="400"/>
 
-
+Interestingly, one of the most pronounced type of misclassification is the labelling of rock pieces as either disco or metal, where intuitively, there is a significant amount of similarity.
 - Loss:
 
+<img src="../assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="400"/>
 
+The model has a clean loss graph, and the early stopping prevented the validation loss from continuing to rise.
 
 
 **Quantitative metrics**: 30-second samples
 
 F1 Scores, confusion matrix, etc.
 
+<img src="../assets/images/gtzan-accuracy-30sec.JPG" alt="drawing" width="400"/>
+
+
+| Genre        | Precision | Recall | F1-score | Support |
+|--------------|-----------|--------|----------|---------|
+| Disco        | 0.67      | 0.48   | 0.56     | 21      |
+| Metal        | 0.96      | 0.69   | 0.81     | 23      |
+| Reggae       | 0.79      | 0.75   | 0.77     | 26      |
+| Blues        | 0.55      | 0.65   | 0.61     | 20      |
+| Rock         | 0.86      | 0.26   | 0.36     | 19      |
+| Classical    | 0.56      | 0.90   | 0.68     | 20      |
+| Jazz         | 0.75      | 0.88   | 0.81     | 17      |
+| Hip Hop      | 0.65      | 0.79   | 0.71     | 19      |
+| Country      | 0.76      | 0.61   | 0.68     | 23      |
+| Pop          | 0.82      | 0.82   | 0.82     | 22      |
+| **Accuracy**     |           |        | 0.71     | 200     |
+| **Macro Avg.**   | 0.70      | 0.71   | 0.70     | 200     |
+| **Weighted Avg.**| 0.71      | 0.71   | 0.70     | 200     |
+
+Clearly, as expected and shown by our results with the validation set during model development, performance is considerably worse. This can simply be attributed to fewer training samples, with the model overfitting too quickly before it could adequately learn the underlying function.
 
 - Confusion Matrix:
 
+<img src="../assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="400"/>
+
+The difficulty of classifying rock is far more pronounced here, although this time, the misclassifications are to classes that are more diverse. However, classes that are highly related to rock (say, blues, from which rock and roll is derived) tend to have a higher misclassification rate than that of, say, classical music. Rock as a genre historically evolved from a number of genres, from jazz to country to blues, and this depth of complexity may be the driving force behind these misclassifications.
 
 - Loss: 
 
+<img src="../assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="400"/>
 
+As expected, the loss graph is far worse, with validation loss diverging in a quite pronounced manner from train loss, quickly overfitting.
+
+**CNN - Processed Spectrogram** (256, non-PCA)
+
+| Genre        | Precision | Recall | F1-score | Support |
+|--------------|-----------|--------|----------|---------|
+| Disco        | 0.76      | 0.75   | 0.75     | 299     |
+| Metal        | 0.73      | 0.83   | 0.78     | 293     |
+| Reggae       | 0.53      | 0.68   | 0.59     | 282     |
+| Blues        | 0.63      | 0.40   | 0.49     | 300     |
+| Rock         | 0.46      | 0.30   | 0.36     | 319     |
+| Classical    | 0.81      | 0.78   | 0.80     | 308     |
+| Jazz         | 0.52      | 0.62   | 0.57     | 304     |
+| Hip Hop      | 0.71      | 0.66   | 0.68     | 300     |
+| Country      | 0.44      | 0.62   | 0.52     | 305     |
+| Pop          | 0.80      | 0.67   | 0.73     | 287     |
+| **Accuracy**     |           |        | 0.63     | 2997    |
+| **Macro Avg.**   | 0.64      | 0.63   | 0.63     | 2997    |
+| **Weighted Avg.**| 0.64      | 0.63   | 0.63     | 2997    |
+
+The CNNs on the processed spectrogram generally perform quite poorly. Extracting features from the raw spectrogram is a far more difficult function to learn than classifying human-selected features, which is effectively much more refined information that humans use when making and playing music. However, the model is certainly far better than a simple randomized classification, and it has certainly learned something.
+
+- Confusion Matrix:
+![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/d23fe7c9-4432-4aa3-b5e7-fcd6849e4ebc)
+
+
+Just as before, rock seems to be misclassified a lot, with blues following not too far behind. Once again, the fact that rock is, in part, derived from blues means that the two are highly similar, and these misclassifications may be explained in this way.
+
+- Loss:
+![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/48d095d0-959b-4fd7-ba58-c0be9739a544)
+
+The loss graph considerably diverges at ~8-9 epochs, showing the start of overfitting.
+
+**CNN - Raw Spectrogram** (2s)
+
+| Genre        | Precision | Recall | F1-score | Support |
+|--------------|-----------|--------|----------|---------|
+| Disco        | 0.76      | 0.75   | 0.75     | 299     |
+| Metal        | 0.73      | 0.83   | 0.78     | 293     |
+| Reggae       | 0.53      | 0.68   | 0.59     | 282     |
+| Blues        | 0.63      | 0.40   | 0.49     | 300     |
+| Rock         | 0.46      | 0.30   | 0.36     | 319     |
+| Classical    | 0.81      | 0.78   | 0.80     | 308     |
+| Jazz         | 0.52      | 0.62   | 0.57     | 304     |
+| Hip Hop      | 0.71      | 0.66   | 0.68     | 300     |
+| Country      | 0.44      | 0.62   | 0.52     | 305     |
+| Pop          | 0.80      | 0.67   | 0.73     | 287     |
+| **Accuracy**     |           |        | 0.63     | 2997    |
+| **Macro Avg.**   | 0.64      | 0.63   | 0.63     | 2997    |
+| **Weighted Avg.**| 0.64      | 0.63   | 0.63     | 2997    |
+
+
+The raw spectrogram model performs considerably better than the processed ones. This is likely due to the processed spectrograms losing valuable information for classification. However, the inherent greater complexity of this function results in a performance that is still inferior to the best MLP.
+
+- Confusion Matrix: 
+
+![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/2099cf00-2909-4d0d-bd36-9a79d103e2d6)
+
+Once again, patterns in rock music being misclassified are observable, a universal trend. The distinct nature of classical music as an archaic genre may help set it apart, resulting in a high model accuracy.
+
+- Loss:
+
+![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/f4c37cfb-efba-4637-81c3-c39b34359c57)
+
+The model has a much better loss graph here, likely due to it being able to learn the function better due to the presence of more information before signs of overfitting creep in.
 
 ### Discussion
 **MusicNet**:
@@ -441,7 +554,12 @@ This project focuses on incorporating neural networks to decision trees, random 
 
 We were able to handle the complexities of classical music data through the processing algorithm for MIDI files, transforming them into row vectors and further into a 2-D array for supervised models. While the averaging of values across the third dimension and flattening of the resulting 2-D array present a reasonable solution to the challenge of varying quarter notes in each piece, we can improve this and optimize this algorithm. The discussion of hyperparameters for decision trees, random forests, and gradient-boosted trees adds depth to the project, and the emphasis on fine-tuning these parameters based on model performance sets the stage for a systematic refinement of the models. Overall, the project's exploration, model choices, and attention to practical considerations definitely contribute to the realm of music classification as a whole.
 
-**GTZAN**:
+**GTZAN**: 
+From the analysis of different models, it's quite clear that human-extracted features perform better than spectrograms, at least when models are relatively shallow. As discussed before, this is likely owed to the fact that human-extracted features represent handpicked selections that are more representative of how we interpret patterns in music, and differences in these patterns is what we recognize as different genres. A CNN has to implicitly learn this from a spectrogram, which significantly increases complexity.
+
+However, it may well be that spectrograms still provide valuable insights, as they certainly contain more raw information (i.e., the entire piece, just without phase information). As we'll discuss in "Next Steps", this fact may be exploited to improve model performance in the future.
+
+Perhaps one of the most interesting insights we find is in how the model does its missclassifications, a finding that is more pronounced in the poorly-performing models. Namely, it is the interesting consequence of rock being a genre that has both a number of predecessor genres (blues, bluegrass, country, boogie-woogie, gospel, and country music) as well as successor genres (pop, metal, etc.). This results in a number of misclassifications for rock, being the "central genre" between these predecessors and successors. Additionally, genres that are not part of this interrelated family end up having performance that is quite high, especially evident with classical music. This potentially shows that the models (however medicore some of their individual performances may be) are learning fundamental features that define western music as an art form.
 
 **Overall**:
 
@@ -452,6 +570,9 @@ We were able to handle the complexities of classical music data through the proc
 3. Addressing Class Imbalance: The imbalanced distribution of samples among composers, especially evident in the reduced subset, may impact model performance, where techniques like oversampling, undersampling, or using different class weights during training could be further explored, noteably the composers whom have much less data to work with compared to the other composers in the dataset.
 
 **GTZAN**:
+Perhaps one of the best avenues for exploration is improving performance with spectrogram data. For human-extracted features, it is unlikely that a beefier model will produce better results - it has been tried in our work, and despite high performance, it seems to produce diminishing returns more than anything. Spectrograms contain far more information, and if a more sophisticated model is used with better preprocessing techniques, it is quite likely that performance can be improved even further.
+
+Another potentially valuable approach is perhaps combining the two, building a model that has a convolutional feature extractor that has its features concatenated with the human-extracted features, before finally being classified by a feedforward network (MLP). With this, the simplicity of human-derived features combined with fine-grain details from the spectrogram can be combined to produce a model that may be superior to both.
 
 ## Contribution Table
 
