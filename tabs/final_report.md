@@ -560,6 +560,14 @@ Perhaps one of the most interesting insights we find is in how the model does it
 1. Improving Performance with Spectrogram Data: Exploring performance improvement with spectrogram data is a promising avenue. Human-extracted features may not benefit significantly from more complex models, as our work shows high performance but diminishing returns. Spectrograms, containing more information, paired with sophisticated models and better preprocessing techniques, could enhance performance further.
 2. Combining Convolutional Feature Extractor with Human-Extracted Features: A hybrid approach could involve building a model that combines a convolutional feature extractor with human-extracted features. The concatenated features would then be classified by a feedforward network (MLP). This method aims to merge the simplicity of human-derived features with the detailed insights from spectrograms, potentially creating a superior model.
 
+**Overall**:
+With our project, we implemented several different architectures, with each model crafted towards a specific representation of music - midi, spectrograms, and extracted features. These models were able to extract information from each representation and perform supervised classification on its genre. 
+
+Midi, as a logical and intuitive way to organize music, make features such as intervals, chords, and progressions much easier to parse. This prompted us to use techniques that can utilize these structures to its fullest - tree based methods. Raw spectrogram files is a way to represent audio files directly that can be learned by a spectrogram. Our work shows that deep convolutions neural network is able to learn complex features and understand genre. However, due to the large dimensionality of audio files, learning features from spectrogram files requires complex models and large datasets. We were able to get better results by using 1D convolutions to account for music's unique representation in the frequency domain. We discovered that human selected features by industry experts performed the best. This reflects the paradigm that domain knowledge can boost machine learning methods by significantly reducing the size and simplicity of models, and can perform complex methods trained on raw data.
+
+Our results explores the capabilities of machine learning methods when applied on supervised learning tasks to different representations of music.
+
+
 ## Contribution Table
 
 | Contributor Name      | Contribution Type                      |
