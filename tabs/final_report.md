@@ -505,13 +505,13 @@ As expected, the loss graph is far worse, with validation loss diverging in a qu
 The CNNs on the processed spectrogram generally perform quite poorly. Extracting features from the raw spectrogram is a far more difficult function to learn than classifying human-selected features, which is effectively much more refined information that humans use when making and playing music. However, the model is certainly far better than a simple randomized classification, and it has certainly learned something.
 
 - Confusion Matrix:
-![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/d23fe7c9-4432-4aa3-b5e7-fcd6849e4ebc)
 
+<img src="../assets/images/gtzan_mlp_spectrogram_2ssecs_cm.png" alt="drawing" width="400"/>
 
 Just as before, rock seems to be misclassified a lot, with blues following not too far behind. Once again, the fact that rock is, in part, derived from blues means that the two are highly similar, and these misclassifications may be explained in this way.
 
 - Loss:
-![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/48d095d0-959b-4fd7-ba58-c0be9739a544)
+<img src="../assets/images/gtzan_mlp_spectrogram_2ssecs_loss.png" alt="drawing" width="400"/>
 
 The loss graph considerably diverges at ~8-9 epochs, showing the start of overfitting.
 
@@ -538,13 +538,13 @@ The raw spectrogram model performs considerably better than the processed ones. 
 
 - Confusion Matrix: 
 
-![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/2099cf00-2909-4d0d-bd36-9a79d103e2d6)
+<img src="../assets/images/raw_gtzan_mlp_spectrogram_2ssecs_cm.png" alt="drawing" width="400"/>
 
 Once again, patterns in rock music being misclassified are observable, a universal trend. The distinct nature of classical music as an archaic genre may help set it apart, resulting in a high model accuracy.
 
 - Loss:
 
-![image](https://github.com/abarton51/CS_4641_Project/assets/129133364/f4c37cfb-efba-4637-81c3-c39b34359c57)
+<img src="../assets/images/raw_gtzan_mlp_spectrogram_2ssecs_loss.png" alt="drawing" width="400"/>
 
 The model has a much better loss graph here, likely due to it being able to learn the function better due to the presence of more information before signs of overfitting creep in.
 
