@@ -13,22 +13,27 @@ Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya
 - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
     - [Datasets](#datasets)
+    - [Overview of Methods and Data Processing](#overview-of-methods-and-data-processing)
   - [Problem Definition](#problem-definition)
-  - [Methods Overview](#methods-overview)
-    - [Data Preprocessing](#data-preprocessing)
+  - [Data Preprocessing](#data-preprocessing)
       - [MIDI Files](#midi-files)
       - [WAV Files](#wav-files)
       - [Extracted Features:](#extracted-features)
       - [Frequency Space representation using Discrete FFT:](#frequency-space-representation-using-discrete-fft)
       - [Dimensionality Reduction - PCA](#dimensionality-reduction---pca)
       - [Dimensionality Reduction - t-SNE](#dimensionality-reduction---t-sne)
-    - [Classification](#classification)
-      - [**MusicNet** - Choice of Model and Algorithms:](#musicnet---choice-of-model-and-algorithms)
-      - [Decision Trees](#decision-trees)
-      - [Random Forests](#random-forests)
-      - [Gradient-Boosted Trees](#gradient-boosted-trees)
-      - [**GTZAN** - Choice of Model and Algorithms:](#gtzan---choice-of-model-and-algorithms)
+  - [Classification Methods](#classification-methods)
+    - [**MusicNet** - Choice of Model and Algorithms:](#musicnet---choice-of-model-and-algorithms)
+      - [**Decision Trees**](#decision-trees)
+      - [**Random Forests**](#random-forests)
+      - [**Gradient-Boosted Trees**](#gradient-boosted-trees)
+    - [**GTZAN** - Choice of Model and Algorithms:](#gtzan---choice-of-model-and-algorithms)
   - [Results and Discussion](#results-and-discussion)
+    - [MusicNet Results](#musicnet-results)
+      - [Decision Trees](#decision-trees-1)
+      - [Random Forests](#random-forests-1)
+      - [Gradient-Boosted Trees](#gradient-boosted-trees-1)
+    - [GTZAN Results](#gtzan-results)
     - [Discussion](#discussion)
   - [Next Steps](#next-steps)
   - [Contribution Table](#contribution-table)
@@ -45,21 +50,23 @@ The primary focus of our work lies in comprehensive data pre-processing and visu
 ### Datasets
 **MusicNet**: We took this data from [Kaggle](kaggle.com). [MusicNet](https://www.kaggle.com/datasets/imsparsh/musicnet-dataset) is an audio dataset consisting of 330 WAV and MIDI files corresponding to 10 mutually exclusive classes. Each of the 330 WAV and MIDI files (per file type) corresponding to 330 separate classical compositions belong to 10 different composers from the classical and baroque periods. The total size of the dataset is approximately 33 GB and has 992 files in total. 330 of those are WAV, 330 are MIDI, 1 NPZ file of MusicNet features stored in a NumPy array, and a CSV of metadata. For this portion of the project, we essentially ignore the NPZ file and explore our own processing and exploration of the WAV and MIDI data for a more thorough understanding of the data and the task. Further discussion of the data processing is described in detail in the [Data Preprocessing](#data-preprocessing) section.
 
+Because of how poorly distributed this data is, and not being able to gather new data ourselves, we opted to only do composer classification on a subset of the original data. Any composer with less than 10 pieces in the dataset was completely excluded. This resulted in reducing the number of composers/classes from 10 to 5. The remaining composers are Bach, Beethoven, Brahms, Mozart, and Schubert. This subset is still heavily imbalanced, as Beethoven has over 100 samples of data but Brahms has 10.
+
 **GTZAN**: [GTZAN](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) is a genre recognition dataset of 30 second audio wav files at 41000 HZ sample rate, labeled by their genre. The sample rate of an audio file represent the number of sample, or real numbers, that the file represent one second of audio clip by. This means, for a 30 second wav file, the dimensionality of the dataset is 41000x30. The data set consists of 1000 wav files and 10 genres, with each genre consisting of 100 wav files. The genres include disco, metal, reggae, blues, rock, classical, jazz, hiphop, country, and pop. We took this data from [Kaggle](kaggle.com).
 
-## Problem Definition
-The problem that we want to solve is the classification of music data into specific categories (composers for MusicNet and genres for GTZAN). Essentially, the existing challenge is to improve previous accuracy benchmarks, especially with methods beyond neural networks, and to explore alternative models like decision trees. Our motivation for this project was to increase classification accuracy, improve the potential of decision trees in this domain, and to better understand and interpret the models that we chose to use. Our project aims to contribute to the field of music classification and expand the range of effective methodologies for similar tasks.
-
-Despite the dominance of neural networks in recent works, there's motivation to enhance their performance and explore if combining methods can gain better results. The references and readings suggest that decision trees, especially gradient-boosted ones, might perform comparably and offer advantages in terms of training time and interpretability. Based on this, the project aims to effectively reduce the dimensionality of the datasets, enhancing the understanding and visualization of the data using techniques like t-SNE and PCA. 
-
-## Methods Overview
+### Overview of Methods and Data Processing
 - We utilize Principal Component Analysis on both datasets as our dimensionality reduction technique for visualization as well as pre-processing data.
 - We implement t-distributed Stochastic Neighbor Embedding (t-SNE) and compare with PCA.
 - We implement classiciation on the MusicNet dataset using decision trees, random forests, and gradient-boosted trees.
 - We implement classification on the GTZAN dataset using Feedforward Neural Networks/MLPs on WAV data and Convolution Neural Networks on Mel-Spectrogram PNG images. 
 - Further discussion of these methods is explained in the Data Preprocessing and Classification sections.
 
-### Data Preprocessing
+## Problem Definition
+The problem that we want to solve is the classification of music data into specific categories (composers for MusicNet and genres for GTZAN). Essentially, the existing challenge is to improve previous accuracy benchmarks, especially with methods beyond neural networks, and to explore alternative models like decision trees. Our motivation for this project was to increase classification accuracy, improve the potential of decision trees in this domain, and to better understand and interpret the models that we chose to use. Our project aims to contribute to the field of music classification and expand the range of effective methodologies for similar tasks.
+
+Despite the dominance of neural networks in recent works, there's motivation to enhance their performance and explore if combining methods can gain better results. The references and readings suggest that decision trees, especially gradient-boosted ones, might perform comparably and offer advantages in terms of training time and interpretability. Based on this, the project aims to effectively reduce the dimensionality of the datasets, enhancing the understanding and visualization of the data using techniques like t-SNE and PCA. 
+
+## Data Preprocessing
 **MusicNet**:
 #### MIDI Files
 For the MIDI files, we aimed to create an algorithm to parse through MIDI files and convert into row vectors to be stored into a data matrix **X**. We utilize the MIDI parsing software from [python-midi](https://github.com/vishnubob/python-midi) to parse through the MIDI files and obtain tensors of float values that corresond to the instrument, the pitch of the note, and the loudness of the note. Each MIDI file generated a (**I**x **P**x **A**) tensor stored as a 3-D numpy array where **I** is the number of instruments, **P** is the total number of pitches, which range from (1-128), and the total number of quarter notes in the piece **A**. **I** is held as a constant of 16. For any instrument not played, it simply stores a matrix of zeroes. Additionally, the number of quarter notes in each piece is vastly different. Therefore, we require a way to process this data in a way that is homogenous in its dimensions.
@@ -103,30 +110,36 @@ Here again we see a lack of separability for the first two principal components 
 After we get our dataset represented by a NxTxF matrix, we perform Principal Component Analysis (PCA) on the dataset. The reason we do this is to reduce the dimensionality of the dataset while mostly maintaining the information we have. This will allow us to train smaller and better models. To do this, we flatten the tensor into a (NT)xF matrix. We then perform PCA to get a (NT)xF' model. We then reshape it back to  a NxTxF' tensor. We will be testing models utilizing different values of F'.
 
 #### Dimensionality Reduction - t-SNE
-**t-distributed Stochastic Neighbor Embedding**: t-SNE, or t-Distributed Stochastic Neighbor Embedding, is a dimensionality reduction technique used for visualizing high-dimensional data in a lower-dimensional space, often two or three dimensions. It excels at preserving local relationships between data points, making it effective in revealing clusters and patterns that might be obscured in higher dimensions. The algorithm focuses on maintaining similarities between neighboring points, creating a visualization that accurately reflects the structure of the data. t-SNE is particularly valuable when exploring complex datasets with nonlinear relationships, as it can outperform traditional linear methods like PCA in capturing intricate structures. Its ability to uncover subtle patterns and groupings makes t-SNE a popular choice for exploratory data analysis and visualization tasks in various fields, including machine learning, biology, and natural language processing. Note that we only perform t-SNE on the MusicNet dataset.
+**t-distributed Stochastic Neighbor Embedding**: t-SNE, or t-Distributed Stochastic Neighbor Embedding, is a dimensionality reduction technique used for visualizing high-dimensional data in a lower-dimensional space, often two or three dimensions. It excels at preserving local relationships between data points, making it effective in revealing clusters and patterns that might be obscured in higher dimensions. The algorithm focuses on maintaining similarities between neighboring points, creating a visualization that accurately reflects the structure of the data. t-SNE is particularly valuable when exploring complex datasets with nonlinear relationships, as it can outperform traditional linear methods like PCA in capturing intricate structures. Note that we only perform t-SNE on the MusicNet dataset.
 
 Our t-SNE results were strikingly poor in comparison to the PCA results shown above. We demonstrate only one plot for the sake of this report's brevity, but most class pairs were not linearly separable in 2 or 3 dimensions.
 
 In purple are data points belonging to Beethoven and in green are data points belonging to Mozart.
 
-<img src="../assets/tsne/tsne_plot_Beethoven_vs_Mozart_2d" alt="drawing" width="300"/>
+<img src="../assets/tsne/tsne_plot_Beethoven_vs_Mozart_2d.png" alt="drawing" width="300"/>
 
 Here are the data points but in a 3-dimensional space reduced by t-SNE from the original 2048 dimensions.
 
-<img src="../assets/tsne/tsne_plot_Beethoven_vs_Mozart_3d" alt="drawing" width="300"/>
+<img src="../assets/tsne/tsne_plot_Beethoven_vs_Mozart_3d.png" alt="drawing" width="300"/>
 
-**MusicNet MIDI Data t-SNE Results**
-
-### Classification
-#### **MusicNet** - Choice of Model and Algorithms:
+## Classification Methods
+### **MusicNet** - Choice of Model and Algorithms:
 **Chosen Model(s)**: We decided to use decision trees, random forests, and gradient-boosted trees for our models.
 
-#### Decision Trees
+#### **Decision Trees**
 Methods in this section were inspired from a previous course taken, MATH 4210, and [sci-kit learn's documentation](https://scikit-learn.org/stable/auto_examples/tree/plot_cost_complexity_pruning.html).
 
 Before jumping to more complicated, expensive, and generally less interpretable models, we analyze the results of classification with a single decision tree. Undergoing a proper analysisa dn hyperparametrization of a single decision tree will provide us insight even if the model does not perform well. This will set us up for success and narrow hyperparameter search spaces in the subsequent models.
 
-We perform a search over the best value of the cost complexity pruning penalty. This is a penalty coefficient of the complexity of the decision tree, where complexity is measured by the number of leaves in a tree (very similar to ridge and LASSO regression). Below we can see how as we increase the cost complexity hyperparameter (alpha), the total imputiry of the leaves increases.
+Decision tree classifiers are models that recursively split data based on features, forming a tree-like structure. Each node represents a decision based on a feature, leading to subsequent nodes. Terminal nodes provide predictions.
+
+| Hyperparameter        | Description                                          | Value(s)               |
+|-----------------------|------------------------------------------------------|------------------------|
+| `criterion   `        | The function to measure the quality of a split       | `gini`                 |
+| `max_depth`           | Maximum depth of the individual trees                | 10                     |
+| `random_state`        | Seed for random number generation                    | seed=42                |
+
+We performed a search over the best value of the cost complexity pruning penalty. This is a penalty coefficient of the complexity of the decision tree, where complexity is measured by the number of leaves in a tree (very similar to ridge and LASSO regression). Below we can see how as we increase the cost complexity hyperparameter (alpha), the total gini impurity of the leaves increases.
 
 <img src="../assets/dt_cc_path.png" alt="drawing" width="300"/>
 
@@ -134,18 +147,9 @@ However, this does not mean the model is performing worse as the cost complexity
 
 <img src="../assets/cc_accuracy_path.png" alt="drawing" width="300"/>
 
-We then fit our decision tree with the cost complexity hyperparameter described previously. The depth of our resulting tree is 10, providing insight for subsequent models as to how deep a tree should or should not be. The results of this tree are summarized below in a confusion matrix, training and testing accuracy, and F1 score.
+#### **Random Forests**
+Random Forest classifiers are an ensemble learning method combining multiple decision tree classifiers. Each tree is trained on a random subset of data and features. The final prediction is an average or voting of individual tree predictions.
 
-<img src="../assets/dt_confusion_matrix.png" alt="drawing" width="300"/>
-
-Decision Tree Classifier
-Training Accuracy: 1.0
-Test Accuracy: 0.6458333333333334
-Test F1-Score0.6475694444444445
-
-We can see the model does actually quite well for how little training data there is and how poorly the data is distributed. This landmark shows that our processing algorithm for the MIDI is effective to at least some extent in distinguishing certain composers from others.
-
-#### Random Forests
 | Hyperparameter        | Description                                          | Value(s)               |
 |-----------------------|------------------------------------------------------|------------------------|
 | `n_estimators`        | Number of boosting stages to be run                  | 100                    |
@@ -155,14 +159,11 @@ We can see the model does actually quite well for how little training data there
 
 Since random forests in our case are very computationally feasible, and since our analysis of decision tree performance based on depth provides insight, we opted to search through what `max_depth` hyperparameter would perform the best. We experimentally found `max_depth` of 13 to work the best for random forests, in contrast to the best depth for a single decision tree to be 10. Our choice of `max_features` was based off the fact that many of the data samples are sparse in non-zero entries and only few contain more than 1024 entries (and not by much more) we felt 0.5 to be reasonable and through experimentation found it to be effective.
 
-Random Forest Classifier
-Training Accuracy: 1.0
-Test Accuracy: 0.8541666666666666
-Test F1-Score0.8519282808470453
-Maximum depth of Random Forest: 13
+#### **Gradient-Boosted Trees**
+Gradient-boosted trees are a type of ensemble learning technique that builds a series of decision trees sequentially, defines an objective/cost function to minimize (very similar to neural network cost functions), and uses the gradient of the cost function to iteratively guide the next sequential tree to improve the overall model. Each tree corrects errors of the previous one and the ensemble model is trained over a defined number of iterations, similar to neural networks. Hence, this model requires lots of hyperparametrization and is in general much more computationally costly compared to decision trees and random forests. Additionally, they are more difficult to interpret.
 
-#### Gradient-Boosted Trees
 **Model 1 Hyperparameters**:
+
 | Hyperparameter        | Description                                          | Value(s)               |
 |-----------------------|------------------------------------------------------|------------------------|
 | `n_estimators`        | Number of boosting stages to be run                  | 20                     |
@@ -174,6 +175,7 @@ Maximum depth of Random Forest: 13
 | `random_state`        | Seed for random number generation                    | seed=42                |
 
 **Model 2 Hyperparameters**:
+
 | Hyperparameter        | Description                                          | Value(s)               |
 |-----------------------|------------------------------------------------------|------------------------|
 | `n_estimators`        | Number of boosting stages to be run                  | 1000                   |
@@ -183,11 +185,50 @@ Maximum depth of Random Forest: 13
 | `objective`           | The objective function this model is minimizing      | `multi:softmax`        |
 | `early_stopping`      | Stop training early if evaluation doesn't improve    | 100                    |
 | `random_state`        | Seed for random number generation                    | seed=42                |
+| `eval_metric`         | Evaluation metrics                                   | `auc` and `merror`     |
 
-We chose these hyperparameters based off of 1) The results from decision trees and random forests and 2) Our own experimentation searching through the space of possible hyperparameters. These 2 models are essentially the same, but we want to showcase how gradient-boosted trees, although effective, come to limits that adding more iterations will not fix. Our learning rate was tuned through experimentation and searching. The `max_depth` was experimented with and the results from random forests and decision trees helped guide this selection. We found that including all the features in our model reduced performance and results in the models overfitting extremely fast. Because many of the row vectors are sparse and only few containing more than 1000 entries, we felt 0.5 to be reasonable and through experimentation found it to be effective.
+We chose these hyperparameters based off of 1) The results from decision trees and random forests and 2) Our own experimentation searching through the space of possible hyperparameters. These 2 models are essentially the same, but we want to showcase how gradient-boosted trees, although effective, come to limits that adding more iterations will not fix. Our learning rate was tuned through experimentation and searching. The `max_depth` was experimented with and the results from random forests and decision trees helped guide this selection. We found that including all the features in our model reduced performance and results in the models overfitting extremely fast. Because many of the row vectors are sparse and only few containing more than 1000 entries, we felt 0.5 to be reasonable and through experimentation found it to be effective. We chose the AUC evaluation metric since it does a better job at evaluating classification performance in imbalanced datasets. Lastly, we implement an early stopping of 100 to not waste time and computational resources. The model will stop training and return the best performing model if after 100 iterations the evaluation metrics do not improve.
+
+### **GTZAN** - Choice of Model and Algorithms:
+**Chosen Model(s)**: 
+
+## Results and Discussion
+
+### MusicNet Results
+
+#### Decision Trees
+
+We fit our decision tree with the cost complexity hyperparameter described [previously](#classification). The depth of our resulting tree is 10 (hence, the justification behind this `max_depth` hyperparameter), providing insight for subsequent models as to how deep a tree should or should not be. The results of this tree are summarized below in a confusion matrix, training and testing accuracy, and F1-score.
+
+<img src="../assets/dt_confusion_matrix.png" alt="drawing" width="300"/>
+
+A note on F1-Score: For this section, we use a weighted average F1 score since this is a multi-class classification task and we believe this method of aggregated pairwise F1-scores is best for our imbalanced dataset.
+
+Decision Tree Classifier Results:
+- Training Accuracy: 1.0
+- Test Accuracy: 0.6458333333333334
+- Test F1-Score: 0.6475694444444445
+
+We can see the model does actually quite well for how little training data there is and how poorly the data is distributed. This landmark shows that our processing algorithm for the MIDI is effective to at least some extent in distinguishing certain composers from others.
+
+#### Random Forests
+
+Results of random forest classifier described in the [classification](#classification) section.
+
+<img src="../assets/rf_confusion_matrix.png" alt="drawing" width="300"/>
+
+Random Forest Classifier Results:
+- Training Accuracy: 1.0
+- Test Accuracy: 0.8541666666666666
+- Test F1-Score: 0.8519282808470453
+
+We can see that random forests drastically improve classification results. Since random forests are highly interpretable and cost efficient we would opt for this model over other less interpretable and cost ineffecitve models. This idea is showcased in the subsequent section with the introduction of gradient-boosted trees.
+
+#### Gradient-Boosted Trees
 
 - **Boosted-Decision Trees Training Results**
 Model 1 Training Table:
+
 | Iteration | Train AUC | Train Misclassification Error | Eval AUC | Eval Misclassification Error |
 |-----------|-----------|-------------------------------|----------|-------------------------------|
 | 0         | 0.86054   | 0.36111                       | 0.77116  | 0.52083                       |
@@ -211,15 +252,17 @@ Model 1 Training Table:
 | 18        | 0.99714   | 0.05556                       | 0.93164  | 0.20833                       |
 | 19        | 0.99742   | 0.03472                       | 0.93645  | 0.20833                       |
 
-Test results:
-XGBoost Classifier - 20 estimators, max_depth of 10, learning rate of 0.8, softmax objective function.
-Training Accuracy: 0.9652777777777778
-Test Accuracy: 0.8541666666666666
-Test F1-Score0.8519282808470453
+XGBoost Model 1 Results:
+- Training Accuracy: 0.9652777777777778
+- Test Accuracy: 0.8541666666666666
+- Test F1-Score: 0.8519282808470453
 
-<img src="../assets/xgboost_model1_confusion_matrix" alt="drawing" width="300"/>
+<img src="../assets/xgboost_model1_confusion_matrix.png" alt="drawing" width="300"/>
+
+We can see the model does well, but overfits (despite only using half of the features) and does not do better than the random forest implementation we had.
 
 Model 2 Training Table:
+
 | Iteration | Train AUC | Train Misclassification Error | Eval AUC | Eval Misclassification Error |
 |-----------|-----------|-------------------------------|----------|-------------------------------|
 |     0     |  0.85925  |            0.36111            |  0.77116 |            0.52083            |
@@ -242,19 +285,16 @@ Model 2 Training Table:
 |    165    |  0.99983  |            0.00694            |  0.91519 |            0.25000            |
 |    166    |  0.99983  |            0.00694            |  0.91418 |            0.25000            |
 
-XGBoost Classifier - 1000 estimators, max_depth of 10, learning rate of 0.8, softmax objective function.
-Training Accuracy: 0.9930555555555556
-Test Accuracy: 0.8541666666666666
-Test F1-Score0.8519282808470453
+XGBoost Model 2 Results:
+- Training Accuracy: 0.9930555555555556
+- Test Accuracy: 0.8541666666666666
+- Test F1-Score: 0.8519282808470453
 
-<img src="../assets/xgboost_model3_confusion_matrix" alt="drawing" width="300"/>
+<img src="../assets/xgboost_model3_confusion_matrix.png" alt="drawing" width="300"/>
 
-As we can see, training the model more does not result in better performance. This is a prime example of overfitting, but the main takeaway is that there are more efficient ways to do things.
+As we can see, training the model more does not result in better performance. Something interesting to note is how, even though they performed the same and the only changed hyperparamter between them is the number of estimators, the confusion matrices are different.
 
-#### **GTZAN** - Choice of Model and Algorithms:
-**Chosen Model(s)**: 
-
-## Results and Discussion
+### GTZAN Results
 **Quantitative metrics**: 3-second samples
 
 F1 Scores, confusion matrix, etc.
