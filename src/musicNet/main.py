@@ -7,6 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import f1_score
+from sklearn.metrics import roc_auc_score
 import xgboost as xgb
 
 path = 'src/musicNet/processed_data'
@@ -28,7 +29,7 @@ y_test[y_test==9] = 4
 
 labels = ['Bach', 'Beethoven', 'Brahms', 'Mozart', 'Schubert']
 
-dt_clf = DecisionTreeClassifier(random_state=42)
+dt_clf = DecisionTreeClassifier(max_depth=10, random_state=42)
 dt_clf.fit(X_train, y_train)
 y_pred = dt_clf.predict(X_test)
 training_accuracy = dt_clf.score(X_train, y_train)
@@ -73,9 +74,19 @@ ax.legend()
 plt.show()
 plt.close()
 
-dt_clf = DecisionTreeClassifier(random_state=42)
+dt_clf = DecisionTreeClassifier(max_depth=10, random_state=42)
 dt_clf.fit(X_train, y_train)
 ypred = dt_clf.predict(X_test)
+training_accuracy = dt_clf.score(X_train, y_train)
+accuracy = dt_clf.score(X_test, y_test)
+print("Decision Tree Classifier")
+print(f"Training Accuracy: {training_accuracy}")
+print(f"Test Accuracy: {accuracy}")
+print(f"Test F1-Score: {f1_score(y_test, ypred, average='weighted')}")
+ypred_proba = dt_clf.predict_proba(X_test)
+print(f"Test 1v1 AUC-Score: {roc_auc_score(y_test, ypred_proba, average='weighted', multi_class='ovo')}")
+print(f"Test 1vRest AUC-Score: {roc_auc_score(y_test, ypred_proba, average='weighted', multi_class='ovr')}\n")
+print(dt_clf.get_depth())
 
 confusion_mat = confusion_matrix(y_test, ypred)
 conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat, display_labels=labels)
@@ -90,11 +101,14 @@ rf_clf = RandomForestClassifier(random_state=42, max_features=512, n_estimators=
 rf_clf.fit(X_train, y_train)
 training_accuracy = rf_clf.score(X_train, y_train)
 accuracy = rf_clf.score(X_test, y_test)
-y_pred = rf_clf.predict(X_test)
+ypred = rf_clf.predict(X_test)
 print("Random Forest Classifier")
 print(f"Training Accuracy: {training_accuracy}")
 print(f"Test Accuracy: {accuracy}")
-print(f"Test F1-Score{f1_score(y_test, y_pred, average='weighted')}")
+print(f"Test F1-Score{f1_score(y_test, ypred, average='weighted')}")
+ypred_proba = rf_clf.predict_proba(X_test)
+print(f"Test 1v1 AUC-Score: {roc_auc_score(y_test, ypred_proba, average='weighted', multi_class='ovo')}")
+print(f"Test 1vRest AUC-Score: {roc_auc_score(y_test, ypred_proba, average='weighted', multi_class='ovr')}\n")
 max_depth = 0
 for tree in rf_clf.estimators_:
     if max_depth < tree.get_depth():
@@ -121,7 +135,10 @@ ypred = bst.predict(X_test)
 print("XGBoost Classifier - 20 estimators, max_depth of 15, learning rate of 0.8, softmax objective function.")
 print(f"Training Accuracy: {training_accuracy}")
 print(f"Test Accuracy: {accuracy}")
-print(f"Test F1-Score{f1_score(y_test, y_pred, average='weighted')}\n")
+print(f"Test F1-Score{f1_score(y_test, ypred, average='weighted')}")
+ypred_proba = bst.predict_proba(X_test)
+print(f"Test 1v1 AUC-Score: {roc_auc_score(y_test, ypred_proba, average='weighted', multi_class='ovo')}")
+print(f"Test 1vRest AUC-Score: {roc_auc_score(y_test, ypred_proba, average='weighted', multi_class='ovr')}\n")
 
 confusion_mat = confusion_matrix(y_test, ypred)
 conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat,  display_labels=labels)
@@ -194,7 +211,10 @@ ypred = xgb_clf.predict(X_test)
 print("XGBoost Classifier - 1000 estimators, max_depth of 15, learning rate of 0.8, softmax objective function.")
 print(f"Training Accuracy: {training_accuracy}")
 print(f"Test Accuracy: {accuracy}")
-print(f"Test F1-Score{f1_score(y_test, y_pred, average='weighted')}\n")
+print(f"Test F1-Score{f1_score(y_test, ypred, average='weighted')}")
+ypred_proba = xgb_clf.predict_proba(X_test)
+print(f"Test 1v1 AUC-Score: {roc_auc_score(y_test, ypred_proba, average='weighted', multi_class='ovo')}")
+print(f"Test 1vRest AUC-Score: {roc_auc_score(y_test, ypred_proba, average='weighted', multi_class='ovr')}\n")
 
 confusion_mat = confusion_matrix(y_test, ypred)
 conf_mat_display = ConfusionMatrixDisplay(confusion_matrix=confusion_mat,  display_labels=labels)
