@@ -28,6 +28,8 @@ Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya
       - [**Random Forests**](#random-forests)
       - [**Gradient-Boosted Trees**](#gradient-boosted-trees)
     - [**GTZAN** - Choice of Model and Algorithms:](#gtzan---choice-of-model-and-algorithms)
+      - [**Multilayer Perceptron**](#multilayer-perceptron)
+      - [**Convolutional Neural Network**](#convolutional-neural-network)
   - [Results and Discussion](#results-and-discussion)
     - [MusicNet Results](#musicnet-results)
       - [Decision Trees](#decision-trees-1)
@@ -43,14 +45,14 @@ Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya
 ## Introduction
 This project addresses the challenges of music audio classification through two distinct tasks on Kaggle datasets, MusicNet and GTZAN. For GTZAN, the objective is genre classification, while for MusicNet, the focus is on identifying composers from the baroque and classical periods. Notably, recent advancements in classification have achieved approximately 92% accuracy [[4.]](#references), surpassing previous struggles to breach the 80% mark [[1.]](#references), [[2.]](#references). While neural networks dominate current implementations, our study revisits the efficacy of decision trees, particularly gradient-boosted trees, which have demonstrated superior performance in comparison on some cases.
 
-In addition to model exploration, our project delves into data analysis and pre-processing techniques. Both linear and non-linear dimensionality reduction methods are considered, inspired by Pal et al's., [[3]](#references) approach. We adopt t-SNE and PCA for dimensionality reduction, leveraging their ability to unveil underlying patterns in the data. We assess and compare the results of these methods visually. In contrast to work by Pal et al., [[3]](#refrences), t-SNE performed worse visually than PCA.
+In addition to model exploration, our project delves into data analysis and pre-processing techniques. Both linear and non-linear dimensionality reduction methods are considered, inspired by Pal et al's., [[3]](#references) approach. We adopt t-SNE and PCA for dimensionality reduction, leveraging their ability to unveil underlying patterns in the data. We assess and compare the results of these methods visually.
 
 The primary focus of our work lies in comprehensive data pre-processing and visualization. We employ PCA as the primary dimensionality reduction technique, aiming to establish baseline results using minimally processed data with straightforward Feedforward Neural Network architectures. This approach contributes to the understanding of audio (specifically, music audio) datasets and opens questions and important notes for future improvements in music audio classification tasks, emphasizing the potential of decision tree models (and their variants) and the significance of effective dimensionality reduction techniques. Our findings also open up for models specific to sequential data.
 
 ### Datasets
 **MusicNet**: We took this data from [Kaggle](kaggle.com). [MusicNet](https://www.kaggle.com/datasets/imsparsh/musicnet-dataset) is an audio dataset consisting of 330 WAV and MIDI files corresponding to 10 mutually exclusive classes. Each of the 330 WAV and MIDI files (per file type) corresponding to 330 separate classical compositions belong to 10 different composers from the classical and baroque periods. The total size of the dataset is approximately 33 GB and has 992 files in total. 330 of those are WAV, 330 are MIDI, 1 NPZ file of MusicNet features stored in a NumPy array, and a CSV of metadata. For this portion of the project, we essentially ignore the NPZ file and explore our own processing and exploration of the WAV and MIDI data for a more thorough understanding of the data and the task. Further discussion of the data processing is described in detail in the [Data Preprocessing](#data-preprocessing) section.
 
-Because of how poorly distributed this data is, and not being able to gather new data ourselves, we opted to only do composer classification on a subset of the original data. Any composer with less than 10 pieces in the dataset was completely excluded. This resulted in reducing the number of composers/classes from 10 to 5. The remaining composers are Bach, Beethoven, Brahms, Mozart, and Schubert. This subset is still heavily imbalanced, as Beethoven has over 100 samples of data but Brahms has 10.
+Because of how poorly distributed this data is, and not being able to gather new data ourselves, we opted to only do composer classification on a subset of the original data. Any composer with less than 10 pieces in the dataset was completely excluded. This resulted in reducing the number of composers/classes from 10 to 5. The remaining composers are **Bach**, **Beethoven**, **Brahms**, **Mozart**, and **Schubert**. This subset is still heavily imbalanced, as Beethoven has over 100 samples of data but Brahms has 10.
 
 **GTZAN**: [GTZAN](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification) is a genre recognition dataset of 30 second audio wav files at 41000 HZ sample rate, labeled by their genre. The sample rate of an audio file represent the number of sample, or real numbers, that the file represent one second of audio clip by. This means, for a 30 second wav file, the dimensionality of the dataset is 41000x30. The data set consists of 1000 wav files and 10 genres, with each genre consisting of 100 wav files. The genres include disco, metal, reggae, blues, rock, classical, jazz, hiphop, country, and pop. We took this data from [Kaggle](kaggle.com).
 
@@ -74,6 +76,8 @@ For the MIDI files, we aimed to create an algorithm to parse through MIDI files 
 We take the average values of each piece across the 3rd dimension (axis = 2) generating a 2-D array of size 16x128 where each entry is the average float value for that corresponding pitch and instrument across every note in the piece. From here, we flatten the 2-D array to generate a 1-D array of size 16*128 = 2048, where each block of values 128 entries long corresponds to an instrument. This flattening procedure respects the order of the instruments in a consistent manner across all MIDI files and is capable of storing instrument information for all MIDI files within the domain of the 16 instruments. The 16 instruments consist of the most common instruments in classical music including piano, violin, bass, cello, drums, voice, etc. Although the memory is costly, and the non-zero entries in each row vector are quite sparse, we determined that this procedure would be a viable method to maintain information in a manner that is feasible and reasonably efficient for our task.
 
 In summary, we parse through each MIDI file and undergo a basic algorithm to generate row vectors of float values for each composition. We do this for each MIDI file and generate a data matrix X_{MIDI} that is a R^{330x2048} stored as a 2-D array of float values. This data matrix X_{MIDI} is what we will process through supervised models in the future and is the data we further explore with Principal Component Analysis detailed in the next section for MusicNet.
+
+After this processing, filtered out all data belonging to composers with less than 10 pieces in the entire data set. The remaining composers are **Bach**, **Beethoven**, **Brahms**, **Mozart**, and **Schubert** and the resulting data matrix is R^{292x2048} This subset is still heavily imbalanced, as Beethoven has over 100 samples of data but Brahms has 10.
 
 #### WAV Files
 For WAV files, we obtain a 1-D array for each song consisting of amplitude float values. Each entry corresponds to a timestep in which the WAV file is sampled which is determined by the sampling rate specified when loading the data. We use the [librosa](https://librosa.org/doc/latest/index.html) audio analysis package in Python to load WAV files. After data is loaded, take intervals of the WAV data to act as a single data point. The sampling rate is defined as the average number of samples obtained in 1 second. It is used while converting the continuous data to a discrete data. For example, a 30 s song with a sampling rate of 2 would generate a 1-D float array of length 60. If we specify intervals of 3 s, then we would obtain 20 distinct data points each with 3 values (each for amplitude). A possible exploration with this data, because it is sequential, is to use models specifically tailored towards processing sequential data and learning relations between points in a sequence, such as transformers. However, we currently only perform this minimal processing for MusicNet in order to visualize and understand the data, and obtain baseline performances in supervised models to compare to performances with other processed data.
@@ -112,7 +116,7 @@ After we get our dataset represented by a NxTxF matrix, we perform Principal Com
 #### Dimensionality Reduction - t-SNE
 **t-distributed Stochastic Neighbor Embedding**: t-SNE, or t-Distributed Stochastic Neighbor Embedding, is a dimensionality reduction technique used for visualizing high-dimensional data in a lower-dimensional space, often two or three dimensions. It excels at preserving local relationships between data points, making it effective in revealing clusters and patterns that might be obscured in higher dimensions. The algorithm focuses on maintaining similarities between neighboring points, creating a visualization that accurately reflects the structure of the data. t-SNE is particularly valuable when exploring complex datasets with nonlinear relationships, as it can outperform traditional linear methods like PCA in capturing intricate structures. Note that we only perform t-SNE on the MusicNet dataset.
 
-Our t-SNE results were strikingly poor in comparison to the PCA results shown above. We demonstrate only one plot for the sake of this report's brevity, but most class pairs were not linearly separable in 2 or 3 dimensions.
+Our t-SNE results were strikingly poor in comparison to the PCA results shown above. In contrast to work by Pal et al., [[3]](#refrences), t-SNE performed worse visually than PCA. We demonstrate only one plot for the sake of this report's brevity, but most class pairs were not linearly separable in 2 or 3 dimensions.
 
 In purple are data points belonging to Beethoven and in green are data points belonging to Mozart.
 
@@ -190,7 +194,110 @@ Gradient-boosted trees are a type of ensemble learning technique that builds a s
 We chose these hyperparameters based off of 1) The results from decision trees and random forests and 2) Our own experimentation searching through the space of possible hyperparameters. These 2 models are essentially the same, but we want to showcase how gradient-boosted trees, although effective, come to limits that adding more iterations will not fix. Our learning rate was tuned through experimentation and searching. The `max_depth` was experimented with and the results from random forests and decision trees helped guide this selection. We found that including all the features in our model reduced performance and results in the models overfitting extremely fast. Because many of the row vectors are sparse and only few containing more than 1000 entries, we felt 0.5 to be reasonable and through experimentation found it to be effective. We chose the AUC evaluation metric since it does a better job at evaluating classification performance in imbalanced datasets. Lastly, we implement an early stopping of 100 to not waste time and computational resources. The model will stop training and return the best performing model if after 100 iterations the evaluation metrics do not improve.
 
 ### **GTZAN** - Choice of Model and Algorithms:
-**Chosen Model(s)**: 
+**Chosen Model(s)**: We chose to use deep learning - traditional MLPs that employ human-selected features, and CNNs that classify raw spectrograms.
+
+#### **Multilayer Perceptron**
+As discussed in our midterm report (from which much of this carries over), we employ a straightfoward feedforward network on the human-selected features. These are not spatially or temporally related, so a model that exploits such structure (CNNs, RNNs, transformers, etc.) in the input is not needed here. It was clear that we had sufficient training samples and a well-balanced dataset, and so a feedforward network seemed effective.
+
+Two variants of the model were built for the two variants of the dataset - 3 and 30 seconds. For both, we employed a 10% validation split to allow monitoring of model performance to detect overfitting. We used early stopping such that if the loss failed to decrease for 3 epochs in a row, the training process would halt.
+
+For both, we employed a softmax activation function (to output a distribution of probabilities - this is a multiclass single-label classification problem) and the categorical cross-entropy loss. Hidden layers used the ReLU activation function, and a variant was not needed as a network so shallow faced little risk from vanishing gradients.
+
+We employed the widely-used Adam optimizer to accelerate convergence.
+
+**3-second variant**
+
+| Hyperparameter        | Description                                               | Value(s)                 |
+|-----------------------|-----------------------------------------------------------|--------------------------|
+| Layers              | Number of hidden layers in the network                    | 2                        |
+| `n_neurons`   | Number of neurons in each hidden layer                    | 512                      |
+| `dropout_rate`        | Dropout rate for regularization                           | 0.5                      |
+| `loss_function`       | Loss function used                                        | `categorical_crossentropy` |
+| `optimizer`           | Optimization algorithm                                    | `Adam`                   |
+| `learning_rate`       | Learning rate for optimizer                               | 0.001 (1e-3)             |
+| `batch_size`          | Number of samples per batch of computation in training    | 32                       |
+| `max_epochs`          | Maximum number of epochs                                  | 500                      |
+| `patience`      | Patience for early stopping (number of epochs)            | 3                        |
+| `validation_split`    | Fraction of data to be used as validation set             | 0.1 (10%)                |
+
+Hyperparameters were chosen largely based on intuition and repeated experimentation. 
+
+The iteration over model architectures began with a single hidden layer of 32 neurons. From there, the number of neurons was increased, and as signs of overfitting were noticed, dropout regularization was added in. Not only did this prevent overfitting, but it also improved model performance compared to less parameter-dense networks, likely a consequence of breaking co-adaptations.
+
+However, it is important to note that performance did not climb significantly from a single-hidden-layer network with just 128 neurons and dropout. After this, additional improvements to model capacity provided diminishing returns for the increased needs for computing.
+
+With similar experimentation, it was found (along with optimizer parameters) that the ideal batch size was 32.
+
+**30-second variant**
+
+| Hyperparameter        | Description                                               | Value(s)                 |
+|-----------------------|-----------------------------------------------------------|--------------------------|
+| Layers            | Number of hidden layers in the network                    | 2                        |
+| `n_neurons`   | Number of neurons in each hidden layer                    | 64                       |
+| `dropout_rate`        | Dropout rate for regularization                           | 0.5                      |
+| `loss_function`       | Loss function used                                        | `categorical_crossentropy` |
+| `optimizer`           | Optimization algorithm                                    | `Adam`                   |
+| `learning_rate`       | Learning rate for optimizer                               | 0.001 (1e-3)             |
+| `batch_size`          | Number of samples per batch of computation in training    | 16                       |
+| `max_epochs`          | Maximum number of epochs                                  | 500                      |
+| `patience`      | Patience for early stopping (number of epochs)            | 3                        |
+| `validation_split`    | Fraction of data to be used as validation set             | 0.1 (10%)                |
+
+
+When dealing with the 30-second variant, the number of training samples drastically reduced, making overfitting an immediate concern. While we ultimately ended up using virtually the same setup (only a smaller batch size, this time 16), we had to make changes to the size and number of layers. The final hyperparameters reflect these changes - a maximum model size for high performance. Anything more complex, and the model tended to suffer from overfitting, and regularization failed to match simpler models.
+
+The 3-second variant essentially represented a better use of the same underlying dataset. It is effectively an augmentation where each 30-second sample is split into 10 parts.
+
+#### **Convolutional Neural Network**
+
+Another approach to the GTZAN dataset is to employ raw spectrogram images and use convolutional layers to extract spatial information from them. The CNN is employed here as its filters can learn spatial information in a manner far more efficiently (and effectively) than fully-connected layers.
+
+There were multiple variants to employ here - 256 samples per segment, 512 samples per segment, respective PCA variants, and the raw spectrograms themselves. We categorize these as "processed" for the first four and "raw" for the raw spectrograms.
+
+Similar to the MLP, we employed manual experimentation and trial-and-error via validation performance. This was especially relevant here, where training times were excessive and an architecture search would've been highly computationally expensive.
+
+**Processed Spectrograms**
+
+| Layer Type      | Configuration                                         | Description                                             |
+|-----------------|-------------------------------------------------------|---------------------------------------------------------|
+| `Conv1D`        | 32 filters, kernel size 64, activation 'relu'         | 1D convolutional layer with 32 filters and a kernel size of 64 |
+| `Reshape`       | Reshape to (-1, 32, 1)                                | Reshapes the output for subsequent 2D convolutional layer|
+| `Conv2D`        | 64 filters, (3x3) kernel, activation 'relu'           | 2D convolutional layer with 64 filters and a (3x3) kernel |
+| `MaxPooling2D`  | Pool size (2x2)                                       | Max pooling layer with a (2x2) window                    |
+| `Dropout`       | Rate 0.2                                              | Dropout layer with a dropout rate of 0.2                 |
+| `Conv2D`        | 128 filters, (3x3) kernel, activation 'relu'          | 2D convolutional layer with 128 filters and a (3x3) kernel |
+| `MaxPooling2D`  | Pool size (2x2)                                       | Max pooling layer with a (2x2) window                    |
+| `Dropout`       | Rate 0.2                                              | Dropout layer with a dropout rate of 0.2                 |
+| `Flatten`       |                                                       | Flattens the input for the dense layer                   |
+| `Dense`         | 128 neurons, activation 'relu'                        | Dense layer with 128 neurons and 'relu' activation       |
+| `Dropout`       | Rate 0.5                                              | Dropout layer with a dropout rate of 0.5                 |
+| `Dense`         | `num_classes` neurons, activation 'softmax'           | Output dense layer with `num_classes` neurons and 'softmax' activation |
+
+The first attempts began with 256 samples per segment variants. While 2D convolutions were initially employed for the entire network, a significant improvement was observed when using 1D horizontal convolutional filters first. The underlying motivation was the idea that each frequency could have its features individually extracted before they were combined in two dimensions. The PCA variant was also experimented with. However, validation set performance had a considerable 20% degradation despite much hyperparameter tuning, and the PCA feature reduced variant was excluded. However, performance was still quite poor, with validation set performance being ~65%.
+
+Attempts with the 512 samples per segment yielded far poorer results, both PCA and otherwise. Many architectures were tried to little avail, and this dataset variant was ultimately abandoned.
+
+**Raw Spectrograms**
+
+| Layer Type      | Configuration                                         | Description                                           |
+|-----------------|-------------------------------------------------------|-------------------------------------------------------|
+| `Conv2D`        | 32 filters, kernel size (3x3), activation 'relu'      | 2D convolutional layer with 32 filters and a (3x3) kernel |
+| `MaxPooling2D`  | Pool size (2x2)                                       | Max pooling layer with a (2x2) window                  |
+| `Conv2D`        | 64 filters, (3x3) kernel, activation 'relu'           | 2D convolutional layer with 64 filters and a (3x3) kernel |
+| `MaxPooling2D`  | Pool size (2x2)                                       | Max pooling layer with a (2x2) window                  |
+| `Dropout`       | Rate 0.25                                             | Dropout layer with a dropout rate of 0.25              |
+| `Conv2D`        | 128 filters, (3x3) kernel, activation 'relu'          | 2D convolutional layer with 128 filters and a (3x3) kernel |
+| `MaxPooling2D`  | Pool size (2x2)                                       | Max pooling layer with a (2x2) window                  |
+| `Dropout`       | Rate 0.4                                              | Dropout layer with a dropout rate of 0.4               |
+| `Flatten`       |                                                       | Flattens the input for the dense layer                 |
+| `Dense`         | 128 neurons, activation 'relu'                        | Dense layer with 128 neurons and 'relu' activation     |
+| `Dropout`       | Rate 0.5                                              | Dropout layer with a dropout rate of 0.5               |
+| `Dense`         | `num_classes` neurons, activation 'softmax'           | Output dense layer with `num_classes` neurons and 'softmax' activation |
+
+
+Here, significant performance improvements were immediately observed, with much cleaner loss graphs and better validation accuracy. Architectures were adjusted and tuned by trial-and-error, tracking overfitting and adding regularization as needed.
+
+The approach of first using 1D filters no longer provided any particular benefit here.
 
 ## Results and Discussion
 
