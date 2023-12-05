@@ -24,6 +24,9 @@ Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya
       - [Dimensionality Reduction - t-SNE](#dimensionality-reduction---t-sne)
     - [Classification](#classification)
       - [**MusicNet** - Choice of Model and Algorithms:](#musicnet---choice-of-model-and-algorithms)
+      - [Decision Trees](#decision-trees)
+      - [Random Forests](#random-forests)
+      - [Gradient-Boosted Trees](#gradient-boosted-trees)
       - [**GTZAN** - Choice of Model and Algorithms:](#gtzan---choice-of-model-and-algorithms)
   - [Results and Discussion](#results-and-discussion)
     - [Discussion](#discussion)
@@ -116,7 +119,137 @@ Here are the data points but in a 3-dimensional space reduced by t-SNE from the 
 
 ### Classification
 #### **MusicNet** - Choice of Model and Algorithms:
-**Chosen Model(s)**: We opted to only perform classification on the GTZAN dataset. MusicNet requires more thorough processing and either trimming the dataset down to obtain a better distribution of data by class or retrieving data manually. This is discussed more in the Discussion section.
+**Chosen Model(s)**: We decided to use decision trees, random forests, and gradient-boosted trees for our models.
+
+#### Decision Trees
+Methods in this section were inspired from a previous course taken, MATH 4210, and [sci-kit learn's documentation](https://scikit-learn.org/stable/auto_examples/tree/plot_cost_complexity_pruning.html).
+
+Before jumping to more complicated, expensive, and generally less interpretable models, we analyze the results of classification with a single decision tree. Undergoing a proper analysisa dn hyperparametrization of a single decision tree will provide us insight even if the model does not perform well. This will set us up for success and narrow hyperparameter search spaces in the subsequent models.
+
+We perform a search over the best value of the cost complexity pruning penalty. This is a penalty coefficient of the complexity of the decision tree, where complexity is measured by the number of leaves in a tree (very similar to ridge and LASSO regression). Below we can see how as we increase the cost complexity hyperparameter (alpha), the total imputiry of the leaves increases.
+
+<img src="../assets/dt_cc_path.png" alt="drawing" width="300"/>
+
+However, this does not mean the model is performing worse as the cost complexity penalty increases. As shown below, there is an optimal cost complexity penality found at around ~0.09 that results in the best test accuracy of the model. This is the cost complexity penalty we use for our decision tree.
+
+<img src="../assets/cc_accuracy_path.png" alt="drawing" width="300"/>
+
+We then fit our decision tree with the cost complexity hyperparameter described previously. The depth of our resulting tree is 10, providing insight for subsequent models as to how deep a tree should or should not be. The results of this tree are summarized below in a confusion matrix, training and testing accuracy, and F1 score.
+
+<img src="../assets/dt_confusion_matrix.png" alt="drawing" width="300"/>
+
+Decision Tree Classifier
+Training Accuracy: 1.0
+Test Accuracy: 0.6458333333333334
+Test F1-Score0.6475694444444445
+
+We can see the model does actually quite well for how little training data there is and how poorly the data is distributed. This landmark shows that our processing algorithm for the MIDI is effective to at least some extent in distinguishing certain composers from others.
+
+#### Random Forests
+| Hyperparameter        | Description                                          | Value(s)               |
+|-----------------------|------------------------------------------------------|------------------------|
+| `n_estimators`        | Number of boosting stages to be run                  | 100                    |
+| `max_depth`           | Maximum depth of the individual trees                | 13                     |
+| `max_features`        | Number of features to consider for the best split    | 1024                   |
+| `random_state`        | Seed for random number generation                    | seed=42                |
+
+Since random forests in our case are very computationally feasible, and since our analysis of decision tree performance based on depth provides insight, we opted to search through what `max_depth` hyperparameter would perform the best. We experimentally found `max_depth` of 13 to work the best for random forests, in contrast to the best depth for a single decision tree to be 10. Our choice of `max_features` was based off the fact that many of the data samples are sparse in non-zero entries and only few contain more than 1024 entries (and not by much more) we felt 0.5 to be reasonable and through experimentation found it to be effective.
+
+Random Forest Classifier
+Training Accuracy: 1.0
+Test Accuracy: 0.8541666666666666
+Test F1-Score0.8519282808470453
+Maximum depth of Random Forest: 13
+
+#### Gradient-Boosted Trees
+**Model 1 Hyperparameters**:
+| Hyperparameter        | Description                                          | Value(s)               |
+|-----------------------|------------------------------------------------------|------------------------|
+| `n_estimators`        | Number of boosting stages to be run                  | 20                     |
+| `learning_rate`       | Step size shrinkage to prevent overfitting           | 0.8                    |
+| `max_depth`           | Maximum depth of the individual trees                | 10                     |
+| `subsample`           | Proportion of features to consider for the best split| 0.5                    |
+| `objective`           | The objective function this model is minimizing      | `multi:softmax`        |
+| `early_stopping`      | Stop training early if evaluation doesn't improve    | None                   |
+| `random_state`        | Seed for random number generation                    | seed=42                |
+
+**Model 2 Hyperparameters**:
+| Hyperparameter        | Description                                          | Value(s)               |
+|-----------------------|------------------------------------------------------|------------------------|
+| `n_estimators`        | Number of boosting stages to be run                  | 1000                   |
+| `learning_rate`       | Step size shrinkage to prevent overfitting           | 0.8                    |
+| `max_depth`           | Maximum depth of the individual trees                | 10                     |
+| `subsample`           | Proportion of features to consider for the best split| 0.5                    |
+| `objective`           | The objective function this model is minimizing      | `multi:softmax`        |
+| `early_stopping`      | Stop training early if evaluation doesn't improve    | 100                    |
+| `random_state`        | Seed for random number generation                    | seed=42                |
+
+We chose these hyperparameters based off of 1) The results from decision trees and random forests and 2) Our own experimentation searching through the space of possible hyperparameters. These 2 models are essentially the same, but we want to showcase how gradient-boosted trees, although effective, come to limits that adding more iterations will not fix. Our learning rate was tuned through experimentation and searching. The `max_depth` was experimented with and the results from random forests and decision trees helped guide this selection. We found that including all the features in our model reduced performance and results in the models overfitting extremely fast. Because many of the row vectors are sparse and only few containing more than 1000 entries, we felt 0.5 to be reasonable and through experimentation found it to be effective.
+
+- **Boosted-Decision Trees Training Results**
+Model 1 Training Table:
+| Iteration | Train AUC | Train Misclassification Error | Eval AUC | Eval Misclassification Error |
+|-----------|-----------|-------------------------------|----------|-------------------------------|
+| 0         | 0.86054   | 0.36111                       | 0.77116  | 0.52083                       |
+| 1         | 0.93284   | 0.21528                       | 0.82366  | 0.47917                       |
+| 2         | 0.95528   | 0.19444                       | 0.84713  | 0.29167                       |
+| 3         | 0.96822   | 0.17361                       | 0.88281  | 0.25000                       |
+| 4         | 0.97271   | 0.15972                       | 0.88940  | 0.31250                       |
+| 5         | 0.97109   | 0.13889                       | 0.90380  | 0.33333                       |
+| 6         | 0.97126   | 0.15278                       | 0.89037  | 0.29167                       |
+| 7         | 0.97764   | 0.13889                       | 0.90454  | 0.27083                       |
+| 8         | 0.97766   | 0.12500                       | 0.92452  | 0.22917                       |
+| 9         | 0.98132   | 0.12500                       | 0.90117  | 0.31250                       |
+| 10        | 0.98462   | 0.12500                       | 0.92574  | 0.25000                       |
+| 11        | 0.98734   | 0.11806                       | 0.92663  | 0.22917                       |
+| 12        | 0.98723   | 0.08333                       | 0.92991  | 0.20833                       |
+| 13        | 0.98879   | 0.07639                       | 0.93026  | 0.22917                       |
+| 14        | 0.99139   | 0.06944                       | 0.93374  | 0.22917                       |
+| 15        | 0.99309   | 0.07639                       | 0.93643  | 0.22917                       |
+| 16        | 0.99436   | 0.07639                       | 0.93824  | 0.20833                       |
+| 17        | 0.99524   | 0.04861                       | 0.93467  | 0.22917                       |
+| 18        | 0.99714   | 0.05556                       | 0.93164  | 0.20833                       |
+| 19        | 0.99742   | 0.03472                       | 0.93645  | 0.20833                       |
+
+Test results:
+XGBoost Classifier - 20 estimators, max_depth of 10, learning rate of 0.8, softmax objective function.
+Training Accuracy: 0.9652777777777778
+Test Accuracy: 0.8541666666666666
+Test F1-Score0.8519282808470453
+
+<img src="../assets/xgboost_model1_confusion_matrix" alt="drawing" width="300"/>
+
+Model 2 Training Table:
+| Iteration | Train AUC | Train Misclassification Error | Eval AUC | Eval Misclassification Error |
+|-----------|-----------|-------------------------------|----------|-------------------------------|
+|     0     |  0.85925  |            0.36111            |  0.77116 |            0.52083            |
+|     1     |  0.92848  |            0.22917            |  0.84076 |            0.41667            |
+|     2     |  0.94987  |            0.20833            |  0.87133 |            0.27083            |
+|     3     |  0.95769  |            0.18056            |  0.89643 |            0.25000            |
+|     4     |  0.96958  |            0.15972            |  0.88770 |            0.22917            |
+|     5     |  0.96794  |            0.15278            |  0.90044 |            0.31250            |
+|     6     |  0.97244  |            0.11806            |  0.88905 |            0.33333            |
+|     7     |  0.97616  |            0.11806            |  0.87536 |            0.33333            |
+|     8     |  0.98422  |            0.10417            |  0.88341 |            0.33333            |
+|     9     |  0.98428  |            0.10417            |  0.88773 |            0.27083            |
+|    10     |  0.98491  |            0.09028            |  0.89605 |            0.25000            |
+|   ...     |    ...    |              ...              |    ...   |              ...              |
+|    160    |  0.99983  |            0.00694            |  0.91817 |            0.22917            |
+|    161    |  0.99983  |            0.00694            |  0.91692 |            0.22917            |
+|    162    |  0.99983  |            0.00694            |  0.91692 |            0.25000            |
+|    163    |  0.99983  |            0.00694            |  0.91742 |            0.18750            |
+|    164    |  0.99983  |            0.00694            |  0.91742 |            0.18750            |
+|    165    |  0.99983  |            0.00694            |  0.91519 |            0.25000            |
+|    166    |  0.99983  |            0.00694            |  0.91418 |            0.25000            |
+
+XGBoost Classifier - 1000 estimators, max_depth of 10, learning rate of 0.8, softmax objective function.
+Training Accuracy: 0.9930555555555556
+Test Accuracy: 0.8541666666666666
+Test F1-Score0.8519282808470453
+
+<img src="../assets/xgboost_model3_confusion_matrix" alt="drawing" width="300"/>
+
+As we can see, training the model more does not result in better performance. This is a prime example of overfitting, but the main takeaway is that there are more efficient ways to do things.
 
 #### **GTZAN** - Choice of Model and Algorithms:
 **Chosen Model(s)**: 
@@ -163,7 +296,7 @@ F1 Scores, confusion matrix, etc.
 
 | Contributor Name      | Contribution Type                      |
 |------------------------|----------------------------------------|
-| Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, MIDI Parsing, Data Visualization, GitHub Pages|
+| Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, t-SNE, CNN framework, Decision Trees Random Forests, Gradient-boosted trees, Figure generation and analysis, MIDI Parsing, Data Visualization, EDA, GitHub Pages|
 | Aditya Radhakrishnan   | Model Design & Implementation, Development/Iteration, Validation, Testing, Results Generation & Visualization, and Early Dataset Balancing Exploration                              |
 | Isabelle Murray        | GanttChart, Model Implementation/development, Testing, Results Generation & Visualization  |
 | Karpagam Karthikeyan   | GanttChart, MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing         |
