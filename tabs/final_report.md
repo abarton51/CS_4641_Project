@@ -510,19 +510,19 @@ The loss graph considerably diverges at ~8-9 epochs, showing the start of overfi
 
 | Genre        | Precision | Recall | F1-score | Support |
 |--------------|-----------|--------|----------|---------|
-| Disco        | 0.76      | 0.75   | 0.75     | 299     |
-| Metal        | 0.73      | 0.83   | 0.78     | 293     |
-| Reggae       | 0.53      | 0.68   | 0.59     | 282     |
-| Blues        | 0.63      | 0.40   | 0.49     | 300     |
-| Rock         | 0.46      | 0.30   | 0.36     | 319     |
-| Classical    | 0.81      | 0.78   | 0.80     | 308     |
-| Jazz         | 0.52      | 0.62   | 0.57     | 304     |
-| Hip Hop      | 0.71      | 0.66   | 0.68     | 300     |
-| Country      | 0.44      | 0.62   | 0.52     | 305     |
-| Pop          | 0.80      | 0.67   | 0.73     | 287     |
-| **Accuracy**     |           |        | 0.63     | 2997    |
-| **Macro Avg.**   | 0.64      | 0.63   | 0.63     | 2997    |
-| **Weighted Avg.**| 0.64      | 0.63   | 0.63     | 2997    |
+| Disco        | 0.76      | 0.68   | 0.72     | 326     |
+| Metal        | 0.82      | 0.95   | 0.88     | 300     |
+| Reggae       | 0.76      | 0.70   | 0.73     | 299     |
+| Blues        | 0.76      | 0.67   | 0.71     | 316     |
+| Rock         | 0.64      | 0.56   | 0.60     | 281     |
+| Classical    | 0.80      | 0.98   | 0.88     | 294     |
+| Jazz         | 0.85      | 0.75   | 0.80     | 291     |
+| Hip Hop      | 0.74      | 0.82   | 0.78     | 299     |
+| Country      | 0.67      | 0.71   | 0.69     | 284     |
+| Pop          | 0.74      | 0.75   | 0.74     | 307     |
+| **Accuracy**     |           |        | 0.76     | 2997    |
+| **Macro Avg.**   | 0.75      | 0.76   | 0.75     | 2997    |
+| **Weighted Avg.**| 0.76      | 0.76   | 0.75     | 2997    |
 
 
 The raw spectrogram model performs considerably better than the processed ones. This is likely due to the processed spectrograms losing valuable information for classification. However, the inherent greater complexity of this function results in a performance that is still inferior to the best MLP.
@@ -549,8 +549,6 @@ From the analysis of different models, it's quite clear that human-extracted fea
 However, it may well be that spectrograms still provide valuable insights, as they certainly contain more raw information (i.e., the entire piece, just without phase information). As we'll discuss in "Next Steps", this fact may be exploited to improve model performance in the future.
 
 Perhaps one of the most interesting insights we find is in how the model does its missclassifications, a finding that is more pronounced in the poorly-performing models. Namely, it is the interesting consequence of rock being a genre that has both a number of predecessor genres (blues, bluegrass, country, boogie-woogie, gospel, and country music) as well as successor genres (pop, metal, etc.). This results in a number of misclassifications for rock, being the "central genre" between these predecessors and successors. Additionally, genres that are not part of this interrelated family end up having performance that is quite high, especially evident with classical music. This potentially shows that the models (however medicore some of their individual performances may be) are learning fundamental features that define western music as an art form.
-
-**Overall**:
 
 ## Next Steps
 **MusicNet**:
