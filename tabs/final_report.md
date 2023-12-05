@@ -143,7 +143,7 @@ We performed a search over the best value of the cost complexity pruning penalty
 
 <img src="../assets/dt_cc_path.png" alt="drawing" width="300"/>
 
-However, this does not mean the model is performing worse as the cost complexity penalty increases. As shown below, there is an optimal cost complexity penality found at around ~0.09 that results in the best test accuracy of the model. This is the cost complexity penalty we use for our decision tree.
+However, this does not mean the model is performing worse as the cost complexity penalty increases. As shown below, there is an optimal cost complexity penality found at around ~0.02 that results in the best test accuracy of the model. This is the cost complexity penalty we use for our decision tree.
 
 <img src="../assets/cc_accuracy_path.png" alt="drawing" width="300"/>
 
