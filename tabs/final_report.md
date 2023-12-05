@@ -330,6 +330,9 @@ F1 Scores, confusion matrix, etc.
 
 ### Discussion
 **MusicNet**:
+This project focuses on incorporating neural networks to decision trees, random forests, and gradient-boosted trees through a nuanced approach that considers both performance and practicality. The emphasis on the latter models, particularly gradient-boosted trees, indicates a goal of competitive performance while using advantages in training time and interpretability, where this model selection aligns with our broader goal of improving existing accuracy benchmarks, especially through methods beyond neural networks, that ultimately reflects a commitment to contributing to the field of music classification and broadening the range of effective methodologies. The results section provides a clear presentation of the models' performances, showcasing training accuracy, test accuracy, F1-score, and AUC. The decision tree's respectable performance despite limited training data and the dataset's distribution sets a benchmark. The subsequent improvements seen with random forests and gradient-boosted trees highlight the project's evolution. The comparative analysis between models, especially the observation that increasing the number of estimators in gradient-boosted trees does not necessarily improve performance, offers valuable insights.
+
+We were able to handle the complexities of classical music data through the processing algorithm for MIDI files, transforming them into row vectors and further into a 2-D array for supervised models. While the averaging of values across the third dimension and flattening of the resulting 2-D array present a reasonable solution to the challenge of varying quarter notes in each piece, we can improve this and optimize this algorithm. The discussion of hyperparameters for decision trees, random forests, and gradient-boosted trees adds depth to the project, and the emphasis on fine-tuning these parameters based on model performance sets the stage for a systematic refinement of the models. Overall, the project's exploration, model choices, and attention to practical considerations definitely contribute to the realm of music classification as a whole.
 
 **GTZAN**:
 
@@ -337,6 +340,9 @@ F1 Scores, confusion matrix, etc.
 
 ## Next Steps
 **MusicNet**:
+1. Fine-tuning Hyperparameters: The decision tree provides a baseline, and the hyperparameter search space can be refined based on its results, and we could do more experimentation with random forests and gradient-boosted trees hyperparameters could potentially improve performance.
+2. Feature Importance Analysis: For decision trees and random forests, analyzing feature importance can provide insights into which aspects of the data contribute the most to classification, where understanding which musical features are crucial for distinguishing composers can enhance model interpretability.
+3. Addressing Class Imbalance: The imbalanced distribution of samples among composers, especially evident in the reduced subset, may impact model performance, where techniques like oversampling, undersampling, or using different class weights during training could be further explored, noteably the composers whom have much less data to work with compared to the other composers in the dataset.
 
 **GTZAN**:
 
@@ -347,8 +353,8 @@ F1 Scores, confusion matrix, etc.
 | Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, t-SNE, CNN framework, Decision Trees Random Forests, Gradient-boosted trees, Figure generation and analysis, MIDI Parsing, Data Visualization, EDA, GitHub Pages|
 | Aditya Radhakrishnan   | Model Design & Implementation, Development/Iteration, Validation, Testing, Results Generation & Visualization, and Early Dataset Balancing Exploration                              |
 | Isabelle Murray        | GanttChart, Model Implementation/development, Testing, Results Generation & Visualization  |
-| Karpagam Karthikeyan   | GanttChart, MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing         |
-| Niki (Keyang) Lu       | Video presentation, GTZAN Data Preprocessing & Visualization                |
+| Karpagam Karthikeyan   | GanttChart, MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing, Figure Generation, CNN Model, Video Presentation         |
+| Niki (Keyang) Lu       | GTZAN Data Preprocessing & Visualization                |
 
 ## Gantt Chart
 Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/personal/kkarthikeyan8_gatech_edu/EVjVKvZA0_xLh_aF5jo_iTEBVskxE3vAHkcjEn6QkRMpAQ?e=xVssxk)
