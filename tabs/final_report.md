@@ -202,12 +202,14 @@ We fit our decision tree with the cost complexity hyperparameter described [prev
 
 <img src="../assets/dt_confusion_matrix.png" alt="drawing" width="300"/>
 
-A note on F1-Score: For this section, we use a weighted average F1 score since this is a multi-class classification task and we believe this method of aggregated pairwise F1-scores is best for our imbalanced dataset.
+**A note on F1-Score and AUC:** For this section, we use a weighted average F1-score and weighted average Area Under the receiver operating Curve (AUC). The reason we weight these scores is due to the imbalance in the classes for this dataset. The F1-score metric is the harmonic mean of precision and reall. Thus, it acts as an aggregated metric for both precision and recall. Because it's defined on a binary case of true/false postive/negatives, each class has its corresponding F1-score. These values are then aggregated by a weighted average into one value, as reported below. The AUC metric is an aggregate measurement of true and false positive rates derived from the ROC plot, which plots the true positive rate (TPR) against the false positive rate (FPR) at each threshold setting. Similarly to the F1-score, this is a binary classification statistics. Therefore, each class has their own AUC score which is aggregated into a single reported AUC. We use both the 1 vs Rest and 1 vs 1 methods. 1 vs Rest divides the data into two classes as the 1 class we are measuring (positive), and the rest (negatives). The 1 vs 1 method only looks at pairwise comparisons between each class as the positives and negatives. Both of the metrics for measuring classification performance are highly regarded and tend to perform better than accuracy alone, especially in imbalanced datasets such as this one [[5.]](#references), [[6.]].
 
 Decision Tree Classifier Results:
 - Training Accuracy: 1.0
 - Test Accuracy: 0.6458333333333334
 - Test F1-Score: 0.6475694444444445
+- Test 1v1 AUC-Score: 0.7684729549963925
+- Test 1vRest AUC-Score: 0.7462224419541492
 
 We can see the model does actually quite well for how little training data there is and how poorly the data is distributed. This landmark shows that our processing algorithm for the MIDI is effective to at least some extent in distinguishing certain composers from others.
 
@@ -221,8 +223,10 @@ Random Forest Classifier Results:
 - Training Accuracy: 1.0
 - Test Accuracy: 0.8541666666666666
 - Test F1-Score: 0.8519282808470453
+- Test 1v1 AUC-Score: 0.9701817279942282
+- Test 1vRest AUC-Score: 0.9668985078283857
 
-We can see that random forests drastically improve classification results. Since random forests are highly interpretable and cost efficient we would opt for this model over other less interpretable and cost ineffecitve models. This idea is showcased in the subsequent section with the introduction of gradient-boosted trees.
+We can see that random forests drastically improve classification results. Since random forests are highly interpretable and cost efficient, we would opt for this model over other less interpretable and cost ineffecitve models. This idea is showcased in the subsequent section with the introduction of gradient-boosted trees.
 
 #### Gradient-Boosted Trees
 
@@ -255,7 +259,9 @@ Model 1 Training Table:
 XGBoost Model 1 Results:
 - Training Accuracy: 0.9652777777777778
 - Test Accuracy: 0.8541666666666666
-- Test F1-Score: 0.8519282808470453
+- Test F1-Score: 0.7749568668046929
+- Test 1v1 AUC-Score: 0.9282258973665223
+- Test 1vRest AUC-Score: 0.936447444831591
 
 <img src="../assets/xgboost_model1_confusion_matrix.png" alt="drawing" width="300"/>
 
@@ -288,7 +294,9 @@ Model 2 Training Table:
 XGBoost Model 2 Results:
 - Training Accuracy: 0.9930555555555556
 - Test Accuracy: 0.8541666666666666
-- Test F1-Score: 0.8519282808470453
+- Test F1-Score: 0.7664231763068972
+- Test 1v1 AUC-Score: 0.9095452290764792
+- Test 1vRest AUC-Score: 0.910000647424428
 
 <img src="../assets/xgboost_model3_confusion_matrix.png" alt="drawing" width="300"/>
 
@@ -360,3 +368,8 @@ Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/perso
 
 [3.] Pál, T., & Várkonyi, D.T. (2020). Comparison of Dimensionality Reduction Techniques on Audio Signals. Conference on Theory and Practice of Information Technologies.
 
+[4.] (https://www.kaggle.com/code/imsparsh/gtzan-genre-classification-deep-learning-val-92-4) Gupta, S. (2021). GTZAN-Genre Classification-Deep Learning-Val-92.4%.
+
+[5.] Ferrer, L. (n.d.). Analysis and comparison of classification metrics - arxiv.org. Arxiv. https://arxiv.org/pdf/2209.05355.pdf 
+
+[6.] Brownlee, J. (2021, April 30). Tour of evaluation metrics for imbalanced classification. MachineLearningMastery.com. https://machinelearningmastery.com/tour-of-evaluation-metrics-for-imbalanced-classification/ 
