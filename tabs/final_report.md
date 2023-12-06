@@ -147,7 +147,7 @@ We performed a search over the best value of the cost complexity pruning penalty
 
 <img src="../assets/dt_cc_path.png" alt="drawing" width="300"/>
 
-However, this does not mean the model is performing worse as the cost complexity penalty increases. As shown below, there is an optimal cost complexity penality found at around ~0.09 that results in the best test accuracy of the model. This is the cost complexity penalty we use for our decision tree.
+However, this does not mean the model is performing worse as the cost complexity penalty increases. As shown below, there is an optimal cost complexity penality found at around ~0.02 that results in the best test accuracy of the model. This is the cost complexity penalty we use for our decision tree.
 
 <img src="../assets/cc_accuracy_path.png" alt="drawing" width="300"/>
 
@@ -309,7 +309,7 @@ We fit our decision tree with the cost complexity hyperparameter described [prev
 
 <img src="../assets/dt_confusion_matrix.png" alt="drawing" width="300"/>
 
-**A note on F1-Score and AUC:** For this section, we use a weighted average F1-score and weighted average Area Under the receiver operating Curve (AUC). The reason we weight these scores is due to the imbalance in the classes for this dataset. The F1-score metric is the harmonic mean of precision and reall. Thus, it acts as an aggregated metric for both precision and recall. Because it's defined on a binary case of true/false postive/negatives, each class has its corresponding F1-score. These values are then aggregated by a weighted average into one value, as reported below. The AUC metric is an aggregate measurement of true and false positive rates derived from the ROC plot, which plots the true positive rate (TPR) against the false positive rate (FPR) at each threshold setting. Similarly to the F1-score, this is a binary classification statistics. Therefore, each class has their own AUC score which is aggregated into a single reported AUC. We use both the 1 vs Rest and 1 vs 1 methods. 1 vs Rest divides the data into two classes as the 1 class we are measuring (positive), and the rest (negatives). The 1 vs 1 method only looks at pairwise comparisons between each class as the positives and negatives. Both of the metrics for measuring classification performance are highly regarded and tend to perform better than accuracy alone, especially in imbalanced datasets such as this one [[5.]](#references), [[6.]].
+**A note on F1-Score and AUC:** For this section, we use a weighted average F1-score and weighted average Area Under the receiver operating Curve (AUC). The reason we weight these scores is due to the imbalance in the classes for this dataset. The F1-score metric is the harmonic mean of precision and reall. Thus, it acts as an aggregated metric for both precision and recall. Because it's defined on a binary case of true/false postive/negatives, each class has its corresponding F1-score. These values are then aggregated by a weighted average into one value, as reported below. The AUC metric is an aggregate measurement of true and false positive rates derived from the ROC plot, which plots the true positive rate (TPR) against the false positive rate (FPR) at each threshold setting. Similarly to the F1-score, this is a binary classification statistics. Therefore, each class has their own AUC score which is aggregated into a single reported AUC. We use both the 1 vs Rest and 1 vs 1 methods. 1 vs Rest divides the data into two classes as the 1 class we are measuring (positive), and the rest (negatives). The 1 vs 1 method only looks at pairwise comparisons between each class as the positives and negatives. Both of the metrics for measuring classification performance are highly regarded and tend to perform better than accuracy alone, especially in imbalanced datasets such as this one [[5.]](#references), [[6.]](#references).
 
 Decision Tree Classifier Results:
 - Training Accuracy: 1.0
@@ -414,38 +414,160 @@ As we can see, training the model more does not result in better performance. So
 
 F1 Scores, confusion matrix, etc.
 
+| Genre        | Precision | Recall | F1-score | Support |
+|--------------|-----------|--------|----------|---------|
+| Disco        | 0.90      | 0.85   | 0.87     | 186     |
+| Metal        | 0.91      | 0.97   | 0.94     | 199     |
+| Reggae       | 0.91      | 0.89   | 0.90     | 194     |
+| Blues        | 0.93      | 0.93   | 0.92     | 190     |
+| Rock         | 0.90      | 0.83   | 0.87     | 189     |
+| Classical    | 0.93      | 0.95   | 0.94     | 208     |
+| Jazz         | 0.89      | 0.91   | 0.90     | 203     |
+| Hip Hop      | 0.85      | 0.89   | 0.87     | 244     |
+| Country      | 0.85      | 0.89   | 0.87     | 210     |
+| Pop          | 0.90      | 0.91   | 0.90     | 183     |
+| **Accuracy**     |           |        | 0.90     | 1998    |
+| **Macro Avg.**   | 0.90      | 0.90   | 0.90     | 1998    |
+| **Weighted Avg.**| 0.90      | 0.90   | 0.90     | 1998    |
 
-- Confusion Matrix:
+
+With a 90% accuray, both weighted and unweighted, this model provides the best results for the entire GTZAN dataset.
+
+  
+<img src="../assets/images/gtzan_mlp_3secs_confmatrix.png" alt="drawing" width="400"/>
+
+Interestingly, one of the most pronounced type of misclassification is the labelling of rock pieces as either disco or metal, where intuitively, there is a significant amount of similarity.
 
 
-- Loss:
+<img src="../assets/images/gtzan_mlp_3secs_loss.png" alt="drawing" width="400"/>
 
-
+The model has a clean loss graph, and the early stopping prevented the validation loss from continuing to rise.
 
 
 **Quantitative metrics**: 30-second samples
 
 F1 Scores, confusion matrix, etc.
 
+| Genre        | Precision | Recall | F1-score | Support |
+|--------------|-----------|--------|----------|---------|
+| Disco        | 0.67      | 0.48   | 0.56     | 21      |
+| Metal        | 0.96      | 0.69   | 0.81     | 23      |
+| Reggae       | 0.79      | 0.75   | 0.77     | 26      |
+| Blues        | 0.55      | 0.65   | 0.61     | 20      |
+| Rock         | 0.86      | 0.26   | 0.36     | 19      |
+| Classical    | 0.56      | 0.90   | 0.68     | 20      |
+| Jazz         | 0.75      | 0.88   | 0.81     | 17      |
+| Hip Hop      | 0.65      | 0.79   | 0.71     | 19      |
+| Country      | 0.76      | 0.61   | 0.68     | 23      |
+| Pop          | 0.82      | 0.82   | 0.82     | 22      |
+| **Accuracy**     |           |        | 0.71     | 200     |
+| **Macro Avg.**   | 0.70      | 0.71   | 0.70     | 200     |
+| **Weighted Avg.**| 0.71      | 0.71   | 0.70     | 200     |
 
-- Confusion Matrix:
+Clearly, as expected and shown by our results with the validation set during model development, performance is considerably worse. This can simply be attributed to fewer training samples, with the model overfitting too quickly before it could adequately learn the underlying function.
 
 
-- Loss: 
+<img src="../assets/images/gtzan-30sec-confmatrix.png" alt="drawing" width="400"/>
+
+The difficulty of classifying rock is far more pronounced here, although this time, the misclassifications are to classes that are more diverse. However, classes that are highly related to rock (say, blues, from which rock and roll is derived) tend to have a higher misclassification rate than that of, say, classical music. Rock as a genre historically evolved from a number of genres, from jazz to country to blues, and this depth of complexity may be the driving force behind these misclassifications.
 
 
+<img src="../assets/images/gtzan_mlp_30secs_loss.png" alt="drawing" width="400"/>
+
+As expected, the loss graph is far worse, with validation loss diverging in a quite pronounced manner from train loss, quickly overfitting.
+
+**CNN - Processed Spectrogram** (256, non-PCA)
+
+| Genre        | Precision | Recall | F1-score | Support |
+|--------------|-----------|--------|----------|---------|
+| Disco        | 0.76      | 0.75   | 0.75     | 299     |
+| Metal        | 0.73      | 0.83   | 0.78     | 293     |
+| Reggae       | 0.53      | 0.68   | 0.59     | 282     |
+| Blues        | 0.63      | 0.40   | 0.49     | 300     |
+| Rock         | 0.46      | 0.30   | 0.36     | 319     |
+| Classical    | 0.81      | 0.78   | 0.80     | 308     |
+| Jazz         | 0.52      | 0.62   | 0.57     | 304     |
+| Hip Hop      | 0.71      | 0.66   | 0.68     | 300     |
+| Country      | 0.44      | 0.62   | 0.52     | 305     |
+| Pop          | 0.80      | 0.67   | 0.73     | 287     |
+| **Accuracy**     |           |        | 0.63     | 2997    |
+| **Macro Avg.**   | 0.64      | 0.63   | 0.63     | 2997    |
+| **Weighted Avg.**| 0.64      | 0.63   | 0.63     | 2997    |
+
+The CNNs on the processed spectrogram generally perform quite poorly. Extracting features from the raw spectrogram is a far more difficult function to learn than classifying human-selected features, which is effectively much more refined information that humans use when making and playing music. However, the model is certainly far better than a simple randomized classification, and it has certainly learned something.
+
+
+<img src="../assets/images/raw_gtzan_mlp_spectrogram_20500hz_2s_256npersegsecs_cm.png" alt="drawing" width="400"/>
+
+Just as before, rock seems to be misclassified a lot, with blues following not too far behind. Once again, the fact that rock is, in part, derived from blues means that the two are highly similar, and these misclassifications may be explained in this way.
+
+
+<img src="../assets/images/raw_gtzan_mlp_spectrogram_20500hz_2s_256npersegsecs_loss.png" alt="drawing" width="400"/>
+
+The loss graph considerably diverges at ~8-9 epochs, showing the start of overfitting.
+
+**CNN - Raw Spectrogram** (2s)
+
+| Genre        | Precision | Recall | F1-score | Support |
+|--------------|-----------|--------|----------|---------|
+| Disco        | 0.76      | 0.68   | 0.72     | 326     |
+| Metal        | 0.82      | 0.95   | 0.88     | 300     |
+| Reggae       | 0.76      | 0.70   | 0.73     | 299     |
+| Blues        | 0.76      | 0.67   | 0.71     | 316     |
+| Rock         | 0.64      | 0.56   | 0.60     | 281     |
+| Classical    | 0.80      | 0.98   | 0.88     | 294     |
+| Jazz         | 0.85      | 0.75   | 0.80     | 291     |
+| Hip Hop      | 0.74      | 0.82   | 0.78     | 299     |
+| Country      | 0.67      | 0.71   | 0.69     | 284     |
+| Pop          | 0.74      | 0.75   | 0.74     | 307     |
+| **Accuracy**     |           |        | 0.76     | 2997    |
+| **Macro Avg.**   | 0.75      | 0.76   | 0.75     | 2997    |
+| **Weighted Avg.**| 0.76      | 0.76   | 0.75     | 2997    |
+
+
+The raw spectrogram model performs considerably better than the processed ones. This is likely due to the processed spectrograms losing valuable information for classification. However, the inherent greater complexity of this function results in a performance that is still inferior to the best MLP.
+
+
+<img src="../assets/images/raw_gtzan_mlp_spectrogram_2ssecs_cm.png" alt="drawing" width="400"/>
+
+Once again, patterns in rock music being misclassified are observable, a universal trend. The distinct nature of classical music as an archaic genre may help set it apart, resulting in a high model accuracy.
+
+
+<img src="../assets/images/raw_gtzan_mlp_spectrogram_2ssecs_loss.png" alt="drawing" width="400"/>
+
+The model has a much better loss graph here, likely due to it being able to learn the function better due to the presence of more information before signs of overfitting creep in.
 
 ### Discussion
 **MusicNet**:
+This project focuses on incorporating neural networks to decision trees, random forests, and gradient-boosted trees through a nuanced approach that considers both performance and practicality. The emphasis on the latter models, particularly gradient-boosted trees, indicates a goal of competitive performance while using advantages in training time and interpretability, where this model selection aligns with our broader goal of improving existing accuracy benchmarks, especially through methods beyond neural networks, that ultimately reflects a commitment to contributing to the field of music classification and broadening the range of effective methodologies. The results section provides a clear presentation of the models' performances, showcasing training accuracy, test accuracy, F1-score, and AUC. The decision tree's respectable performance despite limited training data and the dataset's distribution sets a benchmark. The subsequent improvements seen with random forests and gradient-boosted trees highlight the project's evolution. The comparative analysis between models, especially the observation that increasing the number of estimators in gradient-boosted trees does not necessarily improve performance, offers valuable insights.
 
-**GTZAN**:
+We were able to handle the complexities of classical music data through the processing algorithm for MIDI files, transforming them into row vectors and further into a 2-D array for supervised models. While the averaging of values across the third dimension and flattening of the resulting 2-D array present a reasonable solution to the challenge of varying quarter notes in each piece, we can improve this and optimize this algorithm. The discussion of hyperparameters for decision trees, random forests, and gradient-boosted trees adds depth to the project, and the emphasis on fine-tuning these parameters based on model performance sets the stage for a systematic refinement of the models. Overall, the project's exploration, model choices, and attention to practical considerations definitely contribute to the realm of music classification as a whole.
+
+**GTZAN**: 
+From the analysis of different models, it's quite clear that human-extracted features perform better than spectrograms, at least when models are relatively shallow. As discussed before, this is likely owed to the fact that human-extracted features represent handpicked selections that are more representative of how we interpret patterns in music, and differences in these patterns is what we recognize as different genres. A CNN has to implicitly learn this from a spectrogram, which significantly increases complexity.
+
+However, it may well be that spectrograms still provide valuable insights, as they certainly contain more raw information (i.e., the entire piece, just without phase information). As we'll discuss in "Next Steps", this fact may be exploited to improve model performance in the future.
+
+Perhaps one of the most interesting insights we find is in how the model does its missclassifications, a finding that is more pronounced in the poorly-performing models. Namely, it is the interesting consequence of rock being a genre that has both a number of predecessor genres (blues, bluegrass, country, boogie-woogie, gospel, and country music) as well as successor genres (pop, metal, etc.). This results in a number of misclassifications for rock, being the "central genre" between these predecessors and successors. Additionally, genres that are not part of this interrelated family end up having performance that is quite high, especially evident with classical music. This potentially shows that the models (however medicore some of their individual performances may be) are learning fundamental features that define western music as an art form.
 
 **Overall**:
 
+With our project, we implemented several different architectures, with each model crafted towards a specific representation of music - midi, spectrograms, and extracted features. These models were able to extract information from each representation and perform supervised classification on its genre. 
+
+Midi, as a logical and intuitive way to organize music, make features such as intervals, chords, and progressions much easier to parse. This prompted us to use techniques that can utilize these structures to its fullest - tree based methods. Raw spectrogram files is a way to represent audio files directly that can be learned by a spectrogram. Our work shows that deep convolutions neural network is able to learn complex features and understand genre. However, due to the large dimensionality of audio files, learning features from spectrogram files requires complex models and large datasets. We were able to get better results by using 1D convolutions to account for music's unique representation in the frequency domain. We discovered that human selected features by industry experts performed the best. This reflects the paradigm that domain knowledge can boost machine learning methods by significantly reducing the size and simplicity of models, and can perform complex methods trained on raw data.
+
+Our results explores the capabilities of machine learning methods when applied on supervised learning tasks to different representations of music.
+
 ## Next Steps
 **MusicNet**:
+1. Fine-tuning Hyperparameters: The decision tree provides a baseline, and the hyperparameter search space can be refined based on its results, and we could do more experimentation with random forests and gradient-boosted trees hyperparameters could potentially improve performance.
+2. Feature Importance Analysis: For decision trees and random forests, analyzing feature importance can provide insights into which aspects of the data contribute the most to classification, where understanding which musical features are crucial for distinguishing composers can enhance model interpretability.
+3. Addressing Class Imbalance: The imbalanced distribution of samples among composers, especially evident in the reduced subset, may impact model performance, where techniques like oversampling, undersampling, or using different class weights during training could be further explored, noteably the composers whom have much less data to work with compared to the other composers in the dataset.
 
 **GTZAN**:
+1. Improving Performance with Spectrogram Data: Exploring performance improvement with spectrogram data is a promising avenue. Human-extracted features may not benefit significantly from more complex models, as our work shows high performance but diminishing returns. Spectrograms, containing more information, paired with sophisticated models and better preprocessing techniques, could enhance performance further.
+2. Combining Convolutional Feature Extractor with Human-Extracted Features: A hybrid approach could involve building a model that combines a convolutional feature extractor with human-extracted features. The concatenated features would then be classified by a feedforward network (MLP). This method aims to merge the simplicity of human-derived features with the detailed insights from spectrograms, potentially creating a superior model.
+
 
 ## Contribution Table
 
@@ -454,8 +576,8 @@ F1 Scores, confusion matrix, etc.
 | Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, t-SNE, MusicNet CNN experimentation, Decision Trees, Random Forests, Gradient-boosted trees, Hyperparametrization, Figure generation and analysis, MIDI Parsing, Data Visualization, EDA, GitHub Pages |
 | Aditya Radhakrishnan   | Model Design & Implementation, Development/Iteration, Validation, Testing, Results Generation & Visualization, and Early Dataset Balancing Exploration                              |
 | Isabelle Murray        | GanttChart, Model Implementation/development, Testing, Results Generation & Visualization  |
-| Karpagam Karthikeyan   | GanttChart, MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing         |
-| Niki (Keyang) Lu       | Video presentation, GTZAN Data Preprocessing & Visualization                |
+| Karpagam Karthikeyan   | GanttChart, MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing, Figure Generation, CNN Model, Video Presentation         |
+| Niki (Keyang) Lu       | GTZAN Data Preprocessing & Visualization                |
 
 ## Gantt Chart
 Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/personal/kkarthikeyan8_gatech_edu/EVjVKvZA0_xLh_aF5jo_iTEBVskxE3vAHkcjEn6QkRMpAQ?e=xVssxk)
