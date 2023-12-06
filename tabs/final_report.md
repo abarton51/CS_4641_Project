@@ -2,14 +2,24 @@
 layout: default
 title: 3. Final Report
 ---
-# CS 4641 Machine Learning, Team 6, Final Report
+<style>
+  h1 {
+    text-align: center;
+  }
+</style>
+
+# Exploring Music Classification - Composers and Genres
+
+
+**CS 4641 Machine Learning, Team 6, Final Report**
+
 Members: Austin Barton, Karpagam Karthikeyan, Keyang Lu, Isabelle Murray, Aditya Radhakrishan
 
 ***
 
 # Table of Contents
 
-- [CS 4641 Machine Learning, Team 6, Final Report](#cs-4641-machine-learning-team-6-final-report)
+- [Exploring Music Classification - Composers and Genres](#exploring-music-classification---composers-and-genres)
 - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
     - [Datasets](#datasets)
@@ -573,20 +583,18 @@ Our results explores the capabilities of machine learning methods when applied o
 
 | Contributor Name      | Contribution Type                      |
 |------------------------|----------------------------------------|
-| Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, t-SNE, CNN framework, Decision Trees Random Forests, Gradient-boosted trees, Figure generation and analysis, MIDI Parsing, Data Visualization, EDA, GitHub Pages|
+| Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, t-SNE, MusicNet CNN experimentation, Decision Trees, Random Forests, Gradient-boosted trees, Hyperparametrization, Figure generation and analysis, MIDI Parsing, Data Visualization, EDA, GitHub Pages |
 | Aditya Radhakrishnan   | Model Design & Implementation, Development/Iteration, Validation, Testing, Results Generation & Visualization, and Early Dataset Balancing Exploration                              |
 | Isabelle Murray        | GanttChart, Model Implementation/development, Testing, Results Generation & Visualization  |
-| Karpagam Karthikeyan   | GanttChart, MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing, Figure Generation, CNN Model, Video Presentation         |
+| Karpagam Karthikeyan   | MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing, Figure Generation, CNN Model, Video Presentation,  GanttChart         |
 | Niki (Keyang) Lu       | GTZAN Data Preprocessing & Visualization                |
 
 ## Gantt Chart
 Link to Gantt Chart: [Gantt Chart](https://gtvault-my.sharepoint.com/:x:/g/personal/kkarthikeyan8_gatech_edu/EVjVKvZA0_xLh_aF5jo_iTEBVskxE3vAHkcjEn6QkRMpAQ?e=xVssxk)
 
-![Gantt Chart Page 1](../assets/images/GanttChart_ClassicalficationMusic-1.png)
+![Gantt Chart Page 1](../assets/gantt1.png)
 
-![Gantt Chart Page 2](../assets/images/gantt_midterm_update.png)
-
-![Gantt Chart Page 3](../assets/images/GanttChart_ClassicalficationMusic-3.png)
+![Gantt Chart Page 2](../assets/gantt2.png)
 
 
 
