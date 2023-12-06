@@ -451,7 +451,7 @@ F1 Scores, confusion matrix, etc.
 
 | Contributor Name      | Contribution Type                      |
 |------------------------|----------------------------------------|
-| Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, t-SNE, CNN framework, Decision Trees Random Forests, Gradient-boosted trees, Figure generation and analysis, MIDI Parsing, Data Visualization, EDA, GitHub Pages|
+| Austin Barton          | MusicNet Data Pre-Processing, MusicNet PCA, t-SNE, MusicNet CNN experimentation, Decision Trees, Random Forests, Gradient-boosted trees, Hyperparametrization, Figure generation and analysis, MIDI Parsing, Data Visualization, EDA, GitHub Pages |
 | Aditya Radhakrishnan   | Model Design & Implementation, Development/Iteration, Validation, Testing, Results Generation & Visualization, and Early Dataset Balancing Exploration                              |
 | Isabelle Murray        | GanttChart, Model Implementation/development, Testing, Results Generation & Visualization  |
 | Karpagam Karthikeyan   | GanttChart, MusicNet Data Pre-Processing, Github Pages, Data Visualization, MIDI Parsing         |
